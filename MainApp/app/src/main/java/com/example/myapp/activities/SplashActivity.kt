@@ -4,15 +4,15 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.myapp.R
-import com.example.myapp.models.FirebaseWrapper
+import com.example.myapp.models.FirebaseAuthWrapper
 
 class SplashActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val firebaseWrapper : FirebaseWrapper = FirebaseWrapper()
-        if (!firebaseWrapper.isAuthenticated()){
+        val firebaseAuthWrapper : FirebaseAuthWrapper = FirebaseAuthWrapper()
+        if (!firebaseAuthWrapper.isAuthenticated()){
             val intent = Intent(this,SignInActivity::class.java)
             this.startActivity(intent)
             finish()

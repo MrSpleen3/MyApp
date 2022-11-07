@@ -5,7 +5,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.EditText
+import android.widget.TextView
 import com.example.myapp.R
+import com.example.myapp.activities.SignUpActivity
+import com.example.myapp.models.FirebaseAuthWrapper
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -35,7 +40,27 @@ class SignUpInstructor : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_sign_up_instructor, container, false)
+        val view: View = inflater.inflate(R.layout.fragment_sign_up_instructor, container, false)
+        val link: TextView = view.findViewById(R.id.textViewInstr1)
+        val thiz = this
+        link.setOnClickListener(object : View.OnClickListener {
+            override fun onClick(v: View?) {
+                (thiz.requireActivity() as SignUpActivity).switchFragment()
+            }
+        })
+        val button: Button = view.findViewById(R.id.buttonInstr)
+        button.setOnClickListener(object : View.OnClickListener {
+            override fun onClick(v: View?) {
+                val email : EditText = view.findViewById(R.id.editTextTextInstrEmailAddress)
+                val password : EditText = view.findViewById(R.id.editTextTextInstrPassword)
+                val name : EditText = view.findViewById(R.id.editTextTextInstrName)
+                val surname : EditText = view.findViewById(R.id.editTextTextInstrSurname)
+                val licenceId : EditText = view.findViewById(R.id.editTextTextInstrID)
+                val firebaseAuthWrapper : FirebaseAuthWrapper = FirebaseAuthWrapper(thiz.requireContext())
+                firebaseAuthWrapper.signUpInstructor(email.text.toString(),password.text.toString(),name.text.toString(),surname.text.toString(),licenceId.text.toString())
+            }
+        })
+        return view
     }
 
     companion object {
