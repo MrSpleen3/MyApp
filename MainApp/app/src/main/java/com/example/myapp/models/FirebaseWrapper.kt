@@ -2,8 +2,10 @@ package com.example.myapp.models
 
 import android.content.ContentValues.TAG
 import android.content.Context
+import android.content.Intent
 import android.util.Log
 import android.widget.Toast
+import com.example.myapp.activities.SplashActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.auth.ktx.auth
@@ -36,6 +38,7 @@ class FirebaseAuthWrapper (private val context : Context){
                         .addOnCompleteListener { task ->
                             if (task.isSuccessful) {
                                 Log.d(TAG, "setName:success")
+                                logSuccess()
                             }
                             else {
                                 // If setName in fails, display a message to the user.
@@ -46,13 +49,11 @@ class FirebaseAuthWrapper (private val context : Context){
                                 ).show()
                             }
                         }
-                    //updateUI(user)
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.w(TAG, "createUserWithEmail:failure", task.exception)
                     Toast.makeText(context, "Authentication failed.",
                         Toast.LENGTH_SHORT).show()
-                    //updateUI(null)
                 }
             }
     }
@@ -66,13 +67,12 @@ class FirebaseAuthWrapper (private val context : Context){
                     val user = auth.currentUser
                     val id: String = user!!.uid
                     FirebaseDbWrapper(context).addInstructor(id, name, surname, licenceId)
-                    //updateUI(user)
+                    logSuccess()
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.w(TAG, "createUserWithEmail:failure", task.exception)
                     Toast.makeText(context, "Authentication failed.",
                         Toast.LENGTH_SHORT).show()
-                    //updateUI(null)
                 }
             }
     }
@@ -83,16 +83,20 @@ class FirebaseAuthWrapper (private val context : Context){
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d(TAG, "signInWithEmail:success")
-                    val user = auth.currentUser
-                    //updateUI(user)
+                    logSuccess()
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.w(TAG, "signInWithEmail:failure", task.exception)
                     Toast.makeText(context, "Authentication failed.",
                         Toast.LENGTH_SHORT).show()
-                    //updateUI(null)
                 }
             }
+    }
+
+    private fun logSuccess() {
+        val intent : Intent = Intent(this.context, SplashActivity::class.java)
+        context.startActivity(intent)
+
     }
 }
 

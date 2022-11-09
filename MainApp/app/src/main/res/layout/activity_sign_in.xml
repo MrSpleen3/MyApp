@@ -14,7 +14,7 @@
 
 
         <EditText
-            android:id="@+id/editTextTextEmailAddress"
+            android:id="@+id/emailAddressSignIn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
@@ -22,21 +22,20 @@
             android:hint="Insert email"/>
 
         <EditText
-            android:id="@+id/editTextNumberPassword"
+            android:id="@+id/passwordSignIn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:inputType="numberPassword"
-            android:hint="Insert password"/>
+            android:inputType="textPassword" />
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/buttonSignIn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Button" />
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/toSignUp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|right"
