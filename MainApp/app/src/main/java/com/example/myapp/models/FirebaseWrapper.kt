@@ -123,13 +123,14 @@ class FirebaseDbWrapper (private val context: Context) {
 
     fun isInstructor(id: String): Boolean {
         val docRef = db.collection("Instructors").document(id)
-        var flag: Boolean =false
+        var flag : Boolean = false
         docRef.get()
             .addOnSuccessListener { document ->
                 if (document != null) {
                     Log.d(TAG, "DocumentSnapshot data: ${document.data}")
                     flag = true
-                } else {
+                }
+                else {
                     Log.d(TAG, "No such document")
                 }
             }
