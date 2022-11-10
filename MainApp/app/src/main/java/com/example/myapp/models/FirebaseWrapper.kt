@@ -5,6 +5,8 @@ import android.content.Context
 import android.content.Intent
 import android.util.Log
 import android.widget.Toast
+import com.example.myapp.activities.MainCustomerActivity
+import com.example.myapp.activities.MainInstructorActivity
 import com.example.myapp.activities.SplashActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
@@ -12,6 +14,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.auth.ktx.userProfileChangeRequest
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import javax.xml.transform.Source
 
 class FirebaseAuthWrapper (private val context : Context){
     private var auth: FirebaseAuth = Firebase.auth
@@ -120,6 +123,9 @@ class FirebaseDbWrapper (private val context: Context) {
                     Toast.LENGTH_SHORT).show()
             }
     }
+    /*
+    L'idea era di ritornare un bool e gestire l'intent da spash, ma la lettura
+    è async quindi non funzionerebbe:
 
     fun isInstructor(id: String): Boolean {
         val docRef = db.collection("Instructors").document(id)
@@ -128,7 +134,7 @@ class FirebaseDbWrapper (private val context: Context) {
             .addOnSuccessListener { document ->
                 if (document != null) {
                     Log.d(TAG, "DocumentSnapshot data: ${document.data}")
-                    flag = true
+                    instructorSuccess(true)
                 }
                 else {
                     Log.d(TAG, "No such document")
@@ -138,5 +144,36 @@ class FirebaseDbWrapper (private val context: Context) {
                 Log.d(TAG, "get failed with ", exception)
             }
         return flag
+    }
+     */
+    fun isInstructor(id: String) {
+        val docRef = db.collection("Instructors").document(id)
+        docRef.get()
+            .addOnSuccessListener { document ->
+                if (document != null) {
+                    Log.d(TAG, "DocumentSnapshot data: ${document.data}")
+                    instructorSuccess(true)
+                }
+                else {
+                    Log.d(TAG, "No such document")
+                    instructorSuccess(false)
+                }
+            }
+            .addOnFailureListener { exception ->
+                Log.d(TAG, "get failed with ", exception)
+                Toast.makeText(context, "Can't reach DB.",
+                    Toast.LENGTH_SHORT).show()
+            }
+    }
+
+    private fun instructorSuccess(boolean: Boolean) {
+        var intent : Intent? =null
+        if(boolean) {
+            intent = Intent(this.context, MainInstructorActivity::class.java)
+        }
+        else {
+            intent = Intent(this.context, MainCustomerActivity::class.java)
+        }
+        context.startActivity(intent!!)
     }
 }

@@ -23,7 +23,7 @@ class SplashActivity : AppCompatActivity() {
             //check if customer or instructor and send you to your main
             val firebaseDbWrapper: FirebaseDbWrapper = FirebaseDbWrapper(this)
             val id: String = firebaseAuthWrapper.getId()
-            if (!firebaseDbWrapper.isInstructor(id)) {
+          /*  if (!firebaseDbWrapper.isInstructor(id)) {
                 val intent = Intent(this,MainCustomerActivity::class.java)
                 this.startActivity(intent)
                 finish()
@@ -34,6 +34,8 @@ class SplashActivity : AppCompatActivity() {
                 this.startActivity(intent)
                 finish()
             }
+           */
+            firebaseDbWrapper.isInstructor(id)
 
         }
     }
