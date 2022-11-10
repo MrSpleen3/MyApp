@@ -14,7 +14,6 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.auth.ktx.userProfileChangeRequest
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import javax.xml.transform.Source
 
 class FirebaseAuthWrapper (private val context : Context){
     private var auth: FirebaseAuth = Firebase.auth
@@ -150,7 +149,7 @@ class FirebaseDbWrapper (private val context: Context) {
         val docRef = db.collection("Instructors").document(id)
         docRef.get()
             .addOnSuccessListener { document ->
-                if (document != null) {
+                if (document.data != null) {
                     Log.d(TAG, "DocumentSnapshot data: ${document.data}")
                     instructorSuccess(true)
                 }
@@ -166,6 +165,26 @@ class FirebaseDbWrapper (private val context: Context) {
             }
     }
 
+    fun getPlaces(response: Response) {
+        val docRef = db.collection("Cities").document("list")
+        docRef.get()
+            .addOnSuccessListener { document ->
+                if (document != null) {
+                    Log.d(TAG, "DocumentSnapshot data: " + document.data)
+                    response.list =document.get("city_list") as ArrayList<String>
+                } else {
+                    Log.d(TAG, "No doc ")
+                }
+                }
+            .addOnFailureListener { exception ->
+                Log.d(TAG, "get failed with ", exception)
+                response.e = exception
+                Toast.makeText(context, "Can't reach DB.",
+                    Toast.LENGTH_SHORT).show()
+            }
+
+    }
+
     private fun instructorSuccess(boolean: Boolean) {
         var intent : Intent? =null
         if(boolean) {
@@ -176,4 +195,8 @@ class FirebaseDbWrapper (private val context: Context) {
         }
         context.startActivity(intent!!)
     }
+}
+
+class Response( var list : ArrayList<String>? , var e : Exception?){
+
 }
