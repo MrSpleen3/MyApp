@@ -7,20 +7,25 @@ import android.widget.Spinner
 import com.example.myapp.R
 import com.example.myapp.models.FirebaseDbWrapper
 import com.example.myapp.models.Response
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class MainCustomerActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_customer)
-
+        val thiz = this
         val spinner: Spinner = findViewById(R.id.spinnerPlaces)
-        var arr : ArrayList<String> = ArrayList()
-        val res : Response = Response(null,null)
         val firebaseDbWrapper : FirebaseDbWrapper = FirebaseDbWrapper(this)
-        firebaseDbWrapper.getPlaces(res)
-        arr = res.list!!
-        val adapter: ArrayAdapter<String> = ArrayAdapter(this,android.R.layout.simple_spinner_item,arr)
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        spinner.adapter = adapter
+        GlobalScope.launch(Dispatchers.IO) {
+            val arr : ArrayList<String> = firebaseDbWrapper.getPlaces()
+            val adapter: ArrayAdapter<String> = ArrayAdapter(thiz , android.R.layout.simple_spinner_item, arr)
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            withContext(Dispatchers.Main) {
+                spinner.adapter = adapter
+            }
+        }
     }
 }

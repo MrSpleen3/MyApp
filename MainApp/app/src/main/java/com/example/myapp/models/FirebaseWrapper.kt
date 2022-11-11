@@ -14,6 +14,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.auth.ktx.userProfileChangeRequest
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.tasks.await
 
 class FirebaseAuthWrapper (private val context : Context){
     private var auth: FirebaseAuth = Firebase.auth
@@ -165,24 +166,10 @@ class FirebaseDbWrapper (private val context: Context) {
             }
     }
 
-    fun getPlaces(response: Response) {
+    suspend fun getPlaces() : ArrayList<String> {
         val docRef = db.collection("Cities").document("list")
-        docRef.get()
-            .addOnSuccessListener { document ->
-                if (document != null) {
-                    Log.d(TAG, "DocumentSnapshot data: " + document.data)
-                    response.list =document.get("city_list") as ArrayList<String>
-                } else {
-                    Log.d(TAG, "No doc ")
-                }
-                }
-            .addOnFailureListener { exception ->
-                Log.d(TAG, "get failed with ", exception)
-                response.e = exception
-                Toast.makeText(context, "Can't reach DB.",
-                    Toast.LENGTH_SHORT).show()
-            }
-
+        val doc = docRef.get().await()
+        return doc.get("city_list") as ArrayList<String>
     }
 
     private fun instructorSuccess(boolean: Boolean) {
