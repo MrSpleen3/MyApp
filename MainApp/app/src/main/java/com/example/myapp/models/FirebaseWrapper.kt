@@ -61,7 +61,7 @@ class FirebaseAuthWrapper (private val context : Context){
             }
     }
 
-    fun signUpInstructor(email: String, password: String, name : String, surname : String, licenceId: String) {
+    fun signUpInstructor(email: String, password: String, name : String, surname : String, licenceId: String, place : String) {
         this.auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
@@ -69,7 +69,7 @@ class FirebaseAuthWrapper (private val context : Context){
                     Log.d(TAG, "createUserWithEmail:success")
                     val user = auth.currentUser
                     val id: String = user!!.uid
-                    FirebaseDbWrapper(context).addInstructor(id, name, surname, licenceId)
+                    FirebaseDbWrapper(context).addInstructor(id, name, surname, licenceId, place)
                     logSuccess()
                 } else {
                     // If sign in fails, display a message to the user.
@@ -108,11 +108,12 @@ class FirebaseDbWrapper (private val context: Context) {
 
     private val db = Firebase.firestore
 
-    fun addInstructor(id: String, name: String,surname: String,licenceId: String) {
+    fun addInstructor(id: String, name: String,surname: String,licenceId: String, place : String) {
         val user = hashMapOf(
             "name" to name,
             "surname" to surname,
-            "licenceId" to licenceId
+            "licenceId" to licenceId,
+            "place" to place
         )
         db.collection("Instructors").document(id)
             .set(user)
@@ -182,8 +183,4 @@ class FirebaseDbWrapper (private val context: Context) {
         }
         context.startActivity(intent!!)
     }
-}
-
-class Response( var list : ArrayList<String>? , var e : Exception?){
-
 }

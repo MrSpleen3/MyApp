@@ -1,31 +1,38 @@
 package com.example.myapp.activities
 
+
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.ArrayAdapter
-import android.widget.Spinner
 import com.example.myapp.R
-import com.example.myapp.models.FirebaseDbWrapper
-import com.example.myapp.models.Response
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.commit
+import com.example.myapp.fragments.MainGetInstructors
+import com.example.myapp.fragments.MainGetPlaces
+
 
 class MainCustomerActivity : AppCompatActivity() {
+
+    var fragmentManager : FragmentManager? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_customer)
-        val thiz = this
-        val spinner: Spinner = findViewById(R.id.spinnerPlaces)
-        val firebaseDbWrapper : FirebaseDbWrapper = FirebaseDbWrapper(this)
-        GlobalScope.launch(Dispatchers.IO) {
-            val arr : ArrayList<String> = firebaseDbWrapper.getPlaces()
-            val adapter: ArrayAdapter<String> = ArrayAdapter(thiz , android.R.layout.simple_spinner_item, arr)
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            withContext(Dispatchers.Main) {
-                spinner.adapter = adapter
-            }
+        this.fragmentManager = this.supportFragmentManager
+        renderMainFrag(null)
+    }
+
+    fun renderMainFrag(place : String?) {
+        val frag: Fragment
+        if(place != null) {
+            frag = MainGetInstructors.newInstance(place)
+        }
+        else{
+            frag = MainGetPlaces()
+        }
+        fragmentManager!!.commit {
+            setReorderingAllowed(true)
+            this.replace(R.id.fragmentContainerMain, frag)
         }
     }
 }
