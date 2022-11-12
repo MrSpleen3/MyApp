@@ -19,6 +19,8 @@ import com.example.myapp.activities.MainCustomerActivity
  * Use the [MainGetInstructors.newInstance] factory method to
  * create an instance of this fragment.
  */
+//Prende il luogo d'interesse dall'altro frag
+//e ritorna una lista d'istruttori relativa al luogo
 class MainGetInstructors() : Fragment() {
     // TODO: Rename and change types of parameters
     private var place: String? = null
@@ -37,6 +39,7 @@ class MainGetInstructors() : Fragment() {
         // Inflate the layout for this fragment
         val thiz = this
         val view : View = inflater.inflate(R.layout.fragment_main_get_instructors, container, false)
+        //TODO: prendere gli istruttori 
         val prova1 : TextView = view.findViewById(R.id.provaPlace)
         prova1.text = place
         val provaBack : TextView = view.findViewById(R.id.back)

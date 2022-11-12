@@ -9,7 +9,7 @@ import com.example.myapp.R
 import com.example.myapp.fragments.SignUpCustomer
 import com.example.myapp.fragments.SignUpInstructor
 import com.example.myapp.fragments.SignIn
-
+//Gestisce i fragment di Sign In e Sign Up
 class LogActivity : AppCompatActivity() {
     var logFlag : Boolean = false
     var instFlag : Boolean = false

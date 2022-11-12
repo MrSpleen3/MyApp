@@ -10,7 +10,7 @@ import androidx.fragment.app.commit
 import com.example.myapp.fragments.MainGetInstructors
 import com.example.myapp.fragments.MainGetPlaces
 
-
+//Gestisce i Main fragments
 class MainCustomerActivity : AppCompatActivity() {
 
     var fragmentManager : FragmentManager? = null
