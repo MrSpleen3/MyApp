@@ -8,8 +8,10 @@ import androidx.fragment.app.commit
 import com.example.myapp.R
 import com.example.myapp.fragments.SignUpCustomer
 import com.example.myapp.fragments.SignUpInstructor
+import com.example.myapp.fragments.SignIn
 
-class SignUpActivity : AppCompatActivity() {
+class LogActivity : AppCompatActivity() {
+    var logFlag : Boolean = false
     var instFlag : Boolean = false
     var fragmentManager : FragmentManager? = null
 
@@ -23,11 +25,15 @@ class SignUpActivity : AppCompatActivity() {
 
     private fun renderFragment() {
         val frag : Fragment
-        if(instFlag){
-            frag = SignUpInstructor()
+        if (logFlag) {
+            if (instFlag) {
+                frag = SignUpInstructor()
+            } else {
+                frag = SignUpCustomer()
+            }
         }
         else {
-            frag = SignUpCustomer()
+            frag = SignIn()
         }
         fragmentManager!!.commit {
             setReorderingAllowed(true)
@@ -35,8 +41,13 @@ class SignUpActivity : AppCompatActivity() {
         }
     }
 
-    fun switchFragment() {
+    fun switchSignUpFragment() {
         instFlag = !instFlag
         renderFragment()
     }
+    fun switchLogFragment() {
+        logFlag = !logFlag
+        renderFragment()
+    }
+
 }

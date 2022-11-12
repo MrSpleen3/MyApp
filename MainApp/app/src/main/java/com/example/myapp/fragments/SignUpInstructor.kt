@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import com.example.myapp.R
-import com.example.myapp.activities.SignUpActivity
+import com.example.myapp.activities.LogActivity
 import com.example.myapp.models.FirebaseAuthWrapper
 import com.example.myapp.models.FirebaseDbWrapper
 import kotlinx.coroutines.Dispatchers
@@ -48,7 +48,7 @@ class SignUpInstructor : Fragment() {
         val thiz = this
         link.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
-                (thiz.requireActivity() as SignUpActivity).switchFragment()
+                (thiz.requireActivity() as LogActivity).switchSignUpFragment()
             }
         })
         val spinner: Spinner = view.findViewById(R.id.signPlaces)

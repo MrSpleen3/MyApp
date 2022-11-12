@@ -15,7 +15,7 @@ class SplashActivity : AppCompatActivity() {
         val firebaseAuthWrapper : FirebaseAuthWrapper = FirebaseAuthWrapper(this)
         //if you arent logged send you to sign in
         if (!firebaseAuthWrapper.isAuthenticated()){
-            val intent = Intent(this,SignInActivity::class.java)
+            val intent = Intent(this,LogActivity::class.java)
             this.startActivity(intent)
             finish()
         }
