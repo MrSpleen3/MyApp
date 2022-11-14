@@ -41,7 +41,7 @@ class MainGetInstructors() : Fragment() {
             place = it.getString("place")
         }
     }
-
+    //TODO: change ratingbar
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
