@@ -8,6 +8,7 @@ import android.widget.Toast
 import com.example.myapp.activities.MainCustomerActivity
 import com.example.myapp.activities.MainInstructorActivity
 import com.example.myapp.activities.SplashActivity
+import com.example.myapp.fragments.InstructorListEl
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.auth.ktx.auth
@@ -182,5 +183,18 @@ class FirebaseDbWrapper (private val context: Context) {
             intent = Intent(this.context, MainCustomerActivity::class.java)
         }
         context.startActivity(intent!!)
+    }
+
+    suspend fun getInstructorList(place: String?): List<InstructorListEl> {
+        val docRef = db.collection("Instructors")
+            .whereEqualTo("place",place)
+        val doc = docRef.get().await()
+        val mylist : MutableList<InstructorListEl> = ArrayList<InstructorListEl>()
+        for (document in doc.documents) {
+            val istrName : String = document.get("name").toString()
+            val istRate : Int= (document.get("rate") as Long).toInt()
+            mylist.add(InstructorListEl(istrName,istRate))
+        }
+        return mylist
     }
 }

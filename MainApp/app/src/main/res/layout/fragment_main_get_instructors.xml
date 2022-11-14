@@ -6,10 +6,15 @@
     tools:context=".fragments.MainGetInstructors">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:id="@+id/provaPlace"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent">
+
+        <ListView
+            android:id="@+id/instructorList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </ScrollView>
 
     <TextView
         android:id="@+id/back"

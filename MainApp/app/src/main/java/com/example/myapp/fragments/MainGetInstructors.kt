@@ -1,13 +1,23 @@
 package com.example.myapp.fragments
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import android.widget.ListAdapter
+import android.widget.ListView
+import android.widget.RatingBar
 import android.widget.TextView
 import com.example.myapp.R
 import com.example.myapp.activities.MainCustomerActivity
+import com.example.myapp.models.FirebaseDbWrapper
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -39,9 +49,16 @@ class MainGetInstructors() : Fragment() {
         // Inflate the layout for this fragment
         val thiz = this
         val view : View = inflater.inflate(R.layout.fragment_main_get_instructors, container, false)
-        //TODO: prendere gli istruttori 
-        val prova1 : TextView = view.findViewById(R.id.provaPlace)
-        prova1.text = place
+        val istrList : ListView = view.findViewById(R.id.instructorList)
+        val firebaseDbWrapper : FirebaseDbWrapper = FirebaseDbWrapper(thiz.requireContext())
+        GlobalScope.launch(Dispatchers.IO) {
+            val mylist : List <InstructorListEl> = firebaseDbWrapper.getInstructorList(place)
+            val adapter : ListAdapter = MyListAdapter(thiz.requireActivity(),0,mylist) as ListAdapter
+            withContext(Dispatchers.Main) {
+                //TODO:need to debug
+                istrList.adapter = adapter
+            }
+        }
         val provaBack : TextView = view.findViewById(R.id.back)
         provaBack.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
@@ -68,5 +85,26 @@ class MainGetInstructors() : Fragment() {
                     putString("place", place)
                 }
             }
+    }
+}
+
+class InstructorListEl(val name : String,val rate: Int) {
+
+}
+
+class MyListAdapter(context: Context, val resorce:Int, val instructors : List<InstructorListEl>) :
+ArrayAdapter<InstructorListEl>(context,resorce,instructors){
+    override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+        val instructor : InstructorListEl = instructors.get(position)
+        var vieww : View? = convertView
+        if (vieww == null) {
+            vieww =
+                LayoutInflater.from(context).inflate(R.layout.instructors_list,parent,false)
+        }
+        val instName : TextView = vieww!!.findViewById(R.id.nameInstr)
+        instName.text = instructor.name
+        val instRate : RatingBar = vieww!!.findViewById(R.id.ratingInstr)
+        instRate.numStars = instructor.rate
+        return vieww
     }
 }
