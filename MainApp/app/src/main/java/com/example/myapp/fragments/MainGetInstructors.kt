@@ -1,6 +1,7 @@
 package com.example.myapp.fragments
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -13,6 +14,7 @@ import android.widget.RatingBar
 import android.widget.TextView
 import com.example.myapp.R
 import com.example.myapp.activities.MainCustomerActivity
+import com.example.myapp.activities.MainInstructorActivity
 import com.example.myapp.models.FirebaseDbWrapper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -88,7 +90,7 @@ class MainGetInstructors() : Fragment() {
     }
 }
 
-class InstructorListEl(val name : String,val rate: Int) {
+class InstructorListEl(val id : String,val name : String,val rate: Int) {
 
 }
 
@@ -105,6 +107,14 @@ ArrayAdapter<InstructorListEl>(context,resorce,instructors){
         instName.text = instructor.name
         val instRate : RatingBar = vieww!!.findViewById(R.id.ratingInstr)
         instRate.numStars = instructor.rate
+        instName.setOnClickListener(object : View.OnClickListener {
+            override fun onClick(v: View?) {
+                val myintent: Intent = Intent(context,MainInstructorActivity::class.java)
+                myintent.putExtra("id",instructor.id)
+                myintent.putExtra("flag",false)
+                context.startActivity(myintent)
+            }
+        })
         return vieww
     }
 }

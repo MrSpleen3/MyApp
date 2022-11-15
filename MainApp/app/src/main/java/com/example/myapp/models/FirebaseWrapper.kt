@@ -9,6 +9,7 @@ import com.example.myapp.activities.MainCustomerActivity
 import com.example.myapp.activities.MainInstructorActivity
 import com.example.myapp.activities.SplashActivity
 import com.example.myapp.fragments.InstructorListEl
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.auth.ktx.auth
@@ -148,24 +149,19 @@ class FirebaseDbWrapper (private val context: Context) {
         return flag
     }
      */
-    fun isInstructor(id: String) {
+    suspend fun isInstructor(id: String) {
         val docRef = db.collection("Instructors").document(id)
-        docRef.get()
-            .addOnSuccessListener { document ->
-                if (document.data != null) {
-                    Log.d(TAG, "DocumentSnapshot data: ${document.data}")
-                    instructorSuccess(true)
-                }
-                else {
-                    Log.d(TAG, "No such document")
-                    instructorSuccess(false)
-                }
-            }
-            .addOnFailureListener { exception ->
-                Log.d(TAG, "get failed with ", exception)
-                Toast.makeText(context, "Can't reach DB.",
-                    Toast.LENGTH_SHORT).show()
-            }
+        val doc = docRef.get().await()
+        var intent : Intent? = null
+        if (doc.data!=null){
+            intent = Intent(this.context, MainInstructorActivity::class.java)
+            intent.putExtra("flag",true)
+            intent.putExtra("id",id)
+        }
+        else{
+            intent = Intent(this.context, MainCustomerActivity::class.java)
+        }
+        context.startActivity(intent!!)
     }
 
     suspend fun getPlaces() : ArrayList<String> {
@@ -174,16 +170,18 @@ class FirebaseDbWrapper (private val context: Context) {
         return doc.get("city_list") as ArrayList<String>
     }
 
-    private fun instructorSuccess(boolean: Boolean) {
+  /*  private fun instructorSuccess(boolean: Boolean) {
         var intent : Intent? =null
         if(boolean) {
             intent = Intent(this.context, MainInstructorActivity::class.java)
+            intent.putExtra("flag",true)
+            intent.putExtra("id",)
         }
         else {
             intent = Intent(this.context, MainCustomerActivity::class.java)
         }
         context.startActivity(intent!!)
-    }
+    }*/
 
     suspend fun getInstructorList(place: String?): List<InstructorListEl> {
         val docRef = db.collection("Instructors")
@@ -191,10 +189,23 @@ class FirebaseDbWrapper (private val context: Context) {
         val doc = docRef.get().await()
         val mylist : MutableList<InstructorListEl> = ArrayList<InstructorListEl>()
         for (document in doc.documents) {
+            val id: String = document.id
             val istrName : String = document.get("name").toString()
             val istRate : Int= (document.get("rate") as Long).toInt()
-            mylist.add(InstructorListEl(istrName,istRate))
+            mylist.add(InstructorListEl(id,istrName,istRate))
         }
         return mylist
+    }
+
+    suspend fun getBookings(id : String,day : Int,month : Int, year : Int) {
+        val docRef = db.collection("Bookings")
+            .whereEqualTo("id_istr",id)
+            .whereEqualTo("day",day)
+            .whereEqualTo("month",month)
+            .whereEqualTo("year",year)
+        val doc = docRef.get().await()
+        for (document in doc.documents) {
+            val te = 1
+        }
     }
 }

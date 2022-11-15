@@ -6,6 +6,9 @@ import android.os.Bundle
 import com.example.myapp.R
 import com.example.myapp.models.FirebaseAuthWrapper
 import com.example.myapp.models.FirebaseDbWrapper
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class SplashActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,8 +38,9 @@ class SplashActivity : AppCompatActivity() {
                 finish()
             }
            */
+            GlobalScope.launch(Dispatchers.IO) {
             firebaseDbWrapper.isInstructor(id)
-
+            }
         }
     }
 }
