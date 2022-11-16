@@ -6,7 +6,11 @@ import android.os.Bundle
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.commit
 import com.example.myapp.R
+import com.example.myapp.fragments.TimeTableFragment
 import com.example.myapp.models.FirebaseDbWrapper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -18,18 +22,24 @@ class MainInstructorActivity : AppCompatActivity() {
 
     private var instructorFlag: Boolean? = null
     private var instructorId: String? = null
+    var fragmentManager : FragmentManager? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_instructor)
+        this.fragmentManager = this.supportFragmentManager
+        val frag : Fragment = TimeTableFragment()
+        fragmentManager!!.commit {
+            setReorderingAllowed(true)
+            this.replace(R.id.fragmentContainerTimeTable,frag)
+        }
         instructorFlag = intent.extras!!.getBoolean("flag")
         instructorId = intent.getStringExtra("id")
-        val text1 : TextView = findViewById(R.id.textView12)
-        text1.text = instructorFlag.toString()
-        val lay : LinearLayout = findViewById(R.id.layswitch)
+        val textBook : TextView = findViewById(R.id.textViewBook)
+        val lay : LinearLayout = findViewById(R.id.switchfrag)
         lay.visibility= View.GONE
         var flagvis : Boolean = false
-        text1.setOnClickListener(object : View.OnClickListener {
+        textBook.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
                 flagvis = !flagvis
                 if (flagvis){
