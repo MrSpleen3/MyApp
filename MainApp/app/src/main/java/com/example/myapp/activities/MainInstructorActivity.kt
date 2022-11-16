@@ -40,6 +40,12 @@ class MainInstructorActivity : AppCompatActivity() {
                 }
             }
         })
+        val calendar: Calendar= Calendar.getInstance()
+        val today : Int = calendar.get(Calendar.DAY_OF_MONTH)
+        val firstDay : Int = today - calendar.get(Calendar.DAY_OF_WEEK_IN_MONTH) + 1
+        val lastDay : Int = firstDay + 6
+        val bo = true
+
       /*  val firebaseDbWrapper =FirebaseDbWrapper(this)
         GlobalScope.launch(Dispatchers.IO) {
             firebaseDbWrapper.getBookings(instructorId!!, 23,11,2022)
