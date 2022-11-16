@@ -19,26 +19,32 @@ import com.example.myapp.R
  */
 class TimeTableFragment : Fragment() {
     // TODO: Rename and change types of parameters
-    //private var param1: String? = null
-  //  private var param2: String? = null
+    private var day: Int? = null
+    private var month: Int? = null
+    private var year: Int? = null
+    private var id : String? = null
 
-    /*override fun onCreate(savedInstanceState: Bundle?) {
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+
+            day = it.getInt("day")
+            month = it.getInt("month")
+            year = it.getInt("year")
+            id = it.getString("id")
         }
-    }*/
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        //TODO: get lessons of the day, render the results in the list...
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_timetable, container, false)
     }
 
-    /*companion object {
+    companion object {
         /**
          * Use this factory method to create a new instance of
          * this fragment using the provided parameters.
@@ -49,12 +55,14 @@ class TimeTableFragment : Fragment() {
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance(param1: String, param2: String) =
+        fun newInstance(id : String,day : Int, month : Int, year : Int) =
             TimeTableFragment().apply {
                 arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+                    putString("id",id)
+                    putInt("day",day)
+                    putInt("month",month)
+                    putInt("year",year)
                 }
             }
-    }*/
+    }
 }

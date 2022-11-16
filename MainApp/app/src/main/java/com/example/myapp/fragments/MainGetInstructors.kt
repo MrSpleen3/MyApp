@@ -57,7 +57,6 @@ class MainGetInstructors() : Fragment() {
             val mylist : List <InstructorListEl> = firebaseDbWrapper.getInstructorList(place)
             val adapter : ListAdapter = MyListAdapter(thiz.requireActivity(),0,mylist) as ListAdapter
             withContext(Dispatchers.Main) {
-                //TODO:need to debug
                 istrList.adapter = adapter
             }
         }

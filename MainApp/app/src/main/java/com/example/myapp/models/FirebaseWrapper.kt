@@ -208,4 +208,10 @@ class FirebaseDbWrapper (private val context: Context) {
             val te = 1
         }
     }
+    suspend fun getMainInfo(id : String) : Array<String>{
+        val docRef = db.collection("Instructors").document(id)
+        val doc = docRef.get().await()
+        return arrayOf((doc.get("name") as String),(doc.get("place") as String))
+    }
+
 }
