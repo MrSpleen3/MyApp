@@ -14,6 +14,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.commit
 import com.example.myapp.R
 import com.example.myapp.fragments.TimeTableFragment
+import com.example.myapp.models.FirebaseAuthWrapper
 import com.example.myapp.models.FirebaseDbWrapper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -32,6 +33,8 @@ class MainInstructorActivity : AppCompatActivity() {
         instructorFlag = intent.extras!!.getBoolean("flag")
         instructorId = intent.getStringExtra("id")
         val firebaseDbWrapper =FirebaseDbWrapper(this)
+        val firebaseAuthWrapper: FirebaseAuthWrapper = FirebaseAuthWrapper(this)
+        val custromerId = firebaseAuthWrapper.getId()
         val textName : TextView = findViewById(R.id.textViewName)
         val textPlace : TextView = findViewById(R.id.textViewPlace)
         GlobalScope.launch(Dispatchers.IO) {
@@ -67,7 +70,7 @@ class MainInstructorActivity : AppCompatActivity() {
                 val month : Int = calendar.get(Calendar.MONTH)
                 val day : Int = calendar.get(Calendar.DAY_OF_MONTH)
                 val dialog : DatePickerDialog = DatePickerDialog(thiz,android.R.style.Theme_Holo_Light_Dialog_MinWidth,DatePickerDialog.OnDateSetListener { view , myear, mmonth, mdayOfMonth ->
-                    val frag : Fragment = TimeTableFragment.newInstance(instructorId!!,mdayOfMonth,mmonth,myear)
+                    val frag : Fragment = TimeTableFragment.newInstance(instructorId!!,custromerId,mdayOfMonth,mmonth,myear)
                     fragmentManager.commit {
                         setReorderingAllowed(true)
                         this.replace(R.id.fragmentContainerTimeTable,frag)

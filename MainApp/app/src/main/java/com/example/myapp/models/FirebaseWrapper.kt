@@ -9,7 +9,6 @@ import com.example.myapp.activities.MainCustomerActivity
 import com.example.myapp.activities.MainInstructorActivity
 import com.example.myapp.activities.SplashActivity
 import com.example.myapp.fragments.InstructorListEl
-import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.auth.ktx.auth
@@ -197,21 +196,36 @@ class FirebaseDbWrapper (private val context: Context) {
         return mylist
     }
 
-    suspend fun getBookings(id : String,day : Int,month : Int, year : Int) {
+    suspend fun getBookings(id : String,day : Int,month : Int, year : Int) : List<BookingElement> {
         val docRef = db.collection("Bookings")
             .whereEqualTo("id_istr",id)
             .whereEqualTo("day",day)
             .whereEqualTo("month",month)
             .whereEqualTo("year",year)
+            .orderBy("time_slot")
         val doc = docRef.get().await()
-        for (document in doc.documents) {
-            val te = 1
+        val mylist : MutableList<BookingElement> = ArrayList<BookingElement>()
+        var j = 0
+        for (i in 1..7) {
+            val res = doc.documents[j]
+            if(i == (res.get("time_slot") as Int)){
+                mylist.add(BookingElement((res.get("id_cust") as String),i,(res.get("check") as Boolean)))
+                j++
+            }
+            else {
+                mylist.add(BookingElement(null,i,null))
+            }
         }
+        return mylist
     }
     suspend fun getMainInfo(id : String) : Array<String>{
         val docRef = db.collection("Instructors").document(id)
         val doc = docRef.get().await()
         return arrayOf((doc.get("name") as String),(doc.get("place") as String))
+    }
+
+    fun BookLesson(id : String, timeSlot : Int) {
+        TODO()
     }
 
 }
