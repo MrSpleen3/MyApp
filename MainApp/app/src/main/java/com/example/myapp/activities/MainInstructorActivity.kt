@@ -52,6 +52,7 @@ class MainInstructorActivity : AppCompatActivity() {
         var flagvis : Boolean = false
         val calendar: Calendar= Calendar.getInstance()
         val textSet : TextView = findViewById(R.id.textSetDate)
+        if(instructorFlag!!) textBook.text = "Le tue lezioni"
         textBook.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
                 flagvis = !flagvis
@@ -70,13 +71,14 @@ class MainInstructorActivity : AppCompatActivity() {
                 val month : Int = calendar.get(Calendar.MONTH)
                 val day : Int = calendar.get(Calendar.DAY_OF_MONTH)
                 val dialog : DatePickerDialog = DatePickerDialog(thiz,android.R.style.Theme_Holo_Light_Dialog_MinWidth,DatePickerDialog.OnDateSetListener { view , myear, mmonth, mdayOfMonth ->
-                    val frag : Fragment = TimeTableFragment.newInstance(instructorId!!,custromerId,mdayOfMonth,mmonth,myear)
+                    val frag : Fragment = TimeTableFragment.newInstance(instructorId!!,custromerId,instructorFlag!!,mdayOfMonth,(mmonth + 1),myear)
                     fragmentManager.commit {
                         setReorderingAllowed(true)
                         this.replace(R.id.fragmentContainerTimeTable,frag)
                     }
                 },year,month,day)
                 dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                dialog.datePicker.minDate = calendar.timeInMillis
                 dialog.show()
             }
         })

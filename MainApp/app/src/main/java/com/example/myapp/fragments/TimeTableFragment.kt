@@ -5,10 +5,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import android.widget.ListView
 import com.example.myapp.R
+import com.example.myapp.models.BookingElement
 import com.example.myapp.models.BookingListAdapter
 import com.example.myapp.models.FirebaseDbWrapper
+import com.example.myapp.models.LessonListAdapter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -31,6 +34,7 @@ class TimeTableFragment : Fragment() {
     private var year: Int? = null
     private var id_istr : String? = null
     private var id_cust : String? = null
+    private var instructorFlag : Boolean? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,9 +45,10 @@ class TimeTableFragment : Fragment() {
             year = it.getInt("year")
             id_istr = it.getString("id_istr")
             id_cust = it.getString("id_cust")
+            instructorFlag=it.getBoolean("flag_istr")
         }
     }
-
+    //TODO: aggiungere listener di eventi live! se no conflitti prenotazioni!
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -54,9 +59,15 @@ class TimeTableFragment : Fragment() {
         GlobalScope.launch(Dispatchers.IO) {
             val myList =
                 FirebaseDbWrapper(thiz.requireContext()).getBookings(id_istr!!, day!!, month!!, year!!)
-            val myAdapter : BookingListAdapter = BookingListAdapter(thiz.requireContext(),0,myList,id_cust!!)
+            var myAdapter : ArrayAdapter<BookingElement>
+            if(!instructorFlag!!) {
+                myAdapter = BookingListAdapter(thiz.requireContext(), 0, myList, id_cust!!,id_istr!!,day!!,month!!,year!!)
+            }
+            else {
+                myAdapter = LessonListAdapter(thiz.requireContext(), 0, myList)
+            }
             withContext(Dispatchers.Main) {
-                myListView.adapter = myAdapter
+                myListView.adapter = myAdapter!!
             }
         }
         return view
@@ -73,11 +84,12 @@ class TimeTableFragment : Fragment() {
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance(id_istr : String, id_cust : String, day : Int, month : Int, year : Int) =
+        fun newInstance(id_istr : String, id_cust : String?,flag : Boolean, day : Int, month : Int, year : Int) =
             TimeTableFragment().apply {
                 arguments = Bundle().apply {
                     putString("id_istr",id_istr)
                     putString("id_cust",id_cust)
+                    putBoolean("flag_istr",flag)
                     putInt("day",day)
                     putInt("month",month)
                     putInt("year",year)

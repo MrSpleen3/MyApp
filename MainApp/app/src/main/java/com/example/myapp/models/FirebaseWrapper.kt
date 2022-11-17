@@ -206,14 +206,19 @@ class FirebaseDbWrapper (private val context: Context) {
         val doc = docRef.get().await()
         val mylist : MutableList<BookingElement> = ArrayList<BookingElement>()
         var j = 0
-        for (i in 1..7) {
-            val res = doc.documents[j]
-            if(i == (res.get("time_slot") as Int)){
-                mylist.add(BookingElement((res.get("id_cust") as String),i,(res.get("check") as Boolean)))
-                j++
+        val max = doc.documents.size
+        for (i in 1..8) {
+            if(j<max) {
+                val res = doc.documents.get(j)
+                if ((i == (res.get("time_slot") as Long).toInt())) {
+                    mylist.add(BookingElement((res.get("id_cust") as String), i, (res.get("check") as Boolean),(res.id as String)))
+                    j++
+                } else {
+                    mylist.add(BookingElement(null, i, null,null))
+                }
             }
             else {
-                mylist.add(BookingElement(null,i,null))
+                mylist.add(BookingElement(null, i, null,null))
             }
         }
         return mylist
@@ -224,8 +229,35 @@ class FirebaseDbWrapper (private val context: Context) {
         return arrayOf((doc.get("name") as String),(doc.get("place") as String))
     }
 
-    fun BookLesson(id : String, timeSlot : Int) {
-        TODO()
+    fun BookLesson(id : String,istr_id: String, timeSlot : Int, day :Int, month: Int, year: Int ) {
+        val lesson = hashMapOf(
+            "time_slot" to timeSlot,
+            "day" to day,
+            "month" to month,
+            "year" to year,
+            "id_istr" to istr_id,
+            "id_cust" to id,
+            "check" to false
+        )
+        db.collection("Bookings").document()
+            .set(lesson)
+            .addOnSuccessListener {
+                Log.d(TAG, "DocumentSnapshot added")
+                Toast.makeText(context, "Lezione prenotata!",
+                    Toast.LENGTH_SHORT).show()}
+            .addOnFailureListener { e ->
+                Log.w(TAG, "Error adding document", e)
+                Toast.makeText(context, "Prenotazione fallita.",
+                    Toast.LENGTH_SHORT).show()
+            }
     }
 
+    fun confrimLesson(id : String) {
+        val docRef = db.collection("Bookings").document(id)
+        docRef.update("check",true)
+    }
+    fun deleteLesson(id : String) {
+        val docRef = db.collection("Bookings").document(id)
+        docRef.delete()
+    }
 }
