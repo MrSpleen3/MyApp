@@ -16,6 +16,8 @@ import com.example.myapp.R
 import com.example.myapp.activities.MainCustomerActivity
 import com.example.myapp.activities.MainInstructorActivity
 import com.example.myapp.models.FirebaseDbWrapper
+import com.example.myapp.models.InstructorListEl
+import com.example.myapp.models.MyListAdapter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -86,34 +88,5 @@ class MainGetInstructors() : Fragment() {
                     putString("place", place)
                 }
             }
-    }
-}
-
-class InstructorListEl(val id : String,val name : String,val rate: Int) {
-
-}
-
-class MyListAdapter(context: Context, val resorce:Int, val instructors : List<InstructorListEl>) :
-ArrayAdapter<InstructorListEl>(context,resorce,instructors){
-    override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-        val instructor : InstructorListEl = instructors.get(position)
-        var vieww : View? = convertView
-        if (vieww == null) {
-            vieww =
-                LayoutInflater.from(context).inflate(R.layout.instructors_list,parent,false)
-        }
-        val instName : TextView = vieww!!.findViewById(R.id.nameInstr)
-        instName.text = instructor.name
-        val instRate : RatingBar = vieww!!.findViewById(R.id.ratingInstr)
-        instRate.numStars = instructor.rate
-        instName.setOnClickListener(object : View.OnClickListener {
-            override fun onClick(v: View?) {
-                val myintent: Intent = Intent(context,MainInstructorActivity::class.java)
-                myintent.putExtra("id",instructor.id)
-                myintent.putExtra("flag",false)
-                context.startActivity(myintent)
-            }
-        })
-        return vieww
     }
 }

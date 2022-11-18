@@ -26,31 +26,37 @@ class MainInstructorActivity : AppCompatActivity() {
 
     private var instructorFlag: Boolean? = null
     private var instructorId: String? = null
+    private var custromerId : String? = null
+    var firebaseDbWrapper : FirebaseDbWrapper? = null
+    var fragmentManager : FragmentManager? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_instructor)
         instructorFlag = intent.extras!!.getBoolean("flag")
         instructorId = intent.getStringExtra("id")
-        val firebaseDbWrapper =FirebaseDbWrapper(this)
+        firebaseDbWrapper =FirebaseDbWrapper(this)
         val firebaseAuthWrapper: FirebaseAuthWrapper = FirebaseAuthWrapper(this)
-        val custromerId = firebaseAuthWrapper.getId()
+        custromerId = firebaseAuthWrapper.getId()
         val textName : TextView = findViewById(R.id.textViewName)
         val textPlace : TextView = findViewById(R.id.textViewPlace)
         GlobalScope.launch(Dispatchers.IO) {
-            val myarray : Array<String> =firebaseDbWrapper.getMainInfo(instructorId!!)
+            val myarray : Array<String> =firebaseDbWrapper!!.getMainInfo(instructorId!!)
             withContext(Dispatchers.Main) {
                 textName.text = myarray[0]
                 textPlace.text= myarray[1]
             }
         }
-        val fragmentManager = this.supportFragmentManager
+        fragmentManager = this.supportFragmentManager
         val thiz = this
         val textBook : TextView = findViewById(R.id.textViewBook)
         val lay : LinearLayout = findViewById(R.id.switchfrag)
         lay.visibility= View.GONE
         var flagvis : Boolean = false
         val calendar: Calendar= Calendar.getInstance()
+        var year : Int = calendar.get(Calendar.YEAR)
+        var month : Int = calendar.get(Calendar.MONTH)
+        var day : Int = calendar.get(Calendar.DAY_OF_MONTH)
         val textSet : TextView = findViewById(R.id.textSetDate)
         if(instructorFlag!!) textBook.text = "Le tue lezioni"
         textBook.setOnClickListener(object : View.OnClickListener {
@@ -67,12 +73,13 @@ class MainInstructorActivity : AppCompatActivity() {
         //TODO: need to implement the fragment
         textSet.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
-                val year : Int = calendar.get(Calendar.YEAR)
-                val month : Int = calendar.get(Calendar.MONTH)
-                val day : Int = calendar.get(Calendar.DAY_OF_MONTH)
+
                 val dialog : DatePickerDialog = DatePickerDialog(thiz,android.R.style.Theme_Holo_Light_Dialog_MinWidth,DatePickerDialog.OnDateSetListener { view , myear, mmonth, mdayOfMonth ->
-                    val frag : Fragment = TimeTableFragment.newInstance(instructorId!!,custromerId,instructorFlag!!,mdayOfMonth,(mmonth + 1),myear)
-                    fragmentManager.commit {
+                    day = mdayOfMonth
+                    month= mmonth
+                    year = myear
+                    val frag : Fragment = TimeTableFragment.newInstance(instructorId!!,custromerId,instructorFlag!!,day,(month + 1),year)
+                    fragmentManager!!.commit {
                         setReorderingAllowed(true)
                         this.replace(R.id.fragmentContainerTimeTable,frag)
                     }
@@ -82,6 +89,20 @@ class MainInstructorActivity : AppCompatActivity() {
                 dialog.show()
             }
         })
-    }
 
+    }
+    fun refreshFragment(day : Int, month : Int, year : Int) {
+        val frag: Fragment = TimeTableFragment.newInstance(
+            instructorId!!,
+            custromerId,
+            instructorFlag!!,
+            day,
+            month,
+            year
+        )
+        fragmentManager!!.commit {
+            setReorderingAllowed(true)
+            this.replace(R.id.fragmentContainerTimeTable, frag)
+        }
+    }
 }

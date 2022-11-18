@@ -8,11 +8,11 @@ import android.widget.Toast
 import com.example.myapp.activities.MainCustomerActivity
 import com.example.myapp.activities.MainInstructorActivity
 import com.example.myapp.activities.SplashActivity
-import com.example.myapp.fragments.InstructorListEl
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.auth.ktx.userProfileChangeRequest
+import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.tasks.await
@@ -246,5 +246,8 @@ class FirebaseDbWrapper (private val context: Context) {
                 Toast.makeText(context, "Operazione fallita.",
                     Toast.LENGTH_SHORT).show()
             }
+    }
+    fun getCollection() : CollectionReference {
+        return db.collection("Bookings")
     }
 }

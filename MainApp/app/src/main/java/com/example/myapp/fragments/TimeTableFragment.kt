@@ -1,6 +1,8 @@
 package com.example.myapp.fragments
 
+import android.content.ContentValues
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -8,10 +10,12 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.ListView
 import com.example.myapp.R
+import com.example.myapp.activities.MainInstructorActivity
 import com.example.myapp.models.BookingElement
 import com.example.myapp.models.BookingListAdapter
 import com.example.myapp.models.FirebaseDbWrapper
 import com.example.myapp.models.LessonListAdapter
+import com.google.firebase.firestore.ListenerRegistration
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -35,6 +39,7 @@ class TimeTableFragment : Fragment() {
     private var id_istr : String? = null
     private var id_cust : String? = null
     private var instructorFlag : Boolean? = null
+    var doc : ListenerRegistration? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,11 +59,13 @@ class TimeTableFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val thiz = this
+        var flag = false
         val view : View = inflater.inflate(R.layout.fragment_timetable, container, false)
         val myListView: ListView = view.findViewById(R.id.bookingList)
+        val firebaseDbWrapper : FirebaseDbWrapper = FirebaseDbWrapper(thiz.requireContext())
         GlobalScope.launch(Dispatchers.IO) {
             val myList =
-                FirebaseDbWrapper(thiz.requireContext()).getBookings(id_istr!!, day!!, month!!, year!!)
+                firebaseDbWrapper.getBookings(id_istr!!, day!!, month!!, year!!)
             var myAdapter : ArrayAdapter<BookingElement>
             if(!instructorFlag!!) {
                 myAdapter = BookingListAdapter(thiz.requireContext(), 0, myList, id_cust!!,id_istr!!,day!!,month!!,year!!)
@@ -70,7 +77,34 @@ class TimeTableFragment : Fragment() {
                 myListView.adapter = myAdapter!!
             }
         }
+        val fire : FirebaseDbWrapper = FirebaseDbWrapper(thiz.requireContext())
+        val docRef = fire.getCollection()
+        doc = docRef.whereEqualTo("id_istr", id_istr!!)
+            .whereEqualTo("day", day!!)
+            .whereEqualTo("month", (month!!))
+            .whereEqualTo("year", year!!)
+            .addSnapshotListener { value, e ->
+                if (e != null) {
+                    Log.w(ContentValues.TAG, "Listen failed.", e)
+                    return@addSnapshotListener
+                }
+                if ((value!!.documents.size > 0)&&flag) {
+                    //prima chiamavo qui direttamente refresh frag e
+                    //buggava l' app perchè il listener rimaneva attivo
+                    //e il fragment rimaneva vivo staccato dall'attività
+                    //non capisco perchè ora funziona se cambio il frag attraverso
+                    //il datepickerdialog, che non chiude il listener
+                    listenComplete()
+                }
+                //non interessa la prima chiamata, solo quando i dati cambiano
+                flag = true
+
+            }
         return view
+    }
+    fun listenComplete() {
+        doc!!.remove()
+        (this.requireActivity() as MainInstructorActivity).refreshFragment(day!!,month!!,year!!)
     }
 
     companion object {

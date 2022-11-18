@@ -42,7 +42,6 @@ class LessonListAdapter(context: Context,
                             })
                         .setNegativeButton("Annulla",
                             DialogInterface.OnClickListener { dialog, id ->
-                                FirebaseDbWrapper(context).deleteLesson(booking.id_doc!!)
                                 dialog.cancel()
                             })
                     builder.create()
