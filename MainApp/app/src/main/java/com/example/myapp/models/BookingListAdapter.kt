@@ -52,9 +52,11 @@ class BookingListAdapter
             })
         }
         else {
-            //TODO: in attesa di conferma/confermata
             if((booking.id == user_id)){
-                myBooking.text="prenotata"
+                if (booking.check!!) {
+                    myBooking.text = "prenotata"
+                }
+                else myBooking.text = "In attesa di conferma"
             }
             else {
                 myBooking.text = "occupato"

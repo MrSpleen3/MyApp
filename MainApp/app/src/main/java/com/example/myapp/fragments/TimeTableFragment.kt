@@ -64,7 +64,7 @@ class TimeTableFragment : Fragment() {
                 myAdapter = BookingListAdapter(thiz.requireContext(), 0, myList, id_cust!!,id_istr!!,day!!,month!!,year!!)
             }
             else {
-                myAdapter = LessonListAdapter(thiz.requireContext(), 0, myList)
+                myAdapter = LessonListAdapter(thiz.requireContext(), 0, myList,id_istr!!,day!!,month!!,year!!)
             }
             withContext(Dispatchers.Main) {
                 myListView.adapter = myAdapter!!

@@ -10,7 +10,13 @@ import android.widget.ArrayAdapter
 import android.widget.TextView
 import com.example.myapp.R
 
-class LessonListAdapter(context: Context, val resorce:Int, val bookings : List<BookingElement>) :
+class LessonListAdapter(context: Context,
+                        val resorce:Int,
+                        val bookings : List<BookingElement>,
+                        val id_istr : String,
+                        val day : Int,
+                        val month : Int,
+                        val year: Int) :
     ArrayAdapter<BookingElement>(context,resorce,bookings){
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val booking: BookingElement = bookings[position]
@@ -25,6 +31,24 @@ class LessonListAdapter(context: Context, val resorce:Int, val bookings : List<B
         val myBooking : TextView = vieww!!.findViewById(R.id.isFree)
         if((booking.id == null)||(booking.check == null)) {
             myBooking.text = "libero"
+            myBooking.setOnClickListener(object : View.OnClickListener {
+                override fun onClick(v: View?) {
+                    val builder = AlertDialog.Builder(context)
+                    builder.setMessage("Sei Occupato?")
+                        .setPositiveButton("Occupato",
+                            DialogInterface.OnClickListener { dialog, id ->
+                                FirebaseDbWrapper(context).noLesson(id_istr,day,month,year,(position + 1))
+                                dialog.cancel()
+                            })
+                        .setNegativeButton("Annulla",
+                            DialogInterface.OnClickListener { dialog, id ->
+                                FirebaseDbWrapper(context).deleteLesson(booking.id_doc!!)
+                                dialog.cancel()
+                            })
+                    builder.create()
+                    builder.show()
+                }
+            })
         }
         else {
             if(booking.check) {

@@ -125,29 +125,7 @@ class FirebaseDbWrapper (private val context: Context) {
                     Toast.LENGTH_SHORT).show()
             }
     }
-    /*
-    L'idea era di ritornare un bool e gestire l'intent da spash, ma la lettura
-    è async quindi non funzionerebbe:
 
-    fun isInstructor(id: String): Boolean {
-        val docRef = db.collection("Instructors").document(id)
-        var flag : Boolean = false
-        docRef.get()
-            .addOnSuccessListener { document ->
-                if (document != null) {
-                    Log.d(TAG, "DocumentSnapshot data: ${document.data}")
-                    instructorSuccess(true)
-                }
-                else {
-                    Log.d(TAG, "No such document")
-                }
-            }
-            .addOnFailureListener { exception ->
-                Log.d(TAG, "get failed with ", exception)
-            }
-        return flag
-    }
-     */
     suspend fun isInstructor(id: String) {
         val docRef = db.collection("Instructors").document(id)
         val doc = docRef.get().await()
@@ -168,19 +146,6 @@ class FirebaseDbWrapper (private val context: Context) {
         val doc = docRef.get().await()
         return doc.get("city_list") as ArrayList<String>
     }
-
-  /*  private fun instructorSuccess(boolean: Boolean) {
-        var intent : Intent? =null
-        if(boolean) {
-            intent = Intent(this.context, MainInstructorActivity::class.java)
-            intent.putExtra("flag",true)
-            intent.putExtra("id",)
-        }
-        else {
-            intent = Intent(this.context, MainCustomerActivity::class.java)
-        }
-        context.startActivity(intent!!)
-    }*/
 
     suspend fun getInstructorList(place: String?): List<InstructorListEl> {
         val docRef = db.collection("Instructors")
@@ -207,7 +172,7 @@ class FirebaseDbWrapper (private val context: Context) {
         val mylist : MutableList<BookingElement> = ArrayList<BookingElement>()
         var j = 0
         val max = doc.documents.size
-        for (i in 1..8) {
+        for (i in 1..9) {
             if(j<max) {
                 val res = doc.documents.get(j)
                 if ((i == (res.get("time_slot") as Long).toInt())) {
@@ -259,5 +224,27 @@ class FirebaseDbWrapper (private val context: Context) {
     fun deleteLesson(id : String) {
         val docRef = db.collection("Bookings").document(id)
         docRef.delete()
+    }
+    fun noLesson(id: String,day: Int,month: Int,year: Int,timeSlot: Int) {
+        val lesson = hashMapOf(
+            "time_slot" to timeSlot,
+            "day" to day,
+            "month" to month,
+            "year" to year,
+            "id_istr" to id,
+            "id_cust" to id,
+            "check" to true
+        )
+        db.collection("Bookings").document()
+            .set(lesson)
+            .addOnSuccessListener {
+                Log.d(TAG, "DocumentSnapshot added")
+                Toast.makeText(context, "Occupata!",
+                    Toast.LENGTH_SHORT).show()}
+            .addOnFailureListener { e ->
+                Log.w(TAG, "Error adding document", e)
+                Toast.makeText(context, "Operazione fallita.",
+                    Toast.LENGTH_SHORT).show()
+            }
     }
 }
