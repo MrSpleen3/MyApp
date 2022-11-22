@@ -22,7 +22,7 @@ class MyBackgroundService : Service() {
     var doc : ListenerRegistration? = null
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-
+        Log.d("wewe","serv")
         val fire : FirebaseDbWrapper = FirebaseDbWrapper(this.applicationContext)
         val id_cust : String = FirebaseAuthWrapper(this.applicationContext).getId()
         val docRef = fire.getCollection()
@@ -49,7 +49,7 @@ class MyBackgroundService : Service() {
     }
 
 
-    fun dataChanged(day : Int, month : Int, flag : Boolean,id : String) {
+    private fun dataChanged(day : Int, month : Int, flag : Boolean, id : String) {
         id_not++
         var notificationText : String? = null
         if(flag) notificationText = "la prenotazione del $day/$month è stata accettata"

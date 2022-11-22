@@ -250,4 +250,5 @@ class FirebaseDbWrapper (private val context: Context) {
     fun getCollection() : CollectionReference {
         return db.collection("Bookings")
     }
+
 }

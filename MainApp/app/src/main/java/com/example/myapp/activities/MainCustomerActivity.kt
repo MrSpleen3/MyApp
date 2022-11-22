@@ -20,7 +20,7 @@ class MainCustomerActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_customer)
-        //quando chiudo l'app il servizio riparte...
+        //quando chiudo l'app il servizio la fa ripartire parzialmente...
         //val serviceIntent = Intent(this,MyBackgroundService :: class.java)
         //startService(serviceIntent)
         this.fragmentManager = this.supportFragmentManager
