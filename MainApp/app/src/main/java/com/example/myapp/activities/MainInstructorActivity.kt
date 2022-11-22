@@ -2,10 +2,13 @@ package com.example.myapp.activities
 
 
 import android.app.DatePickerDialog
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -104,5 +107,24 @@ class MainInstructorActivity : AppCompatActivity() {
             setReorderingAllowed(true)
             this.replace(R.id.fragmentContainerTimeTable, frag)
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.my_menu,menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val notifyintent : Intent = Intent(this,NotificationActivity::class.java)
+        if(instructorFlag!!){
+            notifyintent.putExtra("flag_istr",true)
+            notifyintent.putExtra("id",instructorFlag)
+        }
+        else{
+            notifyintent.putExtra("flag_istr",false)
+            notifyintent.putExtra("id",custromerId)
+        }
+        this.startActivity(notifyintent)
+        return super.onOptionsItemSelected(item)
     }
 }

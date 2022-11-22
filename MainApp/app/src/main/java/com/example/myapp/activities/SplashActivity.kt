@@ -1,6 +1,7 @@
 package com.example.myapp.activities
 
 import android.Manifest
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
@@ -15,6 +16,7 @@ import com.example.myapp.models.FirebaseDbWrapper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class SplashActivity : AppCompatActivity() {
 
@@ -33,6 +35,7 @@ class SplashActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        val thiz = this
         if(this.hasPermission()) {
             val firebaseAuthWrapper: FirebaseAuthWrapper = FirebaseAuthWrapper(this)
             //if you arent logged send you to sign in
@@ -58,6 +61,19 @@ class SplashActivity : AppCompatActivity() {
                */
                 GlobalScope.launch(Dispatchers.IO) {
                     firebaseDbWrapper.isInstructor(id)
+                    val flag = firebaseDbWrapper.isInstructor(id)
+                    withContext(Dispatchers.Main) {
+                        var intent : Intent? = null
+                        if (firebaseDbWrapper.isInstructor(id)) {
+                            intent = Intent(thiz, MainInstructorActivity::class.java)
+                            intent.putExtra("flag", true)
+                            intent.putExtra("id", id)
+                        } else {
+                            intent = Intent(thiz, MainCustomerActivity::class.java)
+                            intent.putExtra("id", id)
+                        }
+                        thiz.startActivity(intent!!)
+                    }
                 }
             }
         }

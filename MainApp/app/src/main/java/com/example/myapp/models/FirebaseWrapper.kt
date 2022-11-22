@@ -13,6 +13,7 @@ import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.auth.ktx.userProfileChangeRequest
 import com.google.firebase.firestore.CollectionReference
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.tasks.await
@@ -126,19 +127,10 @@ class FirebaseDbWrapper (private val context: Context) {
             }
     }
 
-    suspend fun isInstructor(id: String) {
+    suspend fun isInstructor(id: String) : Boolean {
         val docRef = db.collection("Instructors").document(id)
         val doc = docRef.get().await()
-        var intent : Intent? = null
-        if (doc.data!=null){
-            intent = Intent(this.context, MainInstructorActivity::class.java)
-            intent.putExtra("flag",true)
-            intent.putExtra("id",id)
-        }
-        else{
-            intent = Intent(this.context, MainCustomerActivity::class.java)
-        }
-        context.startActivity(intent!!)
+        return doc.data!=null
     }
 
     suspend fun getPlaces() : ArrayList<String> {
@@ -249,6 +241,19 @@ class FirebaseDbWrapper (private val context: Context) {
     }
     fun getCollection() : CollectionReference {
         return db.collection("Bookings")
+    }
+    suspend fun getYourBookings(id : String,day : Int,month: Int,year: Int, flag : Boolean): MutableList<ElementList> {
+        var docRef : Query? = null
+        var list : MutableList<ElementList> = ArrayList<ElementList>()
+        if(flag) docRef = db.collection("Bookings").whereEqualTo("id_istr",id)
+        else docRef = db.collection("Bookings").whereEqualTo("id_cust",id)
+        val doc = docRef.orderBy("time_slot").get().await()
+        for(document in doc.documents){
+            if(((document.get("year") as Long).toInt() >= year)&&((document.get("month") as Long).toInt() >= month)&&((document.get("day") as Long).toInt() >= day)){
+                list.add(ElementList((document.get("day") as Long).toInt(),(document.get("month") as Long).toInt(),(document.get("year") as Long).toInt(),(document.get("time_slot") as Long).toInt(),(document.get("check")as Boolean)))
+            }
+        }
+        return list
     }
 
 }
