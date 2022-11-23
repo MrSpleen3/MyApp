@@ -40,6 +40,10 @@ class TimeTableFragment : Fragment() {
     private var id_cust : String? = null
     private var instructorFlag : Boolean? = null
     var doc : ListenerRegistration? = null
+    var myAdapter : ArrayAdapter<BookingElement>? = null
+    var myListView: ListView? = null
+    var firebaseDbWrapper : FirebaseDbWrapper? = null
+    val thiz = this
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,15 +62,13 @@ class TimeTableFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val thiz = this
         var flag = false
         val view : View = inflater.inflate(R.layout.fragment_timetable, container, false)
-        val myListView: ListView = view.findViewById(R.id.bookingList)
-        val firebaseDbWrapper : FirebaseDbWrapper = FirebaseDbWrapper(thiz.requireContext())
+        myListView = view.findViewById(R.id.bookingList)
+        firebaseDbWrapper = FirebaseDbWrapper(thiz.requireContext())
         GlobalScope.launch(Dispatchers.IO) {
             val myList =
-                firebaseDbWrapper.getBookings(id_istr!!, day!!, month!!, year!!)
-            var myAdapter : ArrayAdapter<BookingElement>
+                firebaseDbWrapper!!.getBookings(id_istr!!, day!!, month!!, year!!)
             if(!instructorFlag!!) {
                 myAdapter = BookingListAdapter(thiz.requireContext(), 0, myList, id_cust!!,id_istr!!,day!!,month!!,year!!)
             }
@@ -74,7 +76,7 @@ class TimeTableFragment : Fragment() {
                 myAdapter = LessonListAdapter(thiz.requireContext(), 0, myList,id_istr!!,day!!,month!!,year!!)
             }
             withContext(Dispatchers.Main) {
-                myListView.adapter = myAdapter!!
+                myListView!!.adapter = myAdapter!!
             }
         }
         val fire : FirebaseDbWrapper = FirebaseDbWrapper(thiz.requireContext())
@@ -103,8 +105,19 @@ class TimeTableFragment : Fragment() {
         return view
     }
     fun listenComplete() {
-        doc!!.remove()
-        (this.requireActivity() as MainInstructorActivity).refreshFragment(day!!,month!!,year!!)
+        GlobalScope.launch(Dispatchers.IO) {
+            val myList =
+                firebaseDbWrapper!!.getBookings(id_istr!!, day!!, month!!, year!!)
+            if(!instructorFlag!!) {
+                myAdapter = BookingListAdapter(thiz.requireContext(), 0, myList, id_cust!!,id_istr!!,day!!,month!!,year!!)
+            }
+            else {
+                myAdapter = LessonListAdapter(thiz.requireContext(), 0, myList,id_istr!!,day!!,month!!,year!!)
+            }
+            withContext(Dispatchers.Main) {
+                myListView!!.adapter = myAdapter!!
+            }
+        }
     }
 
     companion object {

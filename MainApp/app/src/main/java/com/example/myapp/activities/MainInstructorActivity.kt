@@ -94,20 +94,7 @@ class MainInstructorActivity : AppCompatActivity() {
         })
 
     }
-    fun refreshFragment(day : Int, month : Int, year : Int) {
-        val frag: Fragment = TimeTableFragment.newInstance(
-            instructorId!!,
-            custromerId,
-            instructorFlag!!,
-            day,
-            month,
-            year
-        )
-        fragmentManager!!.commit {
-            setReorderingAllowed(true)
-            this.replace(R.id.fragmentContainerTimeTable, frag)
-        }
-    }
+
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.my_menu,menu)
@@ -118,7 +105,7 @@ class MainInstructorActivity : AppCompatActivity() {
         val notifyintent : Intent = Intent(this,NotificationActivity::class.java)
         if(instructorFlag!!){
             notifyintent.putExtra("flag_istr",true)
-            notifyintent.putExtra("id",instructorFlag)
+            notifyintent.putExtra("id",instructorId)
         }
         else{
             notifyintent.putExtra("flag_istr",false)

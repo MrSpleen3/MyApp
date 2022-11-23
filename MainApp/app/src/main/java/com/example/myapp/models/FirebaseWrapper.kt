@@ -249,8 +249,8 @@ class FirebaseDbWrapper (private val context: Context) {
         else docRef = db.collection("Bookings").whereEqualTo("id_cust",id)
         val doc = docRef.orderBy("time_slot").get().await()
         for(document in doc.documents){
-            if(((document.get("year") as Long).toInt() >= year)&&((document.get("month") as Long).toInt() >= month)&&((document.get("day") as Long).toInt() >= day)){
-                list.add(ElementList((document.get("day") as Long).toInt(),(document.get("month") as Long).toInt(),(document.get("year") as Long).toInt(),(document.get("time_slot") as Long).toInt(),(document.get("check")as Boolean)))
+            if(((document.get("year") as Long).toInt() >= year)&&((document.get("month") as Long).toInt() >= month)&&((document.get("day") as Long).toInt() >= day)&&((document.get("id_cust")as String)!=(document.get("id_istr")as String))){
+                list.add(ElementList((document.get("day") as Long).toInt(),(document.get("month") as Long).toInt(),(document.get("year") as Long).toInt(),(document.get("time_slot") as Long).toInt(),(document.get("check")as Boolean),document.id))
             }
         }
         return list
