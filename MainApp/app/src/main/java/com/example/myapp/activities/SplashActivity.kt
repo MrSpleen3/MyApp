@@ -47,31 +47,16 @@ class SplashActivity : AppCompatActivity() {
                 //check if customer or instructor and send you to your main
                 val firebaseDbWrapper: FirebaseDbWrapper = FirebaseDbWrapper(this)
                 val id: String = firebaseAuthWrapper.getId()
-                /*  if (!firebaseDbWrapper.isInstructor(id)) {
-                    val intent = Intent(this,MainCustomerActivity::class.java)
-                    this.startActivity(intent)
-                    finish()
-                }
-                else {
-                    //TODO: customize intent to get you to YOUR main instructor activity
-                    val intent = Intent(this,MainInstructorActivity::class.java)
-                    this.startActivity(intent)
-                    finish()
-                }
-               */
                 GlobalScope.launch(Dispatchers.IO) {
-                    firebaseDbWrapper.isInstructor(id)
                     val flag = firebaseDbWrapper.isInstructor(id)
                     withContext(Dispatchers.Main) {
                         var intent : Intent? = null
-                        if (firebaseDbWrapper.isInstructor(id)) {
+                        if (flag) {
                             intent = Intent(thiz, MainInstructorActivity::class.java)
-                            intent.putExtra("flag", true)
-                            intent.putExtra("id", id)
                         } else {
                             intent = Intent(thiz, MainCustomerActivity::class.java)
-                            intent.putExtra("id", id)
                         }
+                        intent.putExtra("id", id)
                         thiz.startActivity(intent!!)
                     }
                 }

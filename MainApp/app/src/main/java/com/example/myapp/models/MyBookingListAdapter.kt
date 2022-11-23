@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.TextView
 import com.example.myapp.R
-import com.example.myapp.activities.NotificationActivity
+import com.example.myapp.activities.YourLessonsActivity
 
 class MyBookingListAdapter(context: Context, val resorce:Int, val list : List<ElementList>,val flag_istr : Boolean) :
     ArrayAdapter<ElementList>(context,resorce,list) {
@@ -44,13 +44,13 @@ class MyBookingListAdapter(context: Context, val resorce:Int, val list : List<El
                                 DialogInterface.OnClickListener { dialog, id ->
                                     FirebaseDbWrapper(context).confrimLesson(element.id)
                                     dialog.cancel()
-                                    (context as NotificationActivity).refreshAdapter()
+                                    (context as YourLessonsActivity).refreshAdapter()
                                 })
                             .setNegativeButton("Annulla",
                                 DialogInterface.OnClickListener { dialog, id ->
                                     FirebaseDbWrapper(context).deleteLesson(element.id)
                                     dialog.cancel()
-                                    (context as NotificationActivity).refreshAdapter()
+                                    (context as YourLessonsActivity).refreshAdapter()
                                 })
                         builder.create()
                         builder.show()

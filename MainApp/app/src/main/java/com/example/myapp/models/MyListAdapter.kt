@@ -8,7 +8,9 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.RatingBar
 import android.widget.TextView
+import androidx.fragment.app.Fragment
 import com.example.myapp.R
+import com.example.myapp.activities.MainCustomerActivity
 import com.example.myapp.activities.MainInstructorActivity
 
 class MyListAdapter(context: Context, val resorce:Int, val instructors : List<InstructorListEl>) :
@@ -26,10 +28,7 @@ class MyListAdapter(context: Context, val resorce:Int, val instructors : List<In
         instRate.numStars = instructor.rate
         instName.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
-                val myintent: Intent = Intent(context, MainInstructorActivity::class.java)
-                myintent.putExtra("id",instructor.id)
-                myintent.putExtra("flag",false)
-                context.startActivity(myintent)
+                (context as MainCustomerActivity).renderMainFrag(null,instructor.id)
             }
         })
         return vieww

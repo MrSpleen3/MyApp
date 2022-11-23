@@ -17,7 +17,7 @@
         android:theme="@style/Theme.MyApp"
         tools:targetApi="33">
         <activity
-            android:name=".activities.NotificationActivity"
+            android:name=".activities.YourLessonsActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"

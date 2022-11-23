@@ -8,14 +8,13 @@ import android.widget.TextView
 import com.example.myapp.R
 import com.example.myapp.models.FirebaseDbWrapper
 import com.example.myapp.models.MyBookingListAdapter
-import com.google.firebase.firestore.ListenerRegistration
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.*
 
-class NotificationActivity : AppCompatActivity() {
+class YourLessonsActivity : AppCompatActivity() {
 
     var myId : String? = null
     var flag_istr: Boolean? = null
@@ -57,7 +56,7 @@ class NotificationActivity : AppCompatActivity() {
         }
 
     }
-
+//TODO:add live listener calling refresh
     fun refreshAdapter() {
         GlobalScope.launch(Dispatchers.IO) {
             firebaseDbWrapper = FirebaseDbWrapper(thiz)

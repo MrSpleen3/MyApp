@@ -60,7 +60,7 @@ class MainGetPlaces : Fragment() {
         button.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
                 val place = spinner.selectedItem.toString()
-                (thiz.requireActivity() as MainCustomerActivity).renderMainFrag(place)
+                (thiz.requireActivity() as MainCustomerActivity).renderMainFrag(place,null)
             }
         })
         return view

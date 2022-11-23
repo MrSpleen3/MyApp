@@ -7,6 +7,7 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -17,8 +18,8 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.commit
 import com.example.myapp.R
 import com.example.myapp.fragments.TimeTableFragment
-import com.example.myapp.models.FirebaseAuthWrapper
 import com.example.myapp.models.FirebaseDbWrapper
+import com.example.myapp.models.MyBackgroundService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -27,20 +28,19 @@ import java.util.Calendar
 
 class MainInstructorActivity : AppCompatActivity() {
 
-    private var instructorFlag: Boolean? = null
     private var instructorId: String? = null
-    private var custromerId : String? = null
     var firebaseDbWrapper : FirebaseDbWrapper? = null
     var fragmentManager : FragmentManager? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_instructor)
-        instructorFlag = intent.extras!!.getBoolean("flag")
         instructorId = intent.getStringExtra("id")
+        val serviceIntent = Intent(this, MyBackgroundService :: class.java)
+        serviceIntent.putExtra("id",instructorId)
+        serviceIntent.putExtra("flag",true)
+        startService(serviceIntent)
         firebaseDbWrapper =FirebaseDbWrapper(this)
-        val firebaseAuthWrapper: FirebaseAuthWrapper = FirebaseAuthWrapper(this)
-        custromerId = firebaseAuthWrapper.getId()
         val textName : TextView = findViewById(R.id.textViewName)
         val textPlace : TextView = findViewById(R.id.textViewPlace)
         GlobalScope.launch(Dispatchers.IO) {
@@ -61,7 +61,7 @@ class MainInstructorActivity : AppCompatActivity() {
         var month : Int = calendar.get(Calendar.MONTH)
         var day : Int = calendar.get(Calendar.DAY_OF_MONTH)
         val textSet : TextView = findViewById(R.id.textSetDate)
-        if(instructorFlag!!) textBook.text = "Le tue lezioni"
+        textBook.text = "Le tue lezioni"
         textBook.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
                 flagvis = !flagvis
@@ -81,7 +81,7 @@ class MainInstructorActivity : AppCompatActivity() {
                     day = mdayOfMonth
                     month= mmonth
                     year = myear
-                    val frag : Fragment = TimeTableFragment.newInstance(instructorId!!,custromerId,instructorFlag!!,day,(month + 1),year)
+                    val frag : Fragment = TimeTableFragment.newInstance(instructorId!!,null,true,day,(month + 1),year)
                     fragmentManager!!.commit {
                         setReorderingAllowed(true)
                         this.replace(R.id.fragmentContainerTimeTable,frag)
@@ -102,16 +102,16 @@ class MainInstructorActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val notifyintent : Intent = Intent(this,NotificationActivity::class.java)
-        if(instructorFlag!!){
-            notifyintent.putExtra("flag_istr",true)
-            notifyintent.putExtra("id",instructorId)
-        }
-        else{
-            notifyintent.putExtra("flag_istr",false)
-            notifyintent.putExtra("id",custromerId)
-        }
+        val notifyintent : Intent = Intent(this,YourLessonsActivity::class.java)
+        notifyintent.putExtra("flag_istr",true)
+        notifyintent.putExtra("id",instructorId)
         this.startActivity(notifyintent)
         return super.onOptionsItemSelected(item)
+    }
+    override fun onStop() {
+        val serviceIntent = Intent(this, MyBackgroundService :: class.java)
+        stopService(serviceIntent)
+        Log.d("wewe","serv stop")
+        super.onStop()
     }
 }

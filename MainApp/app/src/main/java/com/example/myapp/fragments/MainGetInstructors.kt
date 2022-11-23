@@ -65,11 +65,12 @@ class MainGetInstructors() : Fragment() {
         val provaBack : TextView = view.findViewById(R.id.back)
         provaBack.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
-                (thiz.requireActivity() as MainCustomerActivity).renderMainFrag(null)
+                (thiz.requireActivity() as MainCustomerActivity).renderMainFrag(null,null)
             }
         })
         return view
     }
+    //TODO: customizza onBackPressed
 
     companion object {
         /**
