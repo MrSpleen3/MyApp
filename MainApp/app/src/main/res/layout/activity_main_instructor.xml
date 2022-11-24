@@ -44,5 +44,22 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
         </LinearLayout>
+        <TextView
+            android:id="@+id/textViewYourRate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="I tuoi voti" />
+        <LinearLayout
+            android:id="@+id/switchVisIst"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <ListView
+                android:id="@+id/listRate"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </LinearLayout>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

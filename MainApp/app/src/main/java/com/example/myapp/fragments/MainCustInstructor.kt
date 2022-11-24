@@ -12,7 +12,6 @@ import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.RatingBar
 import android.widget.TextView
-import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.commit
 import com.example.myapp.R
 import com.example.myapp.models.FirebaseDbWrapper
@@ -137,9 +136,9 @@ class MainCustInstructor : Fragment() {
                     .addRating(id_rate,rateBar.rating.toDouble(),custromerId!!,instructorId!!,Timestamp(calendar.time))
             }
         })
-
         return vieww
     }
+
     //TODO: customizza onBackPressed
 
     companion object {

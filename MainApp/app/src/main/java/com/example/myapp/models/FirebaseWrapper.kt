@@ -5,8 +5,6 @@ import android.content.Context
 import android.content.Intent
 import android.util.Log
 import android.widget.Toast
-import com.example.myapp.activities.MainCustomerActivity
-import com.example.myapp.activities.MainInstructorActivity
 import com.example.myapp.activities.SplashActivity
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
@@ -16,6 +14,7 @@ import com.google.firebase.auth.ktx.userProfileChangeRequest
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.tasks.await
@@ -117,8 +116,9 @@ class FirebaseDbWrapper (private val context: Context) {
             "name" to name,
             "surname" to surname,
             "licenceId" to licenceId,
-            "place" to place
-        )
+            "place" to place,
+            "rate" to (0.0 as Double)
+            )
         db.collection("Instructors").document(id)
             .set(user)
             .addOnSuccessListener { Log.d(TAG, "DocumentSnapshot added with ID: $id") }
@@ -149,7 +149,7 @@ class FirebaseDbWrapper (private val context: Context) {
         for (document in doc.documents) {
             val id: String = document.id
             val istrName : String = document.get("name").toString()
-            val istRate : Int= (document.get("rate") as Long).toInt()
+            val istRate : Double= document.get("rate") as Double
             mylist.add(InstructorListEl(id,istrName,istRate))
         }
         return mylist
@@ -287,6 +287,33 @@ class FirebaseDbWrapper (private val context: Context) {
                     Toast.LENGTH_SHORT).show()
             }
 
+    }
+    suspend fun getRatings(id: String) : MutableList<InstructorListEl>? {
+        val docRef = db.collection("Ratings")
+            .whereEqualTo("id_istr",id)
+            .orderBy("date")
+        val doc = docRef.get().await()
+        val myList : MutableList<InstructorListEl> = ArrayList()
+        if(doc.documents.isEmpty()) return null
+        else {
+            for(document in doc.documents){
+                val date = (document.get("date") as Timestamp).toDate()
+                val string = "${date.date}/${date.month + 1}/${date.year + 1900}"
+                myList.add(InstructorListEl(null,string,document.get("vote") as Double))
+            }
+        }
+        return myList
+    }
+
+    fun updateRating(id : String, list : List<InstructorListEl>) {
+        var rate : Double = 0.0
+        for (element in list){
+            rate += element.rate
+        }
+        rate /= list.size
+        val newRate = hashMapOf("rate" to rate)
+        val docRef = db.collection("Instructors").document(id)
+        docRef.set(newRate, SetOptions.merge())
     }
 
 }

@@ -1,7 +1,6 @@
 package com.example.myapp.activities
 
 import android.Manifest
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
@@ -58,6 +57,7 @@ class SplashActivity : AppCompatActivity() {
                         }
                         intent.putExtra("id", id)
                         thiz.startActivity(intent!!)
+                        finish()
                     }
                 }
             }

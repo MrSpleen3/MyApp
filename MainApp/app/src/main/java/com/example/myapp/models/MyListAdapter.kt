@@ -25,7 +25,7 @@ class MyListAdapter(context: Context, val resorce:Int, val instructors : List<In
         val instName : TextView = vieww!!.findViewById(R.id.nameInstr)
         instName.text = instructor.name
         val instRate : RatingBar = vieww!!.findViewById(R.id.ratingInstr)
-        instRate.numStars = instructor.rate
+        instRate.rating = instructor.rate.toFloat()
         instName.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
                 (context as MainCustomerActivity).renderMainFrag(null,instructor.id)

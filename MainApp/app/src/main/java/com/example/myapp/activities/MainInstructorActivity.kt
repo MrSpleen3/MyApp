@@ -12,14 +12,15 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.LinearLayout
+import android.widget.ListAdapter
+import android.widget.ListView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.commit
 import com.example.myapp.R
 import com.example.myapp.fragments.TimeTableFragment
-import com.example.myapp.models.FirebaseDbWrapper
-import com.example.myapp.models.MyBackgroundService
+import com.example.myapp.models.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -62,6 +63,11 @@ class MainInstructorActivity : AppCompatActivity() {
         var day : Int = calendar.get(Calendar.DAY_OF_MONTH)
         val textSet : TextView = findViewById(R.id.textSetDate)
         textBook.text = "Le tue lezioni"
+        val textRate : TextView = findViewById(R.id.textViewYourRate)
+        val layRate : LinearLayout = findViewById(R.id.switchVisIst)
+        var flagRate : Boolean = false
+        layRate.visibility =View.GONE
+        val listRate : ListView = findViewById(R.id.listRate)
         textBook.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
                 flagvis = !flagvis
@@ -92,6 +98,27 @@ class MainInstructorActivity : AppCompatActivity() {
                 dialog.show()
             }
         })
+        textRate.setOnClickListener(object : View.OnClickListener {
+            override fun onClick(v: View?) {
+                flagRate = !flagRate
+                if (flagRate){
+                    layRate.visibility=View.VISIBLE
+                }
+                else {
+                    layRate.visibility=View.GONE
+                }
+            }
+        })
+        GlobalScope.launch(Dispatchers.IO) {
+            val mylist : MutableList <InstructorListEl>? = firebaseDbWrapper!!.getRatings(instructorId!!)
+            if(mylist != null){
+                val adapter : ListAdapter = MyRatingsAdapter(thiz,0,mylist!!) as ListAdapter
+                withContext(Dispatchers.Main) {
+                    listRate.adapter = adapter
+                }
+                firebaseDbWrapper!!.updateRating(instructorId!!,mylist)
+            }
+        }
 
     }
 

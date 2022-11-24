@@ -51,6 +51,7 @@ class MainCustomerActivity : AppCompatActivity() {
         }
     }
 
+
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.my_menu,menu)
         return super.onCreateOptionsMenu(menu)
@@ -69,4 +70,5 @@ class MainCustomerActivity : AppCompatActivity() {
         Log.d("wewe","serv stop")
         super.onStop()
     }
+
 }
