@@ -8,12 +8,16 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.LinearLayout
+import android.widget.RatingBar
 import android.widget.TextView
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.commit
 import com.example.myapp.R
 import com.example.myapp.models.FirebaseDbWrapper
+import com.example.myapp.models.MyRate
+import com.google.firebase.Timestamp
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -100,7 +104,40 @@ class MainCustInstructor : Fragment() {
                 dialog.show()
             }
         })
-        //TODO: prendere valutazione
+        val textRate : TextView = vieww.findViewById(R.id.textViewRateIst)
+        var flagvisRate : Boolean = false
+        val rateBar : RatingBar = vieww.findViewById(R.id.ratingBarIst)
+        var id_rate : String? = null
+        val layRate : LinearLayout = vieww.findViewById(R.id.switchVis)
+        layRate.visibility= View.GONE
+        val addRate : Button = vieww.findViewById(R.id.buttonAddRate)
+        textRate.setOnClickListener(object : View.OnClickListener {
+            override fun onClick(v: View?) {
+                flagvisRate = !flagvisRate
+                if (flagvisRate){
+                    layRate.visibility=View.VISIBLE
+                }
+                else {
+                    layRate.visibility=View.GONE
+                }
+            }
+        })
+        GlobalScope.launch(Dispatchers.IO) {
+            val rate : MyRate? = firebaseDbWrapper!!.getMyRate(instructorId!!,custromerId!!)
+            withContext(Dispatchers.Main) {
+                if(rate != null){
+                    rateBar.rating = rate.vote.toFloat()
+                    id_rate = rate.id
+                }
+            }
+        }
+        addRate.setOnClickListener(object : View.OnClickListener {
+            override fun onClick(v: View?) {
+                firebaseDbWrapper!!
+                    .addRating(id_rate,rateBar.rating.toDouble(),custromerId!!,instructorId!!,Timestamp(calendar.time))
+            }
+        })
+
         return vieww
     }
     //TODO: customizza onBackPressed

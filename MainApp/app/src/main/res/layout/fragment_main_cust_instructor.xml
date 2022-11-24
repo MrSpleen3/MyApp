@@ -43,6 +43,31 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/textViewRateIst"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Vota" />
+    <LinearLayout
+        android:id="@+id/switchVis"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <RatingBar
+            android:id="@+id/ratingBarIst"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:numStars="5" />
+
+        <Button
+            android:id="@+id/buttonAddRate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Button" />
+
+    </LinearLayout>
     </LinearLayout>
 
 </FrameLayout>

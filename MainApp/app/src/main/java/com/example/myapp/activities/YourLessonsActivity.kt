@@ -34,6 +34,7 @@ class YourLessonsActivity : AppCompatActivity() {
         }
         else TODO() //se metto l'intent pure nella notifica
         myListView = findViewById(R.id.listaLez)
+        //TODO: cambiare con un back o con onBackPressed
         val back : TextView = findViewById(R.id.titleNotif)
         back.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {

@@ -8,11 +8,13 @@ import android.widget.Toast
 import com.example.myapp.activities.MainCustomerActivity
 import com.example.myapp.activities.MainInstructorActivity
 import com.example.myapp.activities.SplashActivity
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.auth.ktx.userProfileChangeRequest
 import com.google.firebase.firestore.CollectionReference
+import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -254,6 +256,37 @@ class FirebaseDbWrapper (private val context: Context) {
             }
         }
         return list
+    }
+
+    suspend fun getMyRate(id_istr : String, id_cust : String) : MyRate? {
+        val docRef = db.collection("Ratings")
+            .whereEqualTo("id_istr",id_istr)
+            .whereEqualTo("id_cust",id_cust)
+        val doc = docRef.get().await()
+        if(doc.documents.isEmpty()) return null
+        else return MyRate(doc.documents[0].id,doc.documents[0].get("vote") as Double)
+    }
+
+    fun addRating(id_doc : String?, vote : Double, id_cust : String,id_istr: String,date : Timestamp){
+        val rate = hashMapOf(
+            "id_cust" to id_cust,
+            "id_istr" to id_istr,
+            "date" to date,
+            "vote" to vote
+        )
+        var docRef : DocumentReference? = null
+        if (id_doc != null) docRef = db.collection("Ratings").document(id_doc)
+        else docRef = db.collection("Ratings").document()
+        docRef.set(rate).addOnSuccessListener {
+            Log.d(TAG, "DocumentSnapshot added")
+            Toast.makeText(context, "Valutazione effettuata!",
+                Toast.LENGTH_SHORT).show()}
+            .addOnFailureListener { e ->
+                Log.w(TAG, "Error adding document", e)
+                Toast.makeText(context, "Operazione fallita.",
+                    Toast.LENGTH_SHORT).show()
+            }
+
     }
 
 }
