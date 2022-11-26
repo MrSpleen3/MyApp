@@ -1,6 +1,11 @@
 package com.example.myapp.fragments
 
+import android.app.Dialog
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -51,14 +56,16 @@ class SignUpInstructor : Fragment() {
                 (thiz.requireActivity() as LogActivity).switchSignUpFragment()
             }
         })
-        val spinner: Spinner = view.findViewById(R.id.signPlaces)
+        val spinner: TextView = view.findViewById(R.id.search_spinner)
         val firebaseDbWrapper : FirebaseDbWrapper = FirebaseDbWrapper(thiz.requireContext())
         GlobalScope.launch(Dispatchers.IO) {
             val arr : ArrayList<String> = firebaseDbWrapper.getPlaces()
-            val adapter: ArrayAdapter<String> = ArrayAdapter(thiz.requireContext() , android.R.layout.simple_spinner_item, arr)
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            val adapter: ArrayAdapter<String> = ArrayAdapter(thiz.requireContext() , android.R.layout.simple_list_item_1, arr)
+          //  val adapter: ArrayAdapter<String> = ArrayAdapter(thiz.requireContext() , android.R.layout.simple_spinner_item, arr)
+           // adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+
             withContext(Dispatchers.Main) {
-                spinner.adapter = adapter
+                myList.adapter = adapter
             }
         }
         val button: Button = view.findViewById(R.id.buttonInstr)
