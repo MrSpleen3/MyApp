@@ -63,12 +63,20 @@ class MainCustomerActivity : AppCompatActivity() {
         this.startActivity(notifyintent)
         return super.onOptionsItemSelected(item)
     }
-
-    override fun onStop() {
+    //Quando passo a un altra activity viene chiamato
+    //quindi o lo restarto in onResume o lo chiamo direttam in onDestroy
+    /*override fun onStop() {
         val serviceIntent = Intent(this, MyBackgroundService :: class.java)
         stopService(serviceIntent)
         Log.d("wewe","serv stop")
         super.onStop()
+    }*/
+    //il web dice che non viene sempre invocato, a me non sta dando problemi
+    override fun onDestroy() {
+        val serviceIntent = Intent(this, MyBackgroundService :: class.java)
+        stopService(serviceIntent)
+        Log.d("wewe","serv stop")
+        super.onDestroy()
     }
 
 }

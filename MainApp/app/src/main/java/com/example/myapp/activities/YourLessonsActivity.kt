@@ -1,10 +1,12 @@
 package com.example.myapp.activities
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.ListView
 import android.widget.TextView
+import android.widget.Toast
 import com.example.myapp.R
 import com.example.myapp.models.FirebaseDbWrapper
 import com.example.myapp.models.MyBookingListAdapter
@@ -32,7 +34,12 @@ class YourLessonsActivity : AppCompatActivity() {
             myId = intent!!.getStringExtra("id")
             flag_istr = intent!!.extras!!.getBoolean("flag_istr")
         }
-        else TODO() //se metto l'intent pure nella notifica
+        else {
+            val intent = Intent(this, SplashActivity :: class.java)
+            Toast.makeText(this.applicationContext, "Qualcosa è andato storto!", Toast.LENGTH_SHORT).show()
+            startActivity(intent)
+            finish()
+        }
         myListView = findViewById(R.id.listaLez)
         //TODO: cambiare con un back o con onBackPressed
         val back : TextView = findViewById(R.id.titleNotif)
