@@ -11,11 +11,14 @@
         android:orientation="vertical"
         android:gravity="center">
 
-        <Spinner
-            android:id="@+id/spinnerPlaces"
-            android:layout_width="wrap_content"
+        <TextView
+            android:layout_width = "match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"/>
+            android:id="@+id/search_spinner_cust"
+            android:hint="Dove?"
+            android:drawableEnd="@drawable/ic_arrow"
+            android:background="@android:drawable/editbox_background"
+            />
 
         <Button
             android:id="@+id/mainCustomerButton"

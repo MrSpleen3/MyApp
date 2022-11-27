@@ -1,14 +1,17 @@
 package com.example.myapp.fragments
 
+import android.app.Dialog
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import com.example.myapp.activities.MainCustomerActivity
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import android.widget.Button
-import android.widget.Spinner
+import android.widget.*
 import com.example.myapp.R
 import com.example.myapp.models.FirebaseDbWrapper
 import kotlinx.coroutines.Dispatchers
@@ -46,20 +49,48 @@ class MainGetPlaces : Fragment() {
         // Inflate the layout for this fragment
         val view : View = inflater.inflate(R.layout.fragment_main_get_places, container, false)
         val thiz = this
-        val spinner: Spinner = view.findViewById(R.id.spinnerPlaces)
+        val spinner: TextView = view.findViewById(R.id.search_spinner_cust)
         val firebaseDbWrapper : FirebaseDbWrapper = FirebaseDbWrapper(thiz.requireContext())
         GlobalScope.launch(Dispatchers.IO) {
             val arr : ArrayList<String> = firebaseDbWrapper.getPlaces()
-            val adapter: ArrayAdapter<String> = ArrayAdapter(thiz.requireContext() , android.R.layout.simple_spinner_item, arr)
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             withContext(Dispatchers.Main) {
-                spinner.adapter = adapter
+                spinner.setOnClickListener(object : View.OnClickListener {
+                    override fun onClick(v: View?) {
+                        val dialog = Dialog(thiz.requireContext())
+                        dialog.setContentView(R.layout.dialog_searchable_spinner)
+                        dialog.window!!.setLayout(650, 800)
+                        dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                        dialog.show()
+                        val myList: ListView = dialog.findViewById(R.id.listViewSearch)
+                        val searchText: EditText = dialog.findViewById(R.id.editTextSearch)
+                        val adapter: ArrayAdapter<String> = ArrayAdapter(thiz.requireContext() , android.R.layout.simple_list_item_1, arr)
+                        myList.adapter = adapter
+                        searchText.addTextChangedListener(object : TextWatcher {
+                            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                            }
+
+                            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                                adapter.filter.filter(s)
+                            }
+
+                            override fun afterTextChanged(s: Editable?) {
+                            }
+                        })
+                        myList.setOnItemClickListener( object  : AdapterView.OnItemClickListener{
+                            override fun onItemClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                                spinner.text = adapter.getItem(position)
+                                dialog.dismiss()
+                            }
+
+                        })
+                    }
+                })
             }
         }
         val button: Button = view.findViewById(R.id.mainCustomerButton)
         button.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
-                val place = spinner.selectedItem.toString()
+                val place = spinner.text.toString()
                 (thiz.requireActivity() as MainCustomerActivity).renderMainFrag(place,null)
             }
         })

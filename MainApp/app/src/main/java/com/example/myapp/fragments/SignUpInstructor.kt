@@ -60,12 +60,38 @@ class SignUpInstructor : Fragment() {
         val firebaseDbWrapper : FirebaseDbWrapper = FirebaseDbWrapper(thiz.requireContext())
         GlobalScope.launch(Dispatchers.IO) {
             val arr : ArrayList<String> = firebaseDbWrapper.getPlaces()
-            val adapter: ArrayAdapter<String> = ArrayAdapter(thiz.requireContext() , android.R.layout.simple_list_item_1, arr)
-          //  val adapter: ArrayAdapter<String> = ArrayAdapter(thiz.requireContext() , android.R.layout.simple_spinner_item, arr)
-           // adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-
             withContext(Dispatchers.Main) {
-                myList.adapter = adapter
+                spinner.setOnClickListener(object : View.OnClickListener {
+                    override fun onClick(v: View?) {
+                        val dialog = Dialog(thiz.requireContext())
+                        dialog.setContentView(R.layout.dialog_searchable_spinner)
+                        dialog.window!!.setLayout(650, 800)
+                        dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                        dialog.show()
+                        val myList: ListView = dialog.findViewById(R.id.listViewSearch)
+                        val searchText: EditText = dialog.findViewById(R.id.editTextSearch)
+                        val adapter: ArrayAdapter<String> = ArrayAdapter(thiz.requireContext() , android.R.layout.simple_list_item_1, arr)
+                        myList.adapter = adapter
+                        searchText.addTextChangedListener(object : TextWatcher {
+                            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                            }
+
+                            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                                adapter.filter.filter(s)
+                            }
+
+                            override fun afterTextChanged(s: Editable?) {
+                            }
+                        })
+                        myList.setOnItemClickListener( object  : AdapterView.OnItemClickListener{
+                            override fun onItemClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                                spinner.text = adapter.getItem(position)
+                                dialog.dismiss()
+                            }
+
+                        })
+                    }
+                })
             }
         }
         val button: Button = view.findViewById(R.id.buttonInstr)
@@ -77,7 +103,7 @@ class SignUpInstructor : Fragment() {
                 val surname : EditText = view.findViewById(R.id.editTextTextInstrSurname)
                 val licenceId : EditText = view.findViewById(R.id.editTextTextInstrID)
                 val firebaseAuthWrapper : FirebaseAuthWrapper = FirebaseAuthWrapper(thiz.requireContext())
-                firebaseAuthWrapper.signUpInstructor(email.text.toString(),password.text.toString(),name.text.toString(),surname.text.toString(),licenceId.text.toString(),spinner.selectedItem.toString())
+                firebaseAuthWrapper.signUpInstructor(email.text.toString(),password.text.toString(),name.text.toString(),surname.text.toString(),licenceId.text.toString(),spinner.text.toString())
             }
         })
         return view
