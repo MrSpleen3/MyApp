@@ -9,12 +9,14 @@
     android:id="@+id/list_cardview"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:ignore="MissingConstraints" >
+    tools:ignore="MissingConstraints">
 
     <LinearLayout
+        android:id="@+id/my_lay"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="10dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -25,7 +27,8 @@
                 android:id="@+id/timeSlot"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="TextView" />
+                android:text="TextView"
+                android:paddingRight="30dp"/>
 
             <TextView
                 android:id="@+id/isFree"

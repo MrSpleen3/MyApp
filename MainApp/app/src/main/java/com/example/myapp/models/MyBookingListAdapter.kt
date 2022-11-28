@@ -25,17 +25,17 @@ class MyBookingListAdapter(context: Context, val resorce:Int, val list : List<El
         if(!flag_istr) {
             if (element.flag) {
                 txt =
-                    "${element.day}/${element.month}/${element.year} ore ${element.timeSlot + 8} : lezione prenotata"
+                    "${element.day}/${element.month}/${element.year} ore ${element.timeSlot + 7} : lezione prenotata"
             } else txt =
-                "${element.day}/${element.month}/${element.year} ore ${element.timeSlot + 8} : in attesa di conferma"
+                "${element.day}/${element.month}/${element.year} ore ${element.timeSlot + 7} : in attesa di conferma"
         }
         else{
             if (element.flag) {
                 txt =
-                    "${element.day}/${element.month}/${element.year} ore ${element.timeSlot + 8} : lezione prenotata"
+                    "${element.day}/${element.month}/${element.year} ore ${element.timeSlot + 7} : lezione prenotata"
             } else {
                 txt =
-                    "${element.day}/${element.month}/${element.year} ore ${element.timeSlot + 8} : conferma la prenotazione"
+                    "${element.day}/${element.month}/${element.year} ore ${element.timeSlot + 7} : conferma la prenotazione"
                 msg.setOnClickListener(object : View.OnClickListener {
                     override fun onClick(v: View?) {
                         val builder = AlertDialog.Builder(context)

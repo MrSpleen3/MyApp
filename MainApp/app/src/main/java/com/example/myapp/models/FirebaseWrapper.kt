@@ -18,6 +18,7 @@ import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.tasks.await
+import java.text.SimpleDateFormat
 
 class FirebaseAuthWrapper (private val context : Context){
     private var auth: FirebaseAuth = Firebase.auth
@@ -247,11 +248,14 @@ class FirebaseDbWrapper (private val context: Context) {
     suspend fun getYourBookings(id : String,day : Int,month: Int,year: Int, flag : Boolean): MutableList<ElementList> {
         var docRef : Query? = null
         var list : MutableList<ElementList> = ArrayList<ElementList>()
+        val sdf : SimpleDateFormat = SimpleDateFormat("dd/mm/yyyy")
+        val today = sdf.parse("$day/$month/$year")
         if(flag) docRef = db.collection("Bookings").whereEqualTo("id_istr",id)
         else docRef = db.collection("Bookings").whereEqualTo("id_cust",id)
         val doc = docRef.orderBy("time_slot").get().await()
         for(document in doc.documents){
-            if(((document.get("year") as Long).toInt() >= year)&&((document.get("month") as Long).toInt() >= month)&&((document.get("day") as Long).toInt() >= day)&&((document.get("id_cust")as String)!=(document.get("id_istr")as String))){
+            val bookDay = sdf.parse("${document.get("day")}/${document.get("month")}/${document.get("year")}")
+            if((bookDay.compareTo(today) >= 0)&&((document.get("id_cust")as String)!=(document.get("id_istr")as String))){
                 list.add(ElementList((document.get("day") as Long).toInt(),(document.get("month") as Long).toInt(),(document.get("year") as Long).toInt(),(document.get("time_slot") as Long).toInt(),(document.get("check")as Boolean),document.id))
             }
         }
