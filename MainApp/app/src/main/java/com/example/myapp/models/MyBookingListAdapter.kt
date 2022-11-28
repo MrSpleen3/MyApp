@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import com.example.myapp.R
 import com.example.myapp.activities.YourLessonsActivity
 
@@ -21,22 +22,21 @@ class MyBookingListAdapter(context: Context, val resorce:Int, val list : List<El
                 LayoutInflater.from(context).inflate(R.layout.notif_list, parent, false)
         }
         val msg: TextView = vieww!!.findViewById(R.id.textViewNotif)
-        var txt: String? = null
+        val lay : CardView = vieww!!.findViewById(R.id.list_cardview)
+        val txt1 : String = "${element.day}/${element.month}/${element.year} ore ${element.timeSlot + 7} : "
+        var txt2: String? = null
+        msg.text = txt1
         if(!flag_istr) {
             if (element.flag) {
-                txt =
-                    "${element.day}/${element.month}/${element.year} ore ${element.timeSlot + 7} : lezione prenotata"
-            } else txt =
-                "${element.day}/${element.month}/${element.year} ore ${element.timeSlot + 7} : in attesa di conferma"
+                txt2 = "lezione prenotata"
+            } else txt2 = "in attesa di conferma"
         }
         else{
             if (element.flag) {
-                txt =
-                    "${element.day}/${element.month}/${element.year} ore ${element.timeSlot + 7} : lezione prenotata"
+                txt2 = "lezione prenotata"
             } else {
-                txt =
-                    "${element.day}/${element.month}/${element.year} ore ${element.timeSlot + 7} : conferma la prenotazione"
-                msg.setOnClickListener(object : View.OnClickListener {
+                txt2 = "conferma la prenotazione"
+                lay.setOnClickListener(object : View.OnClickListener {
                     override fun onClick(v: View?) {
                         val builder = AlertDialog.Builder(context)
                         builder.setMessage("Conferma o Annulla.")
@@ -58,7 +58,7 @@ class MyBookingListAdapter(context: Context, val resorce:Int, val list : List<El
                 })
             }
         }
-        msg.text = txt
+        msg.text = txt1+txt2
         return vieww
     }
 }

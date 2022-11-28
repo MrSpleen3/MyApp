@@ -112,7 +112,7 @@ class MainInstructorActivity : AppCompatActivity() {
         GlobalScope.launch(Dispatchers.IO) {
             val mylist : MutableList <InstructorListEl>? = firebaseDbWrapper!!.getRatings(instructorId!!)
             if(mylist != null){
-                val adapter : ListAdapter = MyRatingsAdapter(thiz,0,mylist!!) as ListAdapter
+                val adapter = MyRatingsAdapter(thiz,0,mylist!!)
                 withContext(Dispatchers.Main) {
                     listRate.adapter = adapter
                 }

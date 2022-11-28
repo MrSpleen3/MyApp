@@ -37,7 +37,7 @@ class BookingListAdapter
         if(booking.id == null){
             myBooking.text="prenota"
             lay.setBackgroundColor(ContextCompat.getColor(context, R.color.green))
-            myBooking.setOnClickListener(object : View.OnClickListener {
+            lay.setOnClickListener(object : View.OnClickListener {
                 override fun onClick(v: View?) {
                     val builder = AlertDialog.Builder(context)
                     builder.setMessage("Sicuro di voler prenotare la lezione?")
@@ -60,18 +60,43 @@ class BookingListAdapter
                 if (booking.check!!) {
                     myBooking.text = "prenotata"
                     lay.setBackgroundColor(ContextCompat.getColor(context, R.color.light_blue))
+                    //position 0 ha un bug, spiegazione a fine codice
+                    if(position == 0){
+                        lay.setOnClickListener(object : View.OnClickListener {
+                            override fun onClick(v: View?) {
+                            }
+                        })
+                    }
 
                 }
                 else {
                     myBooking.text = "In attesa di conferma"
                     lay.setBackgroundColor(ContextCompat.getColor(context, R.color.gray))
+                    //position 0 ha un bug, spiegazione a fine codice
+                    if(position == 0){
+                        lay.setOnClickListener(object : View.OnClickListener {
+                            override fun onClick(v: View?) {
+                            }
+                        })
+                    }
                 }
             }
             else {
                 myBooking.text = "occupato"
                 lay.setBackgroundColor(ContextCompat.getColor(context, R.color.red))
+                //position 0 ha un bug, spiegazione a fine codice
+                if(position == 0){
+                    lay.setOnClickListener(object : View.OnClickListener {
+                        override fun onClick(v: View?) {
+                        }
+                    })
+                }
             }
         }
         return vieww
     }
-}
+}//position 0 se non ha listener si comporta all' onclick come se fosse ultima position
+//avente un listener, solo all'onclick... colore e stringa sono corretti.
+//listener vuoto risolve il problema
+//MyBookingListAdapter funziona simile ma non ha lo stesso problema :(
+//LessonListAdapter invece si

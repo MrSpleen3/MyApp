@@ -78,5 +78,4 @@ class MainCustomerActivity : AppCompatActivity() {
         Log.d("wewe","serv stop")
         super.onDestroy()
     }
-
 }
