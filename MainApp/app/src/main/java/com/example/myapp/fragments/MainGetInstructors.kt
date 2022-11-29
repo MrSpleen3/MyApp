@@ -2,6 +2,7 @@ package com.example.myapp.fragments
 
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.ListAdapter
 import android.widget.ListView
 import android.widget.TextView
+import androidx.activity.OnBackPressedCallback
 import com.example.myapp.R
 import com.example.myapp.activities.MainCustomerActivity
 import com.example.myapp.models.FirebaseDbWrapper
@@ -40,6 +42,14 @@ class MainGetInstructors() : Fragment() {
         arguments?.let {
             place = it.getString("place")
         }
+        val thiz = this
+        this.requireActivity().onBackPressedDispatcher?.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                Log.d("bo","back")
+                (thiz.requireActivity() as MainCustomerActivity).renderMainFrag(null,null)
+
+            }
+        })
     }
     
     override fun onCreateView(
@@ -58,12 +68,6 @@ class MainGetInstructors() : Fragment() {
                 istrList.adapter = adapter
             }
         }
-        val provaBack : TextView = view.findViewById(R.id.back)
-        provaBack.setOnClickListener(object : View.OnClickListener {
-            override fun onClick(v: View?) {
-                (thiz.requireActivity() as MainCustomerActivity).renderMainFrag(null,null)
-            }
-        })
         return view
     }
 

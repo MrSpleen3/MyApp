@@ -3,9 +3,7 @@ package com.example.myapp.activities
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
 import android.widget.ListView
-import android.widget.TextView
 import android.widget.Toast
 import com.example.myapp.R
 import com.example.myapp.models.FirebaseDbWrapper
@@ -41,13 +39,6 @@ class YourLessonsActivity : AppCompatActivity() {
             finish()
         }
         myListView = findViewById(R.id.listaLez)
-        //TODO: cambiare con un back o con onBackPressed
-        val back : TextView = findViewById(R.id.titleNotif)
-        back.setOnClickListener(object : View.OnClickListener {
-            override fun onClick(v: View?) {
-                finish()
-            }
-        })
         val calendar: Calendar = Calendar.getInstance()
         year = calendar.get(Calendar.YEAR)
         month = calendar.get(Calendar.MONTH) + 1

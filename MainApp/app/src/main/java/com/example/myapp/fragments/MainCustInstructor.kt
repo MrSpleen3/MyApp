@@ -4,6 +4,7 @@ import android.app.DatePickerDialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -12,8 +13,10 @@ import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.RatingBar
 import android.widget.TextView
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.commit
 import com.example.myapp.R
+import com.example.myapp.activities.MainCustomerActivity
 import com.example.myapp.models.FirebaseDbWrapper
 import com.example.myapp.models.MyRate
 import com.google.firebase.Timestamp
@@ -37,6 +40,7 @@ class MainCustInstructor : Fragment() {
     // TODO: Rename and change types of parameters
     private var instructorId: String? = null
     private var custromerId : String? = null
+    private var place : String? = null
     var firebaseDbWrapper : FirebaseDbWrapper? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,6 +49,14 @@ class MainCustInstructor : Fragment() {
             instructorId = it.getString("id_istr")
             custromerId = it.getString("id_cust")
         }
+        val thiz = this
+        this.requireActivity().onBackPressedDispatcher?.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                Log.d("bo","back")
+                (thiz.requireActivity() as MainCustomerActivity).renderMainFrag(place,null)
+
+            }
+        })
     }
 
     override fun onCreateView(
@@ -62,6 +74,7 @@ class MainCustInstructor : Fragment() {
             withContext(Dispatchers.Main) {
                 textName.text = myarray[0]
                 textPlace.text= myarray[1]
+                place = myarray[1]
             }
         }
         val textBook : TextView = vieww.findViewById(R.id.textViewBookLes)

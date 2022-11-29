@@ -5,27 +5,34 @@
     android:layout_height="match_parent"
     tools:context=".fragments.MainGetPlaces">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:gravity="center">
+        android:layout_marginBottom="30dp"
+        >
 
         <TextView
-            android:layout_width = "match_parent"
-            android:layout_height="wrap_content"
             android:id="@+id/search_spinner_cust"
-            android:hint="Dove?"
-            android:drawableEnd="@drawable/ic_arrow"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="30dp"
+            android:layout_marginBottom="30dp"
             android:background="@android:drawable/editbox_background"
-            />
+            android:drawableEnd="@drawable/ic_arrow"
+            android:hint="Dove?"
+            android:padding="10dp" />
 
         <Button
             android:id="@+id/mainCustomerButton"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Button" />
+            android:text="Button"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"/>
 
-    </LinearLayout>
+    </RelativeLayout>
 
 </FrameLayout>
