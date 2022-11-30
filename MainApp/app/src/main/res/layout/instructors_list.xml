@@ -38,7 +38,8 @@
                 android:numStars="5"
                 android:isIndicator="true"
                 android:clickable="false"
-                android:focusableInTouchMode="false"/>
+                android:focusableInTouchMode="false"
+                android:theme="@style/RatingBar"/>
         </LinearLayout>
         </RelativeLayout>
     </androidx.cardview.widget.CardView>

@@ -58,7 +58,7 @@ class MainGetPlaces : Fragment() {
                     override fun onClick(v: View?) {
                         val dialog = Dialog(thiz.requireContext())
                         dialog.setContentView(R.layout.dialog_searchable_spinner)
-                        dialog.window!!.setLayout(650, 800)
+                        dialog.window!!.setLayout(800, 1000)
                         dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
                         dialog.show()
                         val myList: ListView = dialog.findViewById(R.id.listViewSearch)

@@ -149,7 +149,7 @@ class FirebaseDbWrapper (private val context: Context) {
         val mylist : MutableList<InstructorListEl> = ArrayList<InstructorListEl>()
         for (document in doc.documents) {
             val id: String = document.id
-            val istrName : String = document.get("name").toString()
+            val istrName : String = (document.get("name").toString())+" "+(document.get("surname").toString().get(0))+"."
             val istRate : Double= document.get("rate") as Double
             mylist.add(InstructorListEl(id,istrName,istRate))
         }
