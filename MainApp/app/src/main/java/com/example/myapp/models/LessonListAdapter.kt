@@ -1,16 +1,18 @@
 package com.example.myapp.models
 
 import android.app.AlertDialog
+import android.app.Dialog
 import android.content.Context
 import android.content.DialogInterface
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import android.widget.LinearLayout
-import android.widget.TextView
+import android.widget.*
 import androidx.core.content.ContextCompat
 import com.example.myapp.R
+import com.example.myapp.activities.YourLessonsActivity
 
 class LessonListAdapter(context: Context,
                         val resorce:Int,
@@ -81,20 +83,27 @@ class LessonListAdapter(context: Context,
                     lay.setBackgroundColor(ContextCompat.getColor(context, R.color.gray))
                     lay.setOnClickListener(object : View.OnClickListener {
                         override fun onClick(v: View?) {
-                            val builder = AlertDialog.Builder(context)
-                            builder.setMessage("Conferma o Annulla.")
-                                .setPositiveButton("Conferma",
-                                    DialogInterface.OnClickListener { dialog, id ->
-                                        FirebaseDbWrapper(context).confrimLesson(booking.id_doc!!)
-                                        dialog.cancel()
-                                    })
-                                .setNegativeButton("Annulla",
-                                    DialogInterface.OnClickListener { dialog, id ->
-                                        FirebaseDbWrapper(context).deleteLesson(booking.id_doc!!)
-                                        dialog.cancel()
-                                    })
-                            builder.create()
-                            builder.show()
+                            val dialog = Dialog(context)
+                            dialog.setContentView(R.layout.dialog_confrim_les)
+                            dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                            dialog.show()
+                            val luogo: EditText = dialog.findViewById(R.id.editTextLuogo)
+                            val confrim : Button = dialog.findViewById(R.id.buttonConferma)
+                            val del : Button = dialog.findViewById(R.id.buttonAnnulla)
+                            confrim.setOnClickListener(object : View.OnClickListener {
+                                override fun onClick(v: View?) {
+                                    if(luogo.text.toString() != ""){
+                                        FirebaseDbWrapper(context).confrimLesson(booking.id,luogo.text.toString())
+                                        dialog.dismiss()
+                                    }
+                                }
+                            })
+                            del.setOnClickListener(object : View.OnClickListener {
+                                override fun onClick(v: View?) {
+                                    FirebaseDbWrapper(context).deleteLesson(booking.id)
+                                    dialog.dismiss()
+                                }
+                            })
                         }
                     })
                 }

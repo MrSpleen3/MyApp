@@ -212,9 +212,13 @@ class FirebaseDbWrapper (private val context: Context) {
             }
     }
 
-    fun confrimLesson(id : String) {
+    fun confrimLesson(id : String, place : String) {
+        val data = hashMapOf(
+            "check" to true,
+            "place" to place
+        )
         val docRef = db.collection("Bookings").document(id)
-        docRef.update("check",true)
+        docRef.set(data, SetOptions.merge())
     }
     fun deleteLesson(id : String) {
         val docRef = db.collection("Bookings").document(id)
@@ -256,7 +260,7 @@ class FirebaseDbWrapper (private val context: Context) {
         for(document in doc.documents){
             val bookDay = sdf.parse("${document.get("day")}/${document.get("month")}/${document.get("year")}")
             if((bookDay.compareTo(today) >= 0)&&((document.get("id_cust")as String)!=(document.get("id_istr")as String))){
-                list.add(ElementList((document.get("day") as Long).toInt(),(document.get("month") as Long).toInt(),(document.get("year") as Long).toInt(),(document.get("time_slot") as Long).toInt(),(document.get("check")as Boolean),document.id))
+                list.add(ElementList((document.get("day") as Long).toInt(),(document.get("month") as Long).toInt(),(document.get("year") as Long).toInt(),(document.get("time_slot") as Long).toInt(),(document.get("check")as Boolean),document.id,document.get("place").toString()))
             }
         }
         return list
