@@ -21,18 +21,8 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-//private const val ARG_PARAM1 = "param1"
-//private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [TimeTableFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class TimeTableFragment : Fragment() {
-    // TODO: Rename and change types of parameters
+
     private var day: Int? = null
     private var month: Int? = null
     private var year: Int? = null
@@ -57,7 +47,6 @@ class TimeTableFragment : Fragment() {
             instructorFlag=it.getBoolean("flag_istr")
         }
     }
-    //TODO: aggiungere listener di eventi live! se no conflitti prenotazioni!
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -91,11 +80,6 @@ class TimeTableFragment : Fragment() {
                     return@addSnapshotListener
                 }
                 if ((value!!.documents.size > 0)&&flag) {
-                    //prima chiamavo qui direttamente refresh frag e
-                    //buggava l' app perchè il listener rimaneva attivo
-                    //e il fragment rimaneva vivo staccato dall'attività
-                    //non capisco perchè ora funziona se cambio il frag attraverso
-                    //il datepickerdialog, che non chiude il listener
                     listenComplete()
                 }
                 //non interessa la prima chiamata, solo quando i dati cambiano
@@ -121,15 +105,6 @@ class TimeTableFragment : Fragment() {
     }
 
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment TimeTableFragment.
-         */
-        // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(id_istr : String, id_cust : String?,flag : Boolean, day : Int, month : Int, year : Int) =
             TimeTableFragment().apply {

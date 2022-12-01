@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
+import android.view.Gravity
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +15,7 @@ import android.widget.LinearLayout
 import android.widget.RatingBar
 import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
+import androidx.core.view.marginBottom
 import androidx.fragment.app.commit
 import com.example.myapp.R
 import com.example.myapp.activities.MainCustomerActivity
@@ -68,13 +70,15 @@ class MainCustInstructor : Fragment() {
         val vieww : View = inflater.inflate(R.layout.fragment_main_cust_instructor, container, false)
         firebaseDbWrapper =FirebaseDbWrapper(context)
         val textName : TextView = vieww.findViewById(R.id.textViewNameIstr)
+        val textSurname : TextView = vieww.findViewById(R.id.textViewSurnameIstr)
         val textPlace : TextView = vieww.findViewById(R.id.textViewPlaceIstr)
         GlobalScope.launch(Dispatchers.IO) {
             val myarray : Array<String> =firebaseDbWrapper!!.getMainInfo(instructorId!!)
             withContext(Dispatchers.Main) {
                 textName.text = myarray[0]
-                textPlace.text= myarray[1]
-                place = myarray[1]
+                textSurname.text = myarray[1]
+                textPlace.text= myarray[2]
+                place = myarray[2]
             }
         }
         val textBook : TextView = vieww.findViewById(R.id.textViewBookLes)
@@ -86,14 +90,34 @@ class MainCustInstructor : Fragment() {
         var month : Int = calendar.get(Calendar.MONTH)
         var day : Int = calendar.get(Calendar.DAY_OF_MONTH)
         val textSet : TextView = vieww.findViewById(R.id.textSetDateCust)
+        val textRate : TextView = vieww.findViewById(R.id.textViewRateIst)
+        var flagvisRate : Boolean = false
+        val rateBar : RatingBar = vieww.findViewById(R.id.ratingBarIst)
+        rateBar.numStars=5
+        var id_rate : String? = null
+        val layRate : LinearLayout = vieww.findViewById(R.id.switchVis)
+        layRate.visibility= View.GONE
+        val addRate : Button = vieww.findViewById(R.id.buttonAddRate)
+        val layContainer : LinearLayout = vieww.findViewById(R.id.layContain)
         textBook.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
                 flagvis = !flagvis
                 if (flagvis){
                     lay.visibility=View.VISIBLE
+                    textRate.visibility=View.GONE
+                    layRate.visibility = View.GONE
+                    layContainer.gravity = Gravity.TOP
+                    val param = textBook.layoutParams as ViewGroup.MarginLayoutParams
+                    param.setMargins(0,0,0,5)
+                    textBook.layoutParams = param
                 }
                 else {
                     lay.visibility=View.GONE
+                    textRate.visibility=View.VISIBLE
+                    layContainer.gravity = Gravity.CENTER
+                    val param = textBook.layoutParams as ViewGroup.MarginLayoutParams
+                    param.setMargins(0,0,0,25)
+                    textBook.layoutParams = param
                 }
             }
         })
@@ -116,18 +140,12 @@ class MainCustInstructor : Fragment() {
                 dialog.show()
             }
         })
-        val textRate : TextView = vieww.findViewById(R.id.textViewRateIst)
-        var flagvisRate : Boolean = false
-        val rateBar : RatingBar = vieww.findViewById(R.id.ratingBarIst)
-        var id_rate : String? = null
-        val layRate : LinearLayout = vieww.findViewById(R.id.switchVis)
-        layRate.visibility= View.GONE
-        val addRate : Button = vieww.findViewById(R.id.buttonAddRate)
         textRate.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
                 flagvisRate = !flagvisRate
                 if (flagvisRate){
                     layRate.visibility=View.VISIBLE
+                    lay.visibility=View.GONE
                 }
                 else {
                     layRate.visibility=View.GONE

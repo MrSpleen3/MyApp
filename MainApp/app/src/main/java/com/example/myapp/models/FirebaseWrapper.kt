@@ -186,7 +186,7 @@ class FirebaseDbWrapper (private val context: Context) {
     suspend fun getMainInfo(id : String) : Array<String>{
         val docRef = db.collection("Instructors").document(id)
         val doc = docRef.get().await()
-        return arrayOf((doc.get("name") as String),(doc.get("place") as String))
+        return arrayOf((doc.get("name") as String),(doc.get("surname") as String),(doc.get("place") as String))
     }
 
     fun BookLesson(id : String,istr_id: String, timeSlot : Int, day :Int, month: Int, year: Int ) {
