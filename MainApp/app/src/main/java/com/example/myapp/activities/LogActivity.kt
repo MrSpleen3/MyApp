@@ -47,6 +47,7 @@ class LogActivity : AppCompatActivity() {
     }
     fun switchLogFragment() {
         logFlag = !logFlag
+        instFlag = false
         renderFragment()
     }
 

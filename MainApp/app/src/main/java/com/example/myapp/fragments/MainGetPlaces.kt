@@ -90,8 +90,13 @@ class MainGetPlaces : Fragment() {
         val button: Button = view.findViewById(R.id.mainCustomerButton)
         button.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
-                val place = spinner.text.toString()
-                (thiz.requireActivity() as MainCustomerActivity).renderMainFrag(place,null)
+                if (!spinner.text.isEmpty()) {
+                    val place = spinner.text.toString()
+                    (thiz.requireActivity() as MainCustomerActivity).renderMainFrag(place, null)
+                }
+                else{
+                    Toast.makeText(thiz.requireContext(),"Inserire una località!",Toast.LENGTH_SHORT)
+                }
             }
         })
         return view

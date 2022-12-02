@@ -6,49 +6,71 @@
     android:layout_gravity="center"
     tools:context=".fragments.SignUpCustomer">
 
-    <LinearLayout
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_gravity="center"
         android:gravity="center">
 
-        <TextView
-            android:id="@+id/textViewCustomer"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Sign Up as Instructor" />
-
-        <EditText
-            android:id="@+id/editTextTextPersonName"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="textPersonName"
-            android:hint="Name" />
+            android:orientation="vertical"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_centerInParent="true"
+            android:background="@drawable/shape"
+            android:padding="15dp">
 
-        <EditText
-            android:id="@+id/editTextTextEmailAddress"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="textEmailAddress"
-            android:hint="Insert email"/>
+            <TextView
+                android:id="@+id/textViewBackLogC"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Torna al Log-In"
+                android:layout_marginStart="2dp"/>
+            <EditText
+                android:id="@+id/editTextTextPersonName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="12"
+                android:textSize="20sp"
+                android:inputType="textPersonName"
+                android:hint="Nome" />
+            <EditText
+                android:id="@+id/editTextTextEmailAddress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="12"
+                android:textSize="20sp"
+                android:inputType="textEmailAddress"
+                android:hint="Email"/>
+            <EditText
+                android:id="@+id/editTextTextPassword"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="12"
+                android:textSize="20sp"
+                android:inputType="textPassword"
+                android:hint="Password"/>
 
-        <EditText
-            android:id="@+id/editTextTextPassword"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="textPassword"
-            android:hint="Create password"/>
+            <Button
+                android:id="@+id/buttonSignUpCustomer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Registrati" />
 
-        <Button
-            android:id="@+id/buttonSignUpCustomer"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Button" />
-
-    </LinearLayout>
+            <TextView
+                android:id="@+id/textViewOpCust"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="oppure"
+                android:gravity="center"/>
+            <TextView
+                android:id="@+id/textViewCustomer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Registrati come maestro"
+                android:gravity="center"/>
+        </LinearLayout>
+    </RelativeLayout>
 
 </FrameLayout>

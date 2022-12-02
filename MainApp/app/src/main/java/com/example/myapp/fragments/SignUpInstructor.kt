@@ -49,9 +49,20 @@ class SignUpInstructor : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val view: View = inflater.inflate(R.layout.fragment_sign_up_instructor, container, false)
-        val link: TextView = view.findViewById(R.id.textViewInstr1)
+        val linkReg: TextView = view.findViewById(R.id.textViewInstr1)
+        val linkLog : TextView = view.findViewById(R.id.textViewBackLogI)
+        val email : EditText = view.findViewById(R.id.editTextTextInstrEmailAddress)
+        val password : EditText = view.findViewById(R.id.editTextTextInstrPassword)
+        val name : EditText = view.findViewById(R.id.editTextTextInstrName)
+        val surname : EditText = view.findViewById(R.id.editTextTextInstrSurname)
+        val licenceId : EditText = view.findViewById(R.id.editTextTextInstrID)
         val thiz = this
-        link.setOnClickListener(object : View.OnClickListener {
+        linkLog.setOnClickListener(object : View.OnClickListener {
+            override fun onClick(v: View?) {
+                (thiz.requireActivity() as LogActivity).switchLogFragment()
+            }
+        })
+        linkReg.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
                 (thiz.requireActivity() as LogActivity).switchSignUpFragment()
             }
@@ -97,13 +108,22 @@ class SignUpInstructor : Fragment() {
         val button: Button = view.findViewById(R.id.buttonInstr)
         button.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
-                val email : EditText = view.findViewById(R.id.editTextTextInstrEmailAddress)
-                val password : EditText = view.findViewById(R.id.editTextTextInstrPassword)
-                val name : EditText = view.findViewById(R.id.editTextTextInstrName)
-                val surname : EditText = view.findViewById(R.id.editTextTextInstrSurname)
-                val licenceId : EditText = view.findViewById(R.id.editTextTextInstrID)
-                val firebaseAuthWrapper : FirebaseAuthWrapper = FirebaseAuthWrapper(thiz.requireContext())
-                firebaseAuthWrapper.signUpInstructor(email.text.toString(),password.text.toString(),name.text.toString(),surname.text.toString(),licenceId.text.toString(),spinner.text.toString())
+                val condition : Boolean = !email.text.isEmpty()&&!password.text.isEmpty()&&!spinner.text.isEmpty()&&!surname.text.isEmpty()&&!licenceId.text.isEmpty()&&!name.text.isEmpty()
+                if(condition) {
+                    val firebaseAuthWrapper: FirebaseAuthWrapper =
+                        FirebaseAuthWrapper(thiz.requireContext())
+                    firebaseAuthWrapper.signUpInstructor(
+                        email.text.toString(),
+                        password.text.toString(),
+                        name.text.toString(),
+                        surname.text.toString(),
+                        licenceId.text.toString(),
+                        spinner.text.toString()
+                    )
+                }
+                else{
+                    Toast.makeText(thiz.requireContext(),"Non lasciare campi vuoti!",Toast.LENGTH_SHORT)
+                }
             }
         })
         return view

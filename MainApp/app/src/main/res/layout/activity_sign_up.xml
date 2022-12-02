@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.LogActivity">
+    tools:context=".activities.LogActivity"
+    android:background="@drawable/ski_bk">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -14,7 +15,7 @@
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/fragmentContainerSign"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="match_parent" />
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -6,71 +6,101 @@
     android:layout_gravity="center"
     tools:context=".fragments.SignUpInstructor">
 
-    <LinearLayout
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_gravity="center"
         android:gravity="center">
 
-        <TextView
-            android:id="@+id/textViewInstr1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Sign Up as Customer" />
-
-        <EditText
-            android:id="@+id/editTextTextInstrName"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="textPersonName"
-            android:hint="Name" />
+            android:orientation="vertical"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_centerInParent="true"
+            android:background="@drawable/shape"
+            android:padding="15dp">
 
-        <EditText
-            android:id="@+id/editTextTextInstrSurname"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="textPersonName"
-            android:hint="Surname" />
+            <TextView
+                android:id="@+id/textViewBackLogI"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Torna al Log-In"
+                android:layout_marginStart="2dp"/>
 
-        <EditText
-            android:id="@+id/editTextTextInstrID"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ems="10" />
+            <EditText
+                android:id="@+id/editTextTextInstrName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="12"
+                android:textSize="20sp"
+                android:inputType="textPersonName"
+                android:hint="Nome" />
 
-        <TextView
-            android:layout_width = "match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/search_spinner"
-            android:hint="Dove?"
-            android:drawableEnd="@drawable/ic_arrow"
-            android:background="@android:drawable/editbox_background"
-            />
+            <EditText
+                android:id="@+id/editTextTextInstrSurname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="12"
+                android:textSize="20sp"
+                android:inputType="textPersonName"
+                android:hint="Cognome" />
+
+            <EditText
+                android:id="@+id/editTextTextInstrID"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="12"
+                android:textSize="20sp"
+                android:hint="Codice Licenza"/>
+
+            <TextView
+                android:layout_width = "match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/search_spinner"
+                android:hint="Dove?"
+                android:textSize="20sp"
+                android:drawableEnd="@drawable/ic_arrow"
+                android:background="@android:drawable/editbox_background"
+                />
 
 
-        <EditText
-            android:id="@+id/editTextTextInstrEmailAddress"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="textEmailAddress"
-            android:hint="Insert email"/>
+            <EditText
+                android:id="@+id/editTextTextInstrEmailAddress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="12"
+                android:textSize="20sp"
+                android:inputType="textEmailAddress"
+                android:hint="Email"/>
 
-        <EditText
-            android:id="@+id/editTextTextInstrPassword"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="textPassword"
-            android:hint="Create password"/>
+            <EditText
+                android:id="@+id/editTextTextInstrPassword"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="12"
+                android:textSize="20sp"
+                android:inputType="textPassword"
+                android:hint="Password"/>
 
-        <Button
-            android:id="@+id/buttonInstr"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Button" />
-    </LinearLayout>
+            <Button
+                android:id="@+id/buttonInstr"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Registrati" />
+
+            <TextView
+                android:id="@+id/textViewOpIstr"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="oppure"
+                android:gravity="center"/>
+            <TextView
+                android:id="@+id/textViewInstr1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Registrati come utente"
+                android:gravity="center"/>
+        </LinearLayout>
+    </RelativeLayout>
 </FrameLayout>
