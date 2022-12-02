@@ -104,7 +104,6 @@ class MainInstructorActivity : AppCompatActivity() {
         })
         textSet.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
-
                 val dialog : DatePickerDialog = DatePickerDialog(thiz,android.R.style.Theme_Holo_Light_Dialog_MinWidth,DatePickerDialog.OnDateSetListener { view , myear, mmonth, mdayOfMonth ->
                     if(isFirst||mdayOfMonth!=day||mmonth!=month||myear!=year) {
                         day = mdayOfMonth
@@ -151,9 +150,7 @@ class MainInstructorActivity : AppCompatActivity() {
                 firebaseDbWrapper!!.updateRating(instructorId!!,mylist)
             }
         }
-
     }
-
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.my_menu,menu)
@@ -167,15 +164,7 @@ class MainInstructorActivity : AppCompatActivity() {
         this.startActivity(notifyintent)
         return super.onOptionsItemSelected(item)
     }
-    //Quando passo a un altra activity viene chiamato
-    //quindi o lo restarto in onResume o lo chiamo direttam in onDestroy
-    /*override fun onStop() {
-        val serviceIntent = Intent(this, MyBackgroundService :: class.java)
-        stopService(serviceIntent)
-        Log.d("wewe","serv stop")
-        super.onStop()
-    }*/
-    //il web dice che non viene sempre invocato, a me non sta dando problemi
+
     override fun onDestroy() {
         val serviceIntent = Intent(this, MyBackgroundService :: class.java)
         stopService(serviceIntent)
@@ -194,5 +183,4 @@ class MainInstructorActivity : AppCompatActivity() {
             this.replace(R.id.fragmentContainerTimeTable,frag)
         }
     }
-
 }
