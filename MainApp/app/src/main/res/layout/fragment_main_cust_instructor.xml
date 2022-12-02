@@ -107,7 +107,6 @@
             android:layout_height="wrap_content"
             android:text="Valuta"
             android:textStyle="bold"
-
             android:textSize="30sp"
             android:gravity="center"
             android:layout_gravity="center"

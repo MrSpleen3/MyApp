@@ -1,10 +1,12 @@
 package com.example.myapp.fragments
 
 import android.app.DatePickerDialog
+import android.content.res.Resources
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
+import android.util.TypedValue
 import android.view.Gravity
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -15,7 +17,6 @@ import android.widget.LinearLayout
 import android.widget.RatingBar
 import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
-import androidx.core.view.marginBottom
 import androidx.fragment.app.commit
 import com.example.myapp.R
 import com.example.myapp.activities.MainCustomerActivity
@@ -99,6 +100,10 @@ class MainCustInstructor : Fragment() {
         layRate.visibility= View.GONE
         val addRate : Button = vieww.findViewById(R.id.buttonAddRate)
         val layContainer : LinearLayout = vieww.findViewById(R.id.layContain)
+        val r : Resources = this.resources
+        val marginSmall : Int = getPx(r,5)
+        val marginBig : Int = getPx(r,25)
+        var isFirst = true
         textBook.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
                 flagvis = !flagvis
@@ -108,7 +113,7 @@ class MainCustInstructor : Fragment() {
                     layRate.visibility = View.GONE
                     layContainer.gravity = Gravity.TOP
                     val param = textBook.layoutParams as ViewGroup.MarginLayoutParams
-                    param.setMargins(0,0,0,5)
+                    param.setMargins(0,0,0,marginSmall)
                     textBook.layoutParams = param
                 }
                 else {
@@ -116,7 +121,7 @@ class MainCustInstructor : Fragment() {
                     textRate.visibility=View.VISIBLE
                     layContainer.gravity = Gravity.CENTER
                     val param = textBook.layoutParams as ViewGroup.MarginLayoutParams
-                    param.setMargins(0,0,0,25)
+                    param.setMargins(0,0,0,marginBig)
                     textBook.layoutParams = param
                 }
             }
@@ -126,14 +131,13 @@ class MainCustInstructor : Fragment() {
 
                 val dialog : DatePickerDialog = DatePickerDialog(context,android.R.style.Theme_Holo_Light_Dialog_MinWidth,
                     DatePickerDialog.OnDateSetListener { view, myear, mmonth, mdayOfMonth ->
-                    day = mdayOfMonth
-                    month= mmonth
-                    year = myear
-                    val frag : Fragment = TimeTableFragment.newInstance(instructorId!!,custromerId,false,day,(month + 1),year)
-                    fragmentManager!!.commit {
-                        setReorderingAllowed(true)
-                        this.replace(R.id.fragmentContainerTimeTableCust,frag)
-                    }
+                        if(isFirst||mdayOfMonth!=day||mmonth!=month||myear!=year) {
+                            day = mdayOfMonth
+                            month = mmonth
+                            year = myear
+                            renderFrag(day, month, year)
+                            isFirst=false
+                        }
                 },year,month,day)
                 dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
                 dialog.datePicker.minDate = calendar.timeInMillis
@@ -168,6 +172,16 @@ class MainCustInstructor : Fragment() {
             }
         })
         return vieww
+    }
+    private fun getPx(r : Resources, dp : Int) : Int {
+        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,dp.toFloat(), r.getDisplayMetrics()).toInt()
+    }
+    private fun renderFrag(day : Int, month : Int, year : Int) {
+        val frag : Fragment = TimeTableFragment.newInstance(instructorId!!,custromerId,false,day,(month + 1),year)
+        requireFragmentManager().commit {
+            setReorderingAllowed(true)
+            this.replace(R.id.fragmentContainerTimeTableCust,frag)
+        }
     }
 
     //TODO: customizza onBackPressed
