@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 <item
     android:id="@+id/my_notify"
-    android:icon="@drawable/ic_lessons"
+    android:icon="@drawable/icon_menu_ski"
     android:title="Notifiche"
     app:showAsAction="always" />
 
