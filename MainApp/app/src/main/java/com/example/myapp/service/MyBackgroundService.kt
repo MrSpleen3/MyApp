@@ -1,4 +1,4 @@
-package com.example.myapp.models
+package com.example.myapp.service
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -14,6 +14,7 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.example.myapp.R
 import com.example.myapp.activities.YourLessonsActivity
+import com.example.myapp.models.FirebaseDbWrapper
 import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.Query
 

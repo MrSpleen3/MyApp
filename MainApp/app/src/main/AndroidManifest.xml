@@ -58,7 +58,7 @@
                 android:value="" />
         </activity>
 
-        <service android:name=".models.MyBackgroundService" />
+        <service android:name=".service.MyBackgroundService" />
     </application>
 
 </manifest>

@@ -14,7 +14,7 @@ import androidx.fragment.app.commit
 import com.example.myapp.fragments.MainCustInstructor
 import com.example.myapp.fragments.MainGetInstructors
 import com.example.myapp.fragments.MainGetPlaces
-import com.example.myapp.models.MyBackgroundService
+import com.example.myapp.service.MyBackgroundService
 
 //Gestisce i Main fragments
 class MainCustomerActivity : AppCompatActivity() {
@@ -26,7 +26,7 @@ class MainCustomerActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_customer)
         id = intent!!.extras!!.getString("id")
-        val serviceIntent = Intent(this,MyBackgroundService :: class.java)
+        val serviceIntent = Intent(this, MyBackgroundService :: class.java)
         serviceIntent.putExtra("id",id)
         serviceIntent.putExtra("flag",false)
         startService(serviceIntent)

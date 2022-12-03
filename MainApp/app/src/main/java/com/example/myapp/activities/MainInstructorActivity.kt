@@ -23,7 +23,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.commit
 import com.example.myapp.R
 import com.example.myapp.fragments.TimeTableFragment
-import com.example.myapp.models.MyBackgroundService
+import com.example.myapp.service.MyBackgroundService
 import com.example.myapp.models.FirebaseDbWrapper
 import com.example.myapp.models.MyRatingsAdapter
 import com.example.myapp.models.InstructorListEl
