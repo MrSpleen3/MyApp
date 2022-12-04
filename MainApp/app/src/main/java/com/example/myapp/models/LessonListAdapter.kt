@@ -12,7 +12,6 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.core.content.ContextCompat
 import com.example.myapp.R
-import com.example.myapp.activities.YourLessonsActivity
 
 class LessonListAdapter(context: Context,
                         val resorce:Int,
@@ -93,14 +92,14 @@ class LessonListAdapter(context: Context,
                             confrim.setOnClickListener(object : View.OnClickListener {
                                 override fun onClick(v: View?) {
                                     if(luogo.text.toString() != ""){
-                                        FirebaseDbWrapper(context).confrimLesson(booking.id,luogo.text.toString())
+                                        FirebaseDbWrapper(context).confrimLesson(booking.id_doc!!,luogo.text.toString())
                                         dialog.dismiss()
                                     }
                                 }
                             })
                             del.setOnClickListener(object : View.OnClickListener {
                                 override fun onClick(v: View?) {
-                                    FirebaseDbWrapper(context).deleteLesson(booking.id)
+                                    FirebaseDbWrapper(context).deleteLesson(booking.id_doc!!)
                                     dialog.dismiss()
                                 }
                             })

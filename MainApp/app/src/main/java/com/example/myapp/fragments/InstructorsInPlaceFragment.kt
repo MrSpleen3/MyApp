@@ -22,7 +22,7 @@ import kotlinx.coroutines.withContext
 
 //Prende il luogo d'interesse dall'altro frag
 //e ritorna una lista d'istruttori relativa al luogo
-class MainGetInstructors() : Fragment() {
+class InstructorsInPlaceFragment() : Fragment() {
     // TODO: Rename and change types of parameters
     private var place: String? = null
 
@@ -63,7 +63,7 @@ class MainGetInstructors() : Fragment() {
     companion object {
         @JvmStatic
         fun newInstance(place: String) =
-            MainGetInstructors().apply {
+            InstructorsInPlaceFragment().apply {
                 arguments = Bundle().apply {
                     putString("place", place)
                 }

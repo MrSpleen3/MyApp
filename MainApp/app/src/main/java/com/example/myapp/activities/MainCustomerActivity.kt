@@ -11,9 +11,10 @@ import com.example.myapp.R
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.commit
-import com.example.myapp.fragments.MainCustInstructor
-import com.example.myapp.fragments.MainGetInstructors
-import com.example.myapp.fragments.MainGetPlaces
+import com.example.myapp.fragments.YourInstructorFragment
+import com.example.myapp.fragments.InstructorsInPlaceFragment
+import com.example.myapp.fragments.PlacesFragment
+import com.example.myapp.fragments.YourLessonsFragment
 import com.example.myapp.service.MyBackgroundService
 
 //Gestisce i Main fragments
@@ -37,13 +38,13 @@ class MainCustomerActivity : AppCompatActivity() {
     fun renderMainFrag(place : String?,id_istr : String?) {
         val frag: Fragment
         if(place != null) {
-            frag = MainGetInstructors.newInstance(place)
+            frag = InstructorsInPlaceFragment.newInstance(place)
         }
         else if (id_istr != null){
-            frag = MainCustInstructor.newInstance(id_istr,id!!)
+            frag = YourInstructorFragment.newInstance(id_istr,id!!)
         }
         else{
-            frag = MainGetPlaces()
+            frag = PlacesFragment()
         }
         fragmentManager!!.commit {
             setReorderingAllowed(true)
@@ -58,10 +59,11 @@ class MainCustomerActivity : AppCompatActivity() {
         return super.onCreateOptionsMenu(menu)
     }
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val notifyintent : Intent = Intent(this,YourLessonsActivity::class.java)
-        notifyintent.putExtra("flag_istr",false)
-        notifyintent.putExtra("id",id)
-        this.startActivity(notifyintent)
+        val frag: Fragment = YourLessonsFragment.newInstance(id!!,false)
+        fragmentManager!!.commit {
+            setReorderingAllowed(true)
+            this.replace(R.id.fragmentContainerMain, frag)
+        }
         return super.onOptionsItemSelected(item)
     }
     //Quando passo a un altra activity viene chiamato

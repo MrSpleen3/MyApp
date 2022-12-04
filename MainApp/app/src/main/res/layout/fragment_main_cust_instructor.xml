@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.MainCustInstructor"
+    tools:context=".fragments.YourInstructorFragment"
     android:background="@drawable/ski_bk">
 <RelativeLayout
     android:layout_width="match_parent"

@@ -13,7 +13,6 @@ import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.example.myapp.R
-import com.example.myapp.activities.YourLessonsActivity
 import com.example.myapp.models.FirebaseDbWrapper
 import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.Query
@@ -97,10 +96,10 @@ class MyBackgroundService : Service() {
             else notificationText = "la prenotazione del $day/$month è stata rifiutata"
         }
         else notificationText = "Prenotazione per il $day/$month ricevuta"
-        val intent: Intent = Intent(this, YourLessonsActivity :: class.java)
-        intent.putExtra("id", id_cust)
-        intent.putExtra("flag_istr",flag)
-        val pendingIntent = PendingIntent.getActivity(this,0,intent,PendingIntent.FLAG_IMMUTABLE)
+        //val intent: Intent = Intent(this, YourLessonsActivity :: class.java)
+        //intent.putExtra("id", id_cust)
+        //intent.putExtra("flag_istr",flag)
+        //val pendingIntent = PendingIntent.getActivity(this,0,intent,PendingIntent.FLAG_IMMUTABLE)
         val builder = NotificationCompat.Builder(this,"prova")
             .setContentTitle("Booking notification")
             .setSmallIcon(R.drawable.ic_notification_my)
@@ -110,7 +109,7 @@ class MyBackgroundService : Service() {
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
             .setAutoCancel(true)
-            .setContentIntent(pendingIntent)
+            //.setContentIntent(pendingIntent)
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel("prova","name",NotificationManager.IMPORTANCE_DEFAULT).apply { description="Booking" }
             val notificationManager : NotificationManager =

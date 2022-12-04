@@ -19,7 +19,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class MainGetPlaces : Fragment() {
+class PlacesFragment : Fragment() {
 
   /*  override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -92,7 +92,7 @@ class MainGetPlaces : Fragment() {
 /*    companion object {
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
-            MainGetPlaces().apply {
+            PlacesFragment().apply {
                 arguments = Bundle().apply {
                     putString(ARG_PARAM1, param1)
                     putString(ARG_PARAM2, param2)
