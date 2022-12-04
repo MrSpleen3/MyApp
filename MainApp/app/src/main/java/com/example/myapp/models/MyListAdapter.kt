@@ -13,6 +13,7 @@ import com.example.myapp.R
 import com.example.myapp.activities.MainCustomerActivity
 import com.example.myapp.activities.MainInstructorActivity
 
+//adapter per InstructorsInPlace
 class MyListAdapter(context: Context, val resorce:Int, val instructors : List<InstructorListEl>) :
     ArrayAdapter<InstructorListEl>(context,resorce,instructors){
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {

@@ -11,7 +11,7 @@ import com.example.myapp.R
 import com.example.myapp.activities.MainCustomerActivity
 import com.example.myapp.activities.MainInstructorActivity
 import com.example.myapp.models.FirebaseDbWrapper
-import com.example.myapp.models.MyBookingListAdapter
+import com.example.myapp.models.YourLessonsListAdapter
 import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.Query
 import kotlinx.coroutines.Dispatchers
@@ -66,7 +66,7 @@ class YourLessonsFragment : Fragment() {
         GlobalScope.launch(Dispatchers.IO) {
             val filteredList = firebaseDbWrapper!!.getYourBookings(myId!!,day!!,month!!,year!!,flag_istr!!)
             filteredList.sort()
-            val adapter= MyBookingListAdapter(thiz.requireContext(),0,filteredList,flag_istr!!)
+            val adapter= YourLessonsListAdapter(thiz.requireContext(),0,filteredList,flag_istr!!)
             withContext(Dispatchers.Main){
                 myListView!!.adapter=adapter
             }
@@ -106,7 +106,7 @@ class YourLessonsFragment : Fragment() {
             firebaseDbWrapper = FirebaseDbWrapper(thiz.requireContext())
             val filteredList = firebaseDbWrapper!!.getYourBookings(myId!!,day!!,month!!,year!!,flag_istr!!)
             filteredList.sort()
-            val adapter= MyBookingListAdapter(thiz.requireContext(),0,filteredList,flag_istr!!)
+            val adapter= YourLessonsListAdapter(thiz.requireContext(),0,filteredList,flag_istr!!)
             withContext(Dispatchers.Main){
                 myListView!!.adapter=adapter
             }

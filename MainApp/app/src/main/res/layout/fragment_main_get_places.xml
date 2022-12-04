@@ -18,8 +18,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:layout_marginBottom="30dp"
-        >
+        android:layout_marginBottom="30dp">
 
         <TextView
             android:id="@+id/search_spinner_cust"
@@ -32,7 +31,8 @@
             android:background="@android:drawable/editbox_background"
             android:drawableEnd="@drawable/ic_arrow"
             android:hint="Dove?"
-            android:padding="10dp" />
+            android:padding="10dp"
+            android:textSize="20sp"/>
 
 
 

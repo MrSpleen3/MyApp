@@ -14,7 +14,8 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import com.example.myapp.R
 
-class MyBookingListAdapter(context: Context, val resorce:Int, val list : List<ElementList>,val flag_istr : Boolean) :
+//adapter per YourLessonsFragment
+class YourLessonsListAdapter(context: Context, val resorce:Int, val list : List<ElementList>, val flag_istr : Boolean) :
     ArrayAdapter<ElementList>(context,resorce,list) {
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val element: ElementList = list.get(position)
@@ -23,19 +24,24 @@ class MyBookingListAdapter(context: Context, val resorce:Int, val list : List<El
             vieww =
                 LayoutInflater.from(context).inflate(R.layout.notif_list, parent, false)
         }
-        val msg: TextView = vieww!!.findViewById(R.id.textViewNotif)
+        val msgFirst: TextView = vieww!!.findViewById(R.id.textViewNotif)
+        val msgSecond: TextView = vieww!!.findViewById(R.id.textViewNotPlace)
         val lay : CardView = vieww!!.findViewById(R.id.list_cardview)
         val txt1 : String = "${element.day}/${element.month}/${element.year} ore ${element.timeSlot + 7} : "
         var txt2: String? = null
-        msg.text = txt1
+        msgFirst.text = txt1
         if(!flag_istr) {
             if (element.flag) {
-                txt2 = "lezione prenotata" + " presso: ${element.place}"
+                msgSecond.visibility = View.VISIBLE
+                txt2 = "lezione prenotata"
+                msgSecond.text = "Presso: ${element.place}"
             } else txt2 = "in attesa di conferma"
         }
         else{
             if (element.flag) {
-                txt2 = "lezione prenotata" + " presso: ${element.place}"
+                msgSecond.visibility = View.VISIBLE
+                txt2 = "lezione prenotata"
+                msgSecond.text = "Presso: ${element.place}"
             } else {
                 txt2 = "conferma la prenotazione"
                 lay.setOnClickListener(object : View.OnClickListener {
@@ -65,7 +71,7 @@ class MyBookingListAdapter(context: Context, val resorce:Int, val list : List<El
                 })
             }
         }
-        msg.text = txt1+txt2
+        msgFirst.text = txt1+txt2
         return vieww
     }
 }

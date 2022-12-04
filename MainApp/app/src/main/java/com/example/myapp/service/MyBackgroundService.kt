@@ -102,7 +102,7 @@ class MyBackgroundService : Service() {
         //val pendingIntent = PendingIntent.getActivity(this,0,intent,PendingIntent.FLAG_IMMUTABLE)
         val builder = NotificationCompat.Builder(this,"prova")
             .setContentTitle("Booking notification")
-            .setSmallIcon(R.drawable.ic_notification_my)
+            .setSmallIcon(R.drawable.icon_menu_ski)
             .setContentText(notificationText)
             .setStyle(NotificationCompat.BigTextStyle()
                 .bigText(notificationText))

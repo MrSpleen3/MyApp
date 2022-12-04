@@ -14,14 +14,21 @@
             android:id="@+id/titleNotif"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Lezioni"
-            android:padding="20dp"
+            android:text="Le tue lezioni:"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="@color/light_blue"
+            android:paddingBottom="10dp"
+            android:paddingLeft="20dp"
+            android:paddingTop="20dp"
             />
 
         <ListView
             android:id="@+id/listaLez"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:paddingLeft="20dp"
+            android:paddingRight="5dp"/>
     </LinearLayout>
 
 </FrameLayout>

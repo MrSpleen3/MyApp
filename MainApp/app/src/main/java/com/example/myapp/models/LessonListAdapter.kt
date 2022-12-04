@@ -13,6 +13,7 @@ import android.widget.*
 import androidx.core.content.ContextCompat
 import com.example.myapp.R
 
+//adapter per TimeTable instructor
 class LessonListAdapter(context: Context,
                         val resorce:Int,
                         val bookings : List<BookingElement>,
@@ -114,5 +115,5 @@ class LessonListAdapter(context: Context,
 //position 0 se non ha listener si comporta all' onclick come se fosse ultima position
 //avente un listener, solo all'onclick... colore e stringa sono corretti.
 //listener vuoto risolve il problema
-//MyBookingListAdapter funziona simile ma non ha lo stesso problema :(
+//YourLessonsListAdapter funziona simile ma non ha lo stesso problema :(
 //BookinglistAdapter invece si
