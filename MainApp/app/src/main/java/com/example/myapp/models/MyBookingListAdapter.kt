@@ -1,9 +1,7 @@
 package com.example.myapp.models
 
-import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
-import android.content.DialogInterface
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.view.LayoutInflater
@@ -13,10 +11,8 @@ import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
-import android.widget.Toast
 import androidx.cardview.widget.CardView
 import com.example.myapp.R
-import com.example.myapp.fragments.YourLessonsFragment
 
 class MyBookingListAdapter(context: Context, val resorce:Int, val list : List<ElementList>,val flag_istr : Boolean) :
     ArrayAdapter<ElementList>(context,resorce,list) {
@@ -56,7 +52,6 @@ class MyBookingListAdapter(context: Context, val resorce:Int, val list : List<El
                                 if(luogo.text.toString() != ""){
                                     FirebaseDbWrapper(context).confrimLesson(element.id,luogo.text.toString())
                                     dialog.dismiss()
-                                   // (context as YourLessonsFragment).refreshAdapter()
                                 }
                             }
                             })
@@ -64,7 +59,6 @@ class MyBookingListAdapter(context: Context, val resorce:Int, val list : List<El
                             override fun onClick(v: View?) {
                                 FirebaseDbWrapper(context).deleteLesson(element.id)
                                 dialog.dismiss()
-                               // (context as YourLessonsFragment).refreshAdapter()
                             }
                         })
                     }

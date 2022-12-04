@@ -1,5 +1,6 @@
 package com.example.myapp.fragments
 
+import android.content.ContentValues
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -11,6 +12,8 @@ import com.example.myapp.activities.MainCustomerActivity
 import com.example.myapp.activities.MainInstructorActivity
 import com.example.myapp.models.FirebaseDbWrapper
 import com.example.myapp.models.MyBookingListAdapter
+import com.google.firebase.firestore.DocumentChange
+import com.google.firebase.firestore.Query
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -59,8 +62,8 @@ class YourLessonsFragment : Fragment() {
         year = calendar.get(Calendar.YEAR)
         month = calendar.get(Calendar.MONTH) + 1
         day = calendar.get(Calendar.DAY_OF_MONTH)
+        firebaseDbWrapper = FirebaseDbWrapper(thiz.requireContext())
         GlobalScope.launch(Dispatchers.IO) {
-            firebaseDbWrapper = FirebaseDbWrapper(thiz.requireContext())
             val filteredList = firebaseDbWrapper!!.getYourBookings(myId!!,day!!,month!!,year!!,flag_istr!!)
             filteredList.sort()
             val adapter= MyBookingListAdapter(thiz.requireContext(),0,filteredList,flag_istr!!)
@@ -68,6 +71,26 @@ class YourLessonsFragment : Fragment() {
                 myListView!!.adapter=adapter
             }
 
+        }
+        val docRef = firebaseDbWrapper!!.getCollection()
+        val doc : Query
+        if(!flag_istr!!) doc=docRef.whereEqualTo("id_cust", myId)
+        else doc=docRef.whereEqualTo("id_istr", myId)
+        var first : Boolean = false
+        doc!!.addSnapshotListener { value, e ->
+            if (e != null) {
+                Log.w(ContentValues.TAG, "Listen failed.", e)
+                return@addSnapshotListener
+            }
+            if (!flag_istr!!) {
+                for (dc in value!!.documentChanges) {
+                    if (dc.type != DocumentChange.Type.ADDED) refreshAdapter()
+                }
+            } else {
+                //se no ogni prima volta ritorna tutti i documenti con tale id
+                if (first) refreshAdapter()
+                else first=true
+            }
         }
         return view
     }
@@ -78,6 +101,7 @@ class YourLessonsFragment : Fragment() {
     }
     //TODO : chiamare refreshadapter da snapshotlistener!
     fun refreshAdapter() {
+        Log.d("ewe","refr")
         GlobalScope.launch(Dispatchers.IO) {
             firebaseDbWrapper = FirebaseDbWrapper(thiz.requireContext())
             val filteredList = firebaseDbWrapper!!.getYourBookings(myId!!,day!!,month!!,year!!,flag_istr!!)
