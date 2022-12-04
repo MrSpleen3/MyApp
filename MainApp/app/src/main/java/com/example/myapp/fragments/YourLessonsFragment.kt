@@ -76,7 +76,7 @@ class YourLessonsFragment : Fragment() {
         menu.findItem(R.id.my_notify).isVisible= false
         super.onCreateOptionsMenu(menu, inflater)
     }
-
+    //TODO : chiamare refreshadapter da snapshotlistener!
     fun refreshAdapter() {
         GlobalScope.launch(Dispatchers.IO) {
             firebaseDbWrapper = FirebaseDbWrapper(thiz.requireContext())

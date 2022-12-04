@@ -56,7 +56,7 @@ class MyBookingListAdapter(context: Context, val resorce:Int, val list : List<El
                                 if(luogo.text.toString() != ""){
                                     FirebaseDbWrapper(context).confrimLesson(element.id,luogo.text.toString())
                                     dialog.dismiss()
-                                    (context as YourLessonsFragment).refreshAdapter()
+                                   // (context as YourLessonsFragment).refreshAdapter()
                                 }
                             }
                             })
@@ -64,7 +64,7 @@ class MyBookingListAdapter(context: Context, val resorce:Int, val list : List<El
                             override fun onClick(v: View?) {
                                 FirebaseDbWrapper(context).deleteLesson(element.id)
                                 dialog.dismiss()
-                                (context as YourLessonsFragment).refreshAdapter()
+                               // (context as YourLessonsFragment).refreshAdapter()
                             }
                         })
                     }
