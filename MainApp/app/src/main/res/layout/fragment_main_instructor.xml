@@ -3,13 +3,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.MainInstructorFragment"
-    android:background="@drawable/ski_bk">
-    <RelativeLayout
+    tools:context=".fragments.MainInstructorFragment">
+    <ImageView
+        android:id="@+id/imageViewm"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="30dp"
-        android:layout_marginBottom="40dp">
+        android:padding="0dp"
+        android:src="@drawable/provamain"
+        android:layout_gravity="center"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -58,73 +63,97 @@
 
         <LinearLayout
             android:id="@+id/layContainIstr"
-            android:layout_width="match_parent"
-            android:layout_height="400dp"
-            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
             android:layout_gravity="bottom"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="40dp"
             android:layout_margin="20dp"
             android:gravity="center"
-            android:background="@drawable/shape">
-            <TextView
-                android:id="@+id/textViewBook"
+            android:background="@drawable/shape"
+            android:layout_centerHorizontal="true"
+            android:showDividers="middle"
+            android:divider="?android:dividerVertical">
+            <LinearLayout
+                android:id="@+id/layBookIst"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Calendario"
-                android:textStyle="bold"
-                android:layout_marginBottom="25dp"
-                android:textSize="30sp"
-                android:drawableEnd="@drawable/ic_arrow"
-                android:gravity="center"
-                android:layout_gravity="center"/>
-
-            <LinearLayout
-                android:id="@+id/switchfrag"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:visibility="gone">
-
+                android:orientation="vertical">
                 <TextView
-                    android:id="@+id/textSetDate"
-                    android:layout_width="match_parent"
+                    android:id="@+id/textViewBook"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Data"
-                    android:textSize="20dp"
-                    android:gravity="center"/>
-                <androidx.fragment.app.FragmentContainerView
-                    android:id="@+id/fragmentContainerTimeTable"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:text="Calendario"
+                    android:drawableEnd="@drawable/blue_arrow"
+                    android:ems="4"
+                    android:textStyle="bold"
+                    android:layout_margin="20dp"
+                    android:textSize="30sp"
+                    android:gravity="center"
+                    android:layout_gravity="center"
+                    android:textColor="@color/light_blue"/>
 
+                <LinearLayout
+                    android:id="@+id/switchfrag"
+                    android:layout_width="352dp"
+                    android:layout_height="350dp"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:id="@+id/textSetDate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Data"
+                        android:layout_marginBottom="10dp"
+                        android:drawableEnd="@drawable/ic_arrow"
+                        android:textSize="20dp"
+                        android:gravity="center"
+                        android:layout_gravity="center"/>
+
+                    <androidx.fragment.app.FragmentContainerView
+                        android:id="@+id/fragmentContainerTimeTable"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
             </LinearLayout>
-
-            <TextView
-                android:id="@+id/textViewYourRate"
+            <LinearLayout
+                android:id="@+id/layRateIst"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Valutazioni"
-                android:textStyle="bold"
-                android:textSize="30sp"
                 android:gravity="center"
-                android:layout_gravity="center"
-                android:layout_marginTop="25dp"
-                android:drawableEnd="@drawable/ic_arrow"
-                />
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/textViewYourRate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Valutazioni"
+                    android:drawableEnd="@drawable/blue_arrow"
+                    android:textStyle="bold"
+                    android:textSize="30sp"
+                    android:gravity="center"
+                    android:layout_gravity="center"
+                    android:ems="4"
+                    android:layout_margin="20dp"
+                    android:textColor="@color/light_blue"
+                    />
 
-            <LinearLayout
-                android:id="@+id/switchVisIst"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:gravity="center"
-                android:visibility="gone">
+                <LinearLayout
+                    android:id="@+id/switchVisIst"
+                    android:layout_width="352dp"
+                    android:layout_height="350dp"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:visibility="gone"
+                    >
 
-                <ListView
-                    android:id="@+id/listRate"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    <ListView
+                        android:id="@+id/listRate"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
     </RelativeLayout>

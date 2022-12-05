@@ -86,32 +86,31 @@ class YourInstructorFragment : Fragment() {
         val rateBar : RatingBar = vieww.findViewById(R.id.ratingBarIst)
         rateBar.numStars=5
         var id_rate : String? = null
+        val rateContainer : LinearLayout = vieww.findViewById(R.id.layRate)
+        val bookContainer : LinearLayout = vieww.findViewById(R.id.layBook)
         val layRate : LinearLayout = vieww.findViewById(R.id.switchVis)
         layRate.visibility= View.GONE
         val addRate : Button = vieww.findViewById(R.id.buttonAddRate)
-        val layContainer : LinearLayout = vieww.findViewById(R.id.layContain)
         val r : Resources = this.resources
-        val marginSmall : Int = getPx(r,5)
-        val marginBig : Int = getPx(r,25)
+        val marginSmall : Int = getPx(r,10)
+        val marginBig : Int = getPx(r,20)
         var isFirst = true
         textBook.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
                 flagvis = !flagvis
                 if (flagvis){
+                    rateContainer.visibility=View.GONE
                     lay.visibility=View.VISIBLE
-                    textRate.visibility=View.GONE
                     layRate.visibility = View.GONE
-                    layContainer.gravity = Gravity.TOP
                     val param = textBook.layoutParams as ViewGroup.MarginLayoutParams
-                    param.setMargins(0,0,0,marginSmall)
+                    param.setMargins(marginBig,marginBig,marginBig,marginSmall)
                     textBook.layoutParams = param
                 }
                 else {
                     lay.visibility=View.GONE
-                    textRate.visibility=View.VISIBLE
-                    layContainer.gravity = Gravity.CENTER
+                    rateContainer.visibility=View.VISIBLE
                     val param = textBook.layoutParams as ViewGroup.MarginLayoutParams
-                    param.setMargins(0,0,0,marginBig)
+                    param.setMargins(marginBig,marginBig,marginBig,marginBig)
                     textBook.layoutParams = param
                 }
             }
@@ -138,11 +137,13 @@ class YourInstructorFragment : Fragment() {
             override fun onClick(v: View?) {
                 flagvisRate = !flagvisRate
                 if (flagvisRate){
+                    bookContainer.visibility=View.GONE
                     layRate.visibility=View.VISIBLE
                     lay.visibility=View.GONE
                 }
                 else {
                     layRate.visibility=View.GONE
+                    bookContainer.visibility=View.VISIBLE
                 }
             }
         })

@@ -67,33 +67,33 @@ class MainInstructorFragment : Fragment() {
         var day : Int = calendar.get(Calendar.DAY_OF_MONTH)
         val textSet : TextView = vieww.findViewById(R.id.textSetDate)
         val textRate : TextView = vieww.findViewById(R.id.textViewYourRate)
+        val rateContainer : LinearLayout = vieww.findViewById(R.id.layRateIst)
+        val bookContainer : LinearLayout = vieww.findViewById(R.id.layBookIst)
         val layRate : LinearLayout = vieww.findViewById(R.id.switchVisIst)
         var flagRate : Boolean = false
         layRate.visibility =View.GONE
         val listRate : ListView = vieww.findViewById(R.id.listRate)
         val layContainer : LinearLayout = vieww.findViewById(R.id.layContainIstr)
         val r : Resources = thiz.resources
-        val marginSmall : Int = getPx(r,5)
-        val marginBig : Int = getPx(r,25)
+        val marginSmall : Int = getPx(r,10)
+        val marginBig : Int = getPx(r,20)
         var isFirst = true
         textBook.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
                 flagvis = !flagvis
                 if (flagvis){
+                    rateContainer.visibility=View.GONE
                     lay.visibility=View.VISIBLE
-                    textRate.visibility=View.GONE
                     layRate.visibility = View.GONE
-                    layContainer.gravity = Gravity.TOP
                     val param = textBook.layoutParams as ViewGroup.MarginLayoutParams
-                    param.setMargins(0,0,0,marginSmall)
+                    param.setMargins(marginBig,marginBig,marginBig,marginSmall)
                     textBook.layoutParams = param
                 }
                 else {
                     lay.visibility=View.GONE
-                    textRate.visibility=View.VISIBLE
-                    layContainer.gravity = Gravity.CENTER
+                    rateContainer.visibility=View.VISIBLE
                     val param = textBook.layoutParams as ViewGroup.MarginLayoutParams
-                    param.setMargins(0,0,0,marginBig)
+                    param.setMargins(marginBig,marginBig,marginBig,marginBig)
                     textBook.layoutParams = param
                 }
             }
@@ -119,20 +119,18 @@ class MainInstructorFragment : Fragment() {
             override fun onClick(v: View?) {
                 flagRate = !flagRate
                 if (flagRate){
+                    bookContainer.visibility=View.GONE
                     layRate.visibility=View.VISIBLE
                     lay.visibility=View.GONE
-                    textBook.visibility= View.GONE
-                    layContainer.gravity = Gravity.TOP
                     val param = textRate.layoutParams as ViewGroup.MarginLayoutParams
-                    param.setMargins(0,0,0,marginSmall)
+                    param.setMargins(marginBig,marginBig,marginBig,marginSmall)
                     textRate.layoutParams = param
                 }
                 else {
                     layRate.visibility=View.GONE
-                    textBook.visibility= View.VISIBLE
-                    layContainer.gravity = Gravity.CENTER
+                    bookContainer.visibility=View.VISIBLE
                     val param = textRate.layoutParams as ViewGroup.MarginLayoutParams
-                    param.setMargins(0,marginBig,0,0)
+                    param.setMargins(marginBig,marginBig,marginBig,marginBig)
                     textRate.layoutParams = param
                 }
             }
