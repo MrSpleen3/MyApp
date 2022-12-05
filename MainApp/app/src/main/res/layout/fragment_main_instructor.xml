@@ -86,10 +86,9 @@
                     android:layout_height="wrap_content"
                     android:text="Calendario"
                     android:drawableEnd="@drawable/blue_arrow"
-                    android:ems="4"
                     android:textStyle="bold"
                     android:layout_margin="20dp"
-                    android:textSize="30sp"
+                    android:textSize="23sp"
                     android:gravity="center"
                     android:layout_gravity="center"
                     android:textColor="@color/light_blue"/>
@@ -132,10 +131,9 @@
                     android:text="Valutazioni"
                     android:drawableEnd="@drawable/blue_arrow"
                     android:textStyle="bold"
-                    android:textSize="30sp"
+                    android:textSize="23sp"
                     android:gravity="center"
                     android:layout_gravity="center"
-                    android:ems="4"
                     android:layout_margin="20dp"
                     android:textColor="@color/light_blue"
                     />
