@@ -139,7 +139,9 @@ class FirebaseDbWrapper (private val context: Context) {
     suspend fun getPlaces() : ArrayList<String> {
         val docRef = db.collection("Cities").document("list")
         val doc = docRef.get().await()
-        return doc.get("city_list") as ArrayList<String>
+        val myList : ArrayList<String> =  doc.get("city_list") as ArrayList<String>
+        myList.sort()
+        return myList
     }
 
     suspend fun getInstructorList(place: String?): List<InstructorListEl> {

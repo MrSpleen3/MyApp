@@ -124,6 +124,8 @@ class YourInstructorFragment : Fragment() {
                             day = mdayOfMonth
                             month = mmonth
                             year = myear
+                            textSet.text = "$day/${month + 1}/$year"
+                            textSet.textSize = 15.0F
                             renderFrag(day, month, year)
                             isFirst=false
                         }
