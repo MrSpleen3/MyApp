@@ -42,6 +42,13 @@ class YourLessonsListAdapter(context: Context, val resorce:Int, val list : List<
                 msgSecond.visibility = View.VISIBLE
                 txt2 = "lezione prenotata, cliente : ${element.name}"
                 msgSecond.text = "Presso: ${element.place}"
+                //position 0 ha un bug, spiegazione a fine codice
+                if(position == 0) {
+                    lay.setOnClickListener(object : View.OnClickListener {
+                        override fun onClick(v: View?) {
+                        }
+                    })
+                }
             } else {
                 txt2 = "conferma la prenotazione di ${element.name}"
                 lay.setOnClickListener(object : View.OnClickListener {
@@ -75,3 +82,8 @@ class YourLessonsListAdapter(context: Context, val resorce:Int, val list : List<
         return vieww
     }
 }
+//un tempo questo adapter non aveva assolutamente il bug riscontrato in
+//adapters TimeTable... ora improvvisamete sì...incredibile.
+//mi sembra in questo tempo di aver inserito solo il refresh dell'adapter con lo snapshot listener
+//in YourLessonsFragment...
+//comunque prima 100% non lo faceva :(, vabe si risolve con listener vuoto in posiz 0
