@@ -146,7 +146,7 @@ class FirebaseDbWrapper (private val context: Context) {
 
     suspend fun getInstructorList(place: String?): List<InstructorListEl> {
         val docRef = db.collection("Instructors")
-            .whereEqualTo("place",place)
+            .whereEqualTo("place",place).orderBy("rate",Query.Direction.DESCENDING)
         val doc = docRef.get().await()
         val mylist : MutableList<InstructorListEl> = ArrayList<InstructorListEl>()
         for (document in doc.documents) {
