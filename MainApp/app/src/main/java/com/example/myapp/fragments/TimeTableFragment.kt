@@ -1,6 +1,7 @@
 package com.example.myapp.fragments
 
 import android.content.ContentValues
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -30,13 +31,13 @@ class TimeTableFragment : Fragment() {
     private var id_cust : String? = null
     private var custName : String? = null
     private var instName : String? = null
-    private var i : Int? = null
     private var instructorFlag : Boolean? = null
     var doc : ListenerRegistration? = null
     var myAdapter : ArrayAdapter<BookingElement>? = null
     var myListView: ListView? = null
     var firebaseDbWrapper : FirebaseDbWrapper? = null
     val thiz = this
+    var mycontext : Context? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,7 +51,6 @@ class TimeTableFragment : Fragment() {
             instructorFlag=it.getBoolean("flag_istr")
             custName = it.getString("name")
             instName = it.getString("name_istr")
-            i = it.getInt("i")
 
         }
     }
@@ -58,6 +58,7 @@ class TimeTableFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        mycontext = thiz.requireContext()
         var flag = false
         val view : View = inflater.inflate(R.layout.fragment_timetable, container, false)
         myListView = view.findViewById(R.id.bookingList)
@@ -66,10 +67,10 @@ class TimeTableFragment : Fragment() {
             val myList =
                 firebaseDbWrapper!!.getBookings(id_istr!!, day!!, month!!, year!!)
             if(!instructorFlag!!) {
-                myAdapter = BookingListAdapter(thiz.requireContext(), 0, myList, id_cust!!,id_istr!!,day!!,month!!,year!!,custName!!,instName!!)
+                myAdapter = BookingListAdapter(mycontext!!, 0, myList, id_cust!!,id_istr!!,day!!,month!!,year!!,custName!!,instName!!)
             }
             else {
-                myAdapter = LessonListAdapter(thiz.requireContext(), 0, myList,id_istr!!,day!!,month!!,year!!)
+                myAdapter = LessonListAdapter(mycontext!!, 0, myList,id_istr!!,day!!,month!!,year!!)
             }
             withContext(Dispatchers.Main) {
                 myListView!!.adapter = myAdapter!!
@@ -100,10 +101,10 @@ class TimeTableFragment : Fragment() {
             val myList =
                 firebaseDbWrapper!!.getBookings(id_istr!!, day!!, month!!, year!!)
             if(!instructorFlag!!) {
-                myAdapter = BookingListAdapter(thiz.requireContext(), 0, myList, id_cust!!,id_istr!!,day!!,month!!,year!!,custName!!,instName!!)
+                myAdapter = BookingListAdapter(mycontext!!, 0, myList, id_cust!!,id_istr!!,day!!,month!!,year!!,custName!!,instName!!)
             }
             else {
-                myAdapter = LessonListAdapter(thiz.requireContext(), 0, myList,id_istr!!,day!!,month!!,year!!)
+                myAdapter = LessonListAdapter(mycontext!!, 0, myList,id_istr!!,day!!,month!!,year!!)
             }
             withContext(Dispatchers.Main) {
                 myListView!!.adapter = myAdapter!!
@@ -113,7 +114,7 @@ class TimeTableFragment : Fragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance(id_istr : String, id_cust : String?,flag : Boolean, day : Int, month : Int, year : Int, custName : String?,instName : String?, i : Int) =
+        fun newInstance(id_istr : String, id_cust : String?,flag : Boolean, day : Int, month : Int, year : Int, custName : String?,instName : String?) =
             TimeTableFragment().apply {
                 arguments = Bundle().apply {
                     putString("id_istr",id_istr)
@@ -124,7 +125,6 @@ class TimeTableFragment : Fragment() {
                     putInt("year",year)
                     putString("name",custName)
                     putString("name_istr",instName)
-                    putInt("i",i)
                 }
             }
     }

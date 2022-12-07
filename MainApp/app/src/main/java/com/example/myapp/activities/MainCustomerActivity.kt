@@ -29,10 +29,10 @@ class MainCustomerActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main_customer)
         id = intent!!.extras!!.getString("id")
         name = intent!!.extras!!.getString("name")
-       // val serviceIntent = Intent(this, MyBackgroundService :: class.java)
-       // serviceIntent.putExtra("id",id)
-       // serviceIntent.putExtra("flag",false)
-       // startService(serviceIntent)
+        val serviceIntent = Intent(this, MyBackgroundService :: class.java)
+        serviceIntent.putExtra("id",id)
+        serviceIntent.putExtra("flag",false)
+        startService(serviceIntent)
         this.fragmentManager = this.supportFragmentManager
         renderMainFrag(null,null)
     }

@@ -31,7 +31,6 @@ class MainInstructorFragment : Fragment() {
     private var instructorId: String? = null
     var firebaseDbWrapper : FirebaseDbWrapper? = null
     val thiz = this
-    private var i : Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -150,8 +149,7 @@ class MainInstructorFragment : Fragment() {
     }
 
     private fun renderFrag(day : Int, month : Int, year : Int) {
-        i++
-        val frag : Fragment = TimeTableFragment.newInstance(instructorId!!,null,true,day,(month + 1),year,null,null,i)
+        val frag : Fragment = TimeTableFragment.newInstance(instructorId!!,null,true,day,(month + 1),year,null,null)
         requireFragmentManager().commit {
             setReorderingAllowed(true)
             this.replace(R.id.fragmentContainerTimeTable,frag)
