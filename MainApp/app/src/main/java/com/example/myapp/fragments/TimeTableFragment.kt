@@ -28,6 +28,9 @@ class TimeTableFragment : Fragment() {
     private var year: Int? = null
     private var id_istr : String? = null
     private var id_cust : String? = null
+    private var custName : String? = null
+    private var instName : String? = null
+    private var i : Int? = null
     private var instructorFlag : Boolean? = null
     var doc : ListenerRegistration? = null
     var myAdapter : ArrayAdapter<BookingElement>? = null
@@ -45,6 +48,10 @@ class TimeTableFragment : Fragment() {
             id_istr = it.getString("id_istr")
             id_cust = it.getString("id_cust")
             instructorFlag=it.getBoolean("flag_istr")
+            custName = it.getString("name")
+            instName = it.getString("name_istr")
+            i = it.getInt("i")
+
         }
     }
     override fun onCreateView(
@@ -59,7 +66,7 @@ class TimeTableFragment : Fragment() {
             val myList =
                 firebaseDbWrapper!!.getBookings(id_istr!!, day!!, month!!, year!!)
             if(!instructorFlag!!) {
-                myAdapter = BookingListAdapter(thiz.requireContext(), 0, myList, id_cust!!,id_istr!!,day!!,month!!,year!!)
+                myAdapter = BookingListAdapter(thiz.requireContext(), 0, myList, id_cust!!,id_istr!!,day!!,month!!,year!!,custName!!,instName!!)
             }
             else {
                 myAdapter = LessonListAdapter(thiz.requireContext(), 0, myList,id_istr!!,day!!,month!!,year!!)
@@ -93,7 +100,7 @@ class TimeTableFragment : Fragment() {
             val myList =
                 firebaseDbWrapper!!.getBookings(id_istr!!, day!!, month!!, year!!)
             if(!instructorFlag!!) {
-                myAdapter = BookingListAdapter(thiz.requireContext(), 0, myList, id_cust!!,id_istr!!,day!!,month!!,year!!)
+                myAdapter = BookingListAdapter(thiz.requireContext(), 0, myList, id_cust!!,id_istr!!,day!!,month!!,year!!,custName!!,instName!!)
             }
             else {
                 myAdapter = LessonListAdapter(thiz.requireContext(), 0, myList,id_istr!!,day!!,month!!,year!!)
@@ -106,7 +113,7 @@ class TimeTableFragment : Fragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance(id_istr : String, id_cust : String?,flag : Boolean, day : Int, month : Int, year : Int) =
+        fun newInstance(id_istr : String, id_cust : String?,flag : Boolean, day : Int, month : Int, year : Int, custName : String?,instName : String?, i : Int) =
             TimeTableFragment().apply {
                 arguments = Bundle().apply {
                     putString("id_istr",id_istr)
@@ -115,6 +122,9 @@ class TimeTableFragment : Fragment() {
                     putInt("day",day)
                     putInt("month",month)
                     putInt("year",year)
+                    putString("name",custName)
+                    putString("name_istr",instName)
+                    putInt("i",i)
                 }
             }
     }

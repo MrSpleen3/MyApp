@@ -30,6 +30,9 @@ class FirebaseAuthWrapper (private val context : Context){
     fun getId() : String {
         return auth.currentUser!!.uid
     }
+    fun getName() : String {
+        return auth.currentUser!!.displayName!!
+    }
 
     fun signUp(email: String,password: String, name : String) {
         this.auth.createUserWithEmailAndPassword(email, password)
@@ -146,7 +149,7 @@ class FirebaseDbWrapper (private val context: Context) {
 
     suspend fun getInstructorList(place: String?): List<InstructorListEl> {
         val docRef = db.collection("Instructors")
-            .whereEqualTo("place",place).orderBy("rate",Query.Direction.DESCENDING)
+            .whereEqualTo("place",place).orderBy("name")
         val doc = docRef.get().await()
         val mylist : MutableList<InstructorListEl> = ArrayList<InstructorListEl>()
         for (document in doc.documents) {
@@ -173,14 +176,14 @@ class FirebaseDbWrapper (private val context: Context) {
             if(j<max) {
                 val res = doc.documents.get(j)
                 if ((i == (res.get("time_slot") as Long).toInt())) {
-                    mylist.add(BookingElement((res.get("id_cust") as String), i, (res.get("check") as Boolean),(res.id as String)))
+                    mylist.add(BookingElement((res.get("id_cust") as String), i, (res.get("check") as Boolean),(res.id as String),(res.get("name") as String)))
                     j++
                 } else {
-                    mylist.add(BookingElement(null, i, null,null))
+                    mylist.add(BookingElement(null, i, null,null,null))
                 }
             }
             else {
-                mylist.add(BookingElement(null, i, null,null))
+                mylist.add(BookingElement(null, i, null,null,null))
             }
         }
         return mylist
@@ -191,7 +194,7 @@ class FirebaseDbWrapper (private val context: Context) {
         return arrayOf((doc.get("name") as String),(doc.get("surname") as String),(doc.get("place") as String))
     }
 
-    fun BookLesson(id : String,istr_id: String, timeSlot : Int, day :Int, month: Int, year: Int ) {
+    fun BookLesson(id : String,istr_id: String, timeSlot : Int, day :Int, month: Int, year: Int, name : String, nameIstr : String ) {
         val lesson = hashMapOf(
             "time_slot" to timeSlot,
             "day" to day,
@@ -199,6 +202,8 @@ class FirebaseDbWrapper (private val context: Context) {
             "year" to year,
             "id_istr" to istr_id,
             "id_cust" to id,
+            "name" to name,
+            "name_istr" to nameIstr,
             "check" to false
         )
         db.collection("Bookings").document()
@@ -234,6 +239,8 @@ class FirebaseDbWrapper (private val context: Context) {
             "year" to year,
             "id_istr" to id,
             "id_cust" to id,
+            "name" to " ",
+            "name_istr" to " ",
             "check" to true
         )
         db.collection("Bookings").document()
@@ -262,7 +269,7 @@ class FirebaseDbWrapper (private val context: Context) {
         for(document in doc.documents){
             val bookDay = sdf.parse("${document.get("day")}/${document.get("month")}/${document.get("year")}")
             if((bookDay.compareTo(today) >= 0)&&((document.get("id_cust")as String)!=(document.get("id_istr")as String))){
-                list.add(ElementList((document.get("day") as Long).toInt(),(document.get("month") as Long).toInt(),(document.get("year") as Long).toInt(),(document.get("time_slot") as Long).toInt(),(document.get("check")as Boolean),document.id,document.get("place").toString()))
+                list.add(ElementList((document.get("day") as Long).toInt(),(document.get("month") as Long).toInt(),(document.get("year") as Long).toInt(),(document.get("time_slot") as Long).toInt(),(document.get("check")as Boolean),document.id,document.get("place").toString(),document.get("name").toString(),document.get("name_istr").toString()))
             }
         }
         return list

@@ -22,15 +22,17 @@ class MainCustomerActivity : AppCompatActivity() {
 
     var fragmentManager : FragmentManager? = null
     var id : String? = null
+    var name : String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_customer)
         id = intent!!.extras!!.getString("id")
-        val serviceIntent = Intent(this, MyBackgroundService :: class.java)
-        serviceIntent.putExtra("id",id)
-        serviceIntent.putExtra("flag",false)
-        startService(serviceIntent)
+        name = intent!!.extras!!.getString("name")
+       // val serviceIntent = Intent(this, MyBackgroundService :: class.java)
+       // serviceIntent.putExtra("id",id)
+       // serviceIntent.putExtra("flag",false)
+       // startService(serviceIntent)
         this.fragmentManager = this.supportFragmentManager
         renderMainFrag(null,null)
     }
@@ -41,7 +43,7 @@ class MainCustomerActivity : AppCompatActivity() {
             frag = InstructorsInPlaceFragment.newInstance(place)
         }
         else if (id_istr != null){
-            frag = YourInstructorFragment.newInstance(id_istr,id!!)
+            frag = YourInstructorFragment.newInstance(id_istr,id!!,name!!)
         }
         else{
             frag = PlacesFragment()

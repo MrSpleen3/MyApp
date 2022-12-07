@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ListAdapter
 import android.widget.ListView
+import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
 import com.example.myapp.R
 import com.example.myapp.activities.MainCustomerActivity
@@ -48,6 +49,8 @@ class InstructorsInPlaceFragment() : Fragment() {
         // Inflate the layout for this fragment
         val thiz = this
         val view : View = inflater.inflate(R.layout.fragment_main_get_instructors, container, false)
+        val textIntro : TextView = view.findViewById(R.id.textViewIntro)
+        textIntro.text= "Maestri a ${place}:"
         val istrList : ListView = view.findViewById(R.id.instructorList)
         val firebaseDbWrapper : FirebaseDbWrapper = FirebaseDbWrapper(thiz.requireContext())
         GlobalScope.launch(Dispatchers.IO) {
@@ -55,6 +58,9 @@ class InstructorsInPlaceFragment() : Fragment() {
             val adapter : ListAdapter = MyListAdapter(thiz.requireActivity(),0,mylist) as ListAdapter
             withContext(Dispatchers.Main) {
                 istrList.adapter = adapter
+                if(mylist.isEmpty()){
+                    textIntro.text = "Nessun maestro disponibile a $place"
+                }
             }
         }
         return view

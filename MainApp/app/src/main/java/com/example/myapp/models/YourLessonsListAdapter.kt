@@ -33,17 +33,17 @@ class YourLessonsListAdapter(context: Context, val resorce:Int, val list : List<
         if(!flag_istr) {
             if (element.flag) {
                 msgSecond.visibility = View.VISIBLE
-                txt2 = "lezione prenotata"
+                txt2 = "lezione prenotata, maestro: ${element.name_istr}"
                 msgSecond.text = "Presso: ${element.place}"
-            } else txt2 = "in attesa di conferma"
+            } else txt2 = "in attesa di conferma dal maestro ${element.name_istr}"
         }
         else{
             if (element.flag) {
                 msgSecond.visibility = View.VISIBLE
-                txt2 = "lezione prenotata"
+                txt2 = "lezione prenotata, cliente : ${element.name}"
                 msgSecond.text = "Presso: ${element.place}"
             } else {
-                txt2 = "conferma la prenotazione"
+                txt2 = "conferma la prenotazione di ${element.name}"
                 lay.setOnClickListener(object : View.OnClickListener {
                     override fun onClick(v: View?) {
                         val dialog = Dialog(context)

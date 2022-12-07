@@ -35,6 +35,7 @@ class SignUpCustomer : Fragment() {
         val email : EditText = view.findViewById(R.id.editTextTextEmailAddress)
         val password : EditText = view.findViewById(R.id.editTextTextPassword)
         val name : EditText = view.findViewById(R.id.editTextTextPersonName)
+        val surname : EditText = view.findViewById(R.id.editTextTextPersonSurname)
         linkLog.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
                 (thiz.requireActivity() as LogActivity).switchLogFragment()
@@ -48,13 +49,13 @@ class SignUpCustomer : Fragment() {
         val button: Button = view.findViewById(R.id.buttonSignUpCustomer)
         button.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
-                if(!email.text.isEmpty()&&!password.text.isEmpty()&&!name.text.isEmpty()) {
+                if(!email.text.isEmpty()&&!password.text.isEmpty()&&!name.text.isEmpty()&&!surname.text.isEmpty()) {
                     val firebaseAuthWrapper: FirebaseAuthWrapper =
                         FirebaseAuthWrapper(thiz.requireContext())
                     firebaseAuthWrapper.signUp(
                         email.text.toString(),
                         password.text.toString(),
-                        name.text.toString()
+                        (name.text.toString() + " " + surname.text.toString())
                     )
                 }
                 else{

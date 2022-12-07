@@ -16,11 +16,11 @@ class MyRatingsAdapter(context: Context, val resorce:Int, val ratings : List<Ins
         var vieww: View? = convertView
         if (vieww == null) {
             vieww =
-                LayoutInflater.from(context).inflate(R.layout.instructors_list, parent, false)
+                LayoutInflater.from(context).inflate(R.layout.rating_list, parent, false)
         }
-        val rateDate : TextView = vieww!!.findViewById(R.id.nameInstr)
+        val rateDate : TextView = vieww!!.findViewById(R.id.rateDate)
         rateDate.text = rating.name
-        val instRate : RatingBar = vieww!!.findViewById(R.id.ratingInstr)
+        val instRate : RatingBar = vieww!!.findViewById(R.id.thisRating)
         instRate.rating = rating.rate.toFloat()
     return vieww!!
     }

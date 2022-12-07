@@ -16,12 +16,21 @@
         android:gravity="center"
         android:padding="20dp">
 
+        <TextView
+            android:id="@+id/textViewIntro"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Maestri a Sauze d'Oulx: "
+            android:textColor="@color/light_blue"
+            android:textSize="24sp"
+            android:layout_marginTop="10dp"/>
+
         <ListView
             android:id="@+id/instructorList"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginBottom="20dp"
-            android:layout_marginTop="20dp"/>
+            android:layout_marginTop="15dp"/>
 
     </LinearLayout>
 

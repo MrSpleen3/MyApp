@@ -69,7 +69,7 @@ class LessonListAdapter(context: Context,
             }
             else {
                 if (booking.check) {
-                    myBooking.text = "Lezione"
+                    myBooking.text = "Lezione (${booking.name})"
                     lay.setBackgroundColor(ContextCompat.getColor(context, R.color.light_blue))
                     //position 0 ha un bug, spiegazione a fine codice
                     if(position == 0){
@@ -79,7 +79,7 @@ class LessonListAdapter(context: Context,
                         })
                     }
                 } else {
-                    myBooking.text = "Conferma Lezione"
+                    myBooking.text = "Conferma Lezione (${booking.name})"
                     lay.setBackgroundColor(ContextCompat.getColor(context, R.color.gray))
                     lay.setOnClickListener(object : View.OnClickListener {
                         override fun onClick(v: View?) {

@@ -21,7 +21,9 @@ class BookingListAdapter
      val istr_id :String,
      val day : Int,
      val month : Int,
-     val year: Int) :
+     val year: Int,
+     val custName : String,
+     val instName : String) :
     ArrayAdapter<BookingElement>(context,resorce,bookings){
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val booking: BookingElement = bookings[position]
@@ -44,7 +46,7 @@ class BookingListAdapter
                     builder.setMessage("Sicuro di voler prenotare la lezione?")
                         .setPositiveButton("Prenota",
                             DialogInterface.OnClickListener { dialog, id ->
-                                FirebaseDbWrapper(context).BookLesson(user_id,istr_id,booking.timeSlot,day,month,year)
+                                FirebaseDbWrapper(context).BookLesson(user_id,istr_id,booking.timeSlot,day,month,year,custName,instName)
                                 dialog.cancel()
                             })
                         .setNegativeButton("Indietro",

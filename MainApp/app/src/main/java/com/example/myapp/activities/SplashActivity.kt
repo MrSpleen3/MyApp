@@ -54,6 +54,8 @@ class SplashActivity : AppCompatActivity() {
                             intent = Intent(thiz, MainInstructorActivity::class.java)
                         } else {
                             intent = Intent(thiz, MainCustomerActivity::class.java)
+                            val name = firebaseAuthWrapper.getName()
+                            intent.putExtra("name",name)
                         }
                         intent.putExtra("id", id)
                         thiz.startActivity(intent!!)

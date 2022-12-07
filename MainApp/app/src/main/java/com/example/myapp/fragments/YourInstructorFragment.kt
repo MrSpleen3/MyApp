@@ -17,6 +17,7 @@ import android.widget.LinearLayout
 import android.widget.RatingBar
 import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
+import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.commit
 import com.example.myapp.R
 import com.example.myapp.activities.MainCustomerActivity
@@ -34,7 +35,10 @@ class YourInstructorFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var instructorId: String? = null
     private var custromerId : String? = null
+    private var custromerName : String? = null
+    private var instructorName : String? = null
     private var place : String? = null
+    private var i : Int = 0
     var firebaseDbWrapper : FirebaseDbWrapper? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,6 +46,7 @@ class YourInstructorFragment : Fragment() {
         arguments?.let {
             instructorId = it.getString("id_istr")
             custromerId = it.getString("id_cust")
+            custromerName = it.getString("name")
         }
         val thiz = this
         this.requireActivity().onBackPressedDispatcher?.addCallback(this, object : OnBackPressedCallback(true) {
@@ -70,6 +75,7 @@ class YourInstructorFragment : Fragment() {
                 textSurname.text = myarray[1]
                 textPlace.text= myarray[2]
                 place = myarray[2]
+                instructorName=myarray[0]
             }
         }
         val textBook : TextView = vieww.findViewById(R.id.textViewBookLes)
@@ -170,20 +176,24 @@ class YourInstructorFragment : Fragment() {
         return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,dp.toFloat(), r.getDisplayMetrics()).toInt()
     }
     private fun renderFrag(day : Int, month : Int, year : Int) {
-        val frag : Fragment = TimeTableFragment.newInstance(instructorId!!,custromerId,false,day,(month + 1),year)
-        requireFragmentManager().commit {
+        i++
+        val frag : Fragment = TimeTableFragment.newInstance(instructorId!!,custromerId,false,day,(month + 1),year,custromerName,instructorName,i)
+        parentFragmentManager.commit {
             setReorderingAllowed(true)
             this.replace(R.id.fragmentContainerTimeTableCust,frag)
         }
     }
 
+
     companion object {
         @JvmStatic
-        fun newInstance(param1: String, param2: String) =
+        fun newInstance(param1: String, param2: String,param3 : String) =
             YourInstructorFragment().apply {
                 arguments = Bundle().apply {
                     putString("id_istr", param1)
                     putString("id_cust", param2)
+                    putString("name", param3)
+
                 }
             }
     }
