@@ -33,14 +33,19 @@ class YourLessonsListAdapter(context: Context, val resorce:Int, val list : List<
         if(!flag_istr) {
             if (element.flag) {
                 msgSecond.visibility = View.VISIBLE
-                txt2 = "lezione prenotata, maestro: ${element.name_istr}"
+                txt2 = "lezione prenotata (maestro: ${element.name_istr})"
                 msgSecond.text = "Presso: ${element.place}"
-            } else txt2 = "in attesa di conferma dal maestro ${element.name_istr}"
+            } else {
+                txt2 = "in attesa di conferma (maestro: ${element.name_istr})"
+                //sarebbe settato già a GONE ma il bug in res 0 ora fa vedere anche
+                //Presso: di un altra resource...
+                msgSecond.visibility=View.GONE
+            }
         }
         else{
             if (element.flag) {
                 msgSecond.visibility = View.VISIBLE
-                txt2 = "lezione prenotata, cliente : ${element.name}"
+                txt2 = "lezione prenotata (cliente: ${element.name})"
                 msgSecond.text = "Presso: ${element.place}"
                 //position 0 ha un bug, spiegazione a fine codice
                 if(position == 0) {
@@ -50,7 +55,8 @@ class YourLessonsListAdapter(context: Context, val resorce:Int, val list : List<
                     })
                 }
             } else {
-                txt2 = "conferma la prenotazione di ${element.name}"
+                txt2 = "conferma la prenotazione (cliente: ${element.name})"
+                msgSecond.visibility = View.VISIBLE
                 lay.setOnClickListener(object : View.OnClickListener {
                     override fun onClick(v: View?) {
                         val dialog = Dialog(context)
