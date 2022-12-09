@@ -308,7 +308,7 @@ class FirebaseDbWrapper (private val context: Context) {
     suspend fun getRatings(id: String) : MutableList<InstructorListEl>? {
         val docRef = db.collection("Ratings")
             .whereEqualTo("id_istr",id)
-            .orderBy("date")
+            .orderBy("date",Query.Direction.DESCENDING)
         val doc = docRef.get().await()
         val myList : MutableList<InstructorListEl> = ArrayList()
         if(doc.documents.isEmpty()) return null

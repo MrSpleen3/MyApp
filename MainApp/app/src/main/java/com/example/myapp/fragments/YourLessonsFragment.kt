@@ -1,6 +1,7 @@
 package com.example.myapp.fragments
 
 import android.content.ContentValues
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -30,6 +31,7 @@ class YourLessonsFragment : Fragment() {
     var year : Int? = null
     var month : Int? = null
     var day : Int? = null
+    private var mycontext : Context? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,6 +59,7 @@ class YourLessonsFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_your_lessons, container, false)
+        mycontext = thiz.requireContext()
         myListView = view.findViewById(R.id.listaLez)
         val calendar: Calendar = Calendar.getInstance()
         year = calendar.get(Calendar.YEAR)
@@ -103,10 +106,10 @@ class YourLessonsFragment : Fragment() {
     fun refreshAdapter() {
         Log.d("ewe","refr")
         GlobalScope.launch(Dispatchers.IO) {
-            firebaseDbWrapper = FirebaseDbWrapper(thiz.requireContext())
+            firebaseDbWrapper = FirebaseDbWrapper(mycontext!!)
             val filteredList = firebaseDbWrapper!!.getYourBookings(myId!!,day!!,month!!,year!!,flag_istr!!)
             filteredList.sort()
-            val adapter= YourLessonsListAdapter(thiz.requireContext(),0,filteredList,flag_istr!!)
+            val adapter= YourLessonsListAdapter(mycontext!!,0,filteredList,flag_istr!!)
             withContext(Dispatchers.Main){
                 myListView!!.adapter=adapter
             }
