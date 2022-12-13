@@ -13,6 +13,8 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.auth.ktx.userProfileChangeRequest
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentReference
+import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
@@ -206,17 +208,19 @@ class FirebaseDbWrapper (private val context: Context) {
             "name_istr" to nameIstr,
             "check" to false
         )
-        db.collection("Bookings").document()
-            .set(lesson)
-            .addOnSuccessListener {
-                Log.d(TAG, "DocumentSnapshot added")
-                Toast.makeText(context, "Lezione prenotata!",
-                    Toast.LENGTH_SHORT).show()}
-            .addOnFailureListener { e ->
-                Log.w(TAG, "Error adding document", e)
-                Toast.makeText(context, "Prenotazione fallita.",
-                    Toast.LENGTH_SHORT).show()
+        val id_doc = istr_id + day.toString() + month.toString() + year.toString() + timeSlot.toString()
+        val docRef = db.collection("Bookings").document(id_doc)
+        db.runTransaction { transaction ->
+            val snapshot = transaction.get(docRef)
+            if(!snapshot.exists()) {
+                transaction.set(docRef,lesson)
             }
+            null
+        }.addOnSuccessListener { result ->
+            Log.d(TAG, "Transaction success: $result")
+        }.addOnFailureListener { e ->
+            Log.w(TAG, "Transaction failure.", e)
+        }
     }
 
     fun confrimLesson(id : String, place : String) {
@@ -243,17 +247,19 @@ class FirebaseDbWrapper (private val context: Context) {
             "name_istr" to " ",
             "check" to true
         )
-        db.collection("Bookings").document()
-            .set(lesson)
-            .addOnSuccessListener {
-                Log.d(TAG, "DocumentSnapshot added")
-                Toast.makeText(context, "Occupata!",
-                    Toast.LENGTH_SHORT).show()}
-            .addOnFailureListener { e ->
-                Log.w(TAG, "Error adding document", e)
-                Toast.makeText(context, "Operazione fallita.",
-                    Toast.LENGTH_SHORT).show()
+        val id_doc = id + day.toString() + month.toString() + year.toString() + timeSlot.toString()
+        val docRef = db.collection("Bookings").document(id_doc)
+        db.runTransaction { transaction ->
+            val snapshot = transaction.get(docRef)
+            if(!snapshot.exists()) {
+                transaction.set(docRef,lesson)
             }
+            null
+        }.addOnSuccessListener { result ->
+            Log.d(TAG, "Transaction success: $result")
+        }.addOnFailureListener { e ->
+            Log.w(TAG, "Transaction failure.", e)
+        }
     }
     fun getCollection() : CollectionReference {
         return db.collection("Bookings")
@@ -332,5 +338,4 @@ class FirebaseDbWrapper (private val context: Context) {
         val docRef = db.collection("Instructors").document(id)
         docRef.set(newRate, SetOptions.merge())
     }
-
 }
