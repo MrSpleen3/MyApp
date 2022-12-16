@@ -42,7 +42,7 @@ class MainInstructorActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val frag: Fragment = YourLessonsFragment.newInstance(instructorId!!,true)
+        val frag: Fragment = YourLessonsFragment.newInstance(instructorId!!,true,null,null)
         fragmentManager!!.commit {
             setReorderingAllowed(true)
             this.replace(R.id.fragmentContainerMainIstr, frag)

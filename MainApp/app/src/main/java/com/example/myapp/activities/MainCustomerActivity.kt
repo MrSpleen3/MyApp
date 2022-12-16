@@ -23,6 +23,9 @@ class MainCustomerActivity : AppCompatActivity() {
     var fragmentManager : FragmentManager? = null
     var id : String? = null
     var name : String? = null
+    var lastPlace : String? = null
+    var lastIstr : String? = null
+    var fragTurn : Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,12 +43,17 @@ class MainCustomerActivity : AppCompatActivity() {
     fun renderMainFrag(place : String?,id_istr : String?) {
         val frag: Fragment
         if(place != null) {
+            fragTurn = 1
+            lastPlace = place
             frag = InstructorsInPlaceFragment.newInstance(place)
         }
         else if (id_istr != null){
+            fragTurn = 2
+            lastIstr = id_istr
             frag = YourInstructorFragment.newInstance(id_istr,id!!,name!!)
         }
         else{
+            fragTurn = 0
             frag = PlacesFragment()
         }
         fragmentManager!!.commit {
@@ -61,10 +69,15 @@ class MainCustomerActivity : AppCompatActivity() {
         return super.onCreateOptionsMenu(menu)
     }
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val frag: Fragment = YourLessonsFragment.newInstance(id!!,false)
+        var frag: Fragment? = null
+        when (fragTurn) {
+            0 -> frag = YourLessonsFragment.newInstance(id!!, false,null,null)
+            1 -> frag = YourLessonsFragment.newInstance(id!!, false,null,lastPlace)
+            2 -> frag = YourLessonsFragment.newInstance(id!!, false,lastIstr,null)
+        }
         fragmentManager!!.commit {
             setReorderingAllowed(true)
-            this.replace(R.id.fragmentContainerMain, frag)
+            this.replace(R.id.fragmentContainerMain, frag!!)
         }
         return super.onOptionsItemSelected(item)
     }

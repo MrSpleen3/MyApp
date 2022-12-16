@@ -25,6 +25,8 @@ class YourLessonsFragment : Fragment() {
 
     private var myId: String? = null
     private var flag_istr: Boolean? = null
+    var id_istr : String? = null
+    var place : String? = null
     var firebaseDbWrapper: FirebaseDbWrapper? = null
     var myListView : ListView? = null
     val thiz = this
@@ -39,12 +41,14 @@ class YourLessonsFragment : Fragment() {
         arguments?.let {
             myId = it.getString("id")
             flag_istr = it.getBoolean("flag_istr")
+            id_istr = it.getString("id_istr")
+            place = it.getString("place")
         }
         this.requireActivity().onBackPressedDispatcher?.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 Log.d("bo","back")
                 if (!flag_istr!!) {
-                    (thiz.requireActivity() as MainCustomerActivity).renderMainFrag(null, null)
+                    (thiz.requireActivity() as MainCustomerActivity).renderMainFrag(place, id_istr)
                 }
                 else {
                     (thiz.requireActivity() as MainInstructorActivity).renderMainFrag()
@@ -119,11 +123,13 @@ class YourLessonsFragment : Fragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance(param1: String, param2: Boolean) =
+        fun newInstance(param1: String, param2: Boolean, id_istr : String?,place : String?) =
             YourLessonsFragment().apply {
                 arguments = Bundle().apply {
                     putString("id", param1)
                     putBoolean("flag_istr", param2)
+                    putString("id_istr",id_istr)
+                    putString("place",place)
                 }
             }
     }
