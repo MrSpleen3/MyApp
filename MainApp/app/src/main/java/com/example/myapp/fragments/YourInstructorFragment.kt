@@ -16,6 +16,7 @@ import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.RatingBar
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.commit
@@ -100,6 +101,7 @@ class YourInstructorFragment : Fragment() {
         val marginSmall : Int = getPx(r,10)
         val marginBig : Int = getPx(r,20)
         var isFirst = true
+        var rateFlagAble : Boolean = false
         textBook.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
                 flagvis = !flagvis
@@ -162,11 +164,26 @@ class YourInstructorFragment : Fragment() {
                     id_rate = rate.id
                 }
             }
+            val rateAbility : Boolean = firebaseDbWrapper!!.canRate(custromerId!!,instructorId!!,day,(month + 1),year)
+            withContext(Dispatchers.Main) {
+                rateFlagAble = rateAbility
+            }
         }
         addRate.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
-                firebaseDbWrapper!!
-                    .addRating(id_rate,rateBar.rating.toDouble(),custromerId!!,instructorId!!,Timestamp(calendar.time))
+                if(rateFlagAble) {
+                    firebaseDbWrapper!!
+                        .addRating(
+                            id_rate,
+                            rateBar.rating.toDouble(),
+                            custromerId!!,
+                            instructorId!!,
+                            Timestamp(calendar.time)
+                        )
+                }
+                else {
+                    Toast.makeText(context,"Fai una lezione prima di valutare!",Toast.LENGTH_SHORT).show()
+                }
             }
         })
         return vieww

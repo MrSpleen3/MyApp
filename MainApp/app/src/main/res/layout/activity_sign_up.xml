@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.LogActivity"
-    android:background="@drawable/ski_bk">
+    tools:context=".activities.LogActivity">
 
     <LinearLayout
         android:layout_width="match_parent"

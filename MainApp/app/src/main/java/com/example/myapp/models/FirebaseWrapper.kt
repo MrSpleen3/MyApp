@@ -208,18 +208,28 @@ class FirebaseDbWrapper (private val context: Context) {
             "name_istr" to nameIstr,
             "check" to false
         )
+        var flag : Boolean = false
         val id_doc = istr_id + day.toString() + month.toString() + year.toString() + timeSlot.toString()
         val docRef = db.collection("Bookings").document(id_doc)
+        //transazione evita scrittura concorrente su risorsa condivisa
         db.runTransaction { transaction ->
             val snapshot = transaction.get(docRef)
+            //documento non deve esistere se è la prima scittura
+            //se esiste qualcun altro ha già prenotato nel frattempo
             if(!snapshot.exists()) {
                 transaction.set(docRef,lesson)
+                null
             }
-            null
+            else {
+                throw FirebaseFirestoreException("too late",
+                    FirebaseFirestoreException.Code.ALREADY_EXISTS)
+            }
         }.addOnSuccessListener { result ->
             Log.d(TAG, "Transaction success: $result")
+            Toast.makeText(context,"lezione prenoata",Toast.LENGTH_SHORT).show()
         }.addOnFailureListener { e ->
             Log.w(TAG, "Transaction failure.", e)
+            Toast.makeText(context,"prenotazione fallita",Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -251,14 +261,22 @@ class FirebaseDbWrapper (private val context: Context) {
         val docRef = db.collection("Bookings").document(id_doc)
         db.runTransaction { transaction ->
             val snapshot = transaction.get(docRef)
+            //documento non deve esistere se è la prima scittura
+            //se esiste qualcun altro ha già prenotato nel frattempo
             if(!snapshot.exists()) {
                 transaction.set(docRef,lesson)
+                null
             }
-            null
+            else {
+                throw FirebaseFirestoreException("too late",
+                    FirebaseFirestoreException.Code.ALREADY_EXISTS)
+            }
         }.addOnSuccessListener { result ->
             Log.d(TAG, "Transaction success: $result")
+            Toast.makeText(context,"Sei occupato!",Toast.LENGTH_SHORT).show()
         }.addOnFailureListener { e ->
             Log.w(TAG, "Transaction failure.", e)
+            Toast.makeText(context,"operazione fallita",Toast.LENGTH_SHORT).show()
         }
     }
     fun getCollection() : CollectionReference {
@@ -267,7 +285,7 @@ class FirebaseDbWrapper (private val context: Context) {
     suspend fun getYourBookings(id : String,day : Int,month: Int,year: Int, flag : Boolean): MutableList<ElementList> {
         var docRef : Query? = null
         var list : MutableList<ElementList> = ArrayList<ElementList>()
-        val sdf : SimpleDateFormat = SimpleDateFormat("dd/mm/yyyy")
+        val sdf : SimpleDateFormat = SimpleDateFormat("dd/MM/yyyy")
         val today = sdf.parse("$day/$month/$year")
         if(flag) docRef = db.collection("Bookings").whereEqualTo("id_istr",id)
         else docRef = db.collection("Bookings").whereEqualTo("id_cust",id)
@@ -288,6 +306,26 @@ class FirebaseDbWrapper (private val context: Context) {
         val doc = docRef.get().await()
         if(doc.documents.isEmpty()) return null
         else return MyRate(doc.documents[0].id,doc.documents[0].get("vote") as Double)
+    }
+
+    //si può valutare solo se si ha già fatto una lezione
+    suspend fun canRate( id : String,id_istr: String, day : Int, month: Int, year: Int) : Boolean {
+        val sdf : SimpleDateFormat = SimpleDateFormat("dd/MM/yyyy")
+        val today = sdf.parse("$day/$month/$year")
+        val docRef = db.collection("Bookings")
+            .whereEqualTo("id_cust", id)
+            .whereEqualTo("id_istr", id_istr)
+        val doc = docRef.get().await()
+        if(!doc.documents.isEmpty()) {
+            for (document in doc.documents) {
+                val bookDay =
+                    sdf.parse("${document.get("day")}/${document.get("month")}/${document.get("year")}")
+                if (bookDay.compareTo(today) <= 0) {
+                    return true
+                }
+            }
+        }
+        return false
     }
 
     fun addRating(id_doc : String?, vote : Double, id_cust : String,id_istr: String,date : Timestamp){
