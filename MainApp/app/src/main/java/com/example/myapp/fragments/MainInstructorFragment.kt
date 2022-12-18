@@ -78,6 +78,7 @@ class MainInstructorFragment : Fragment() {
         val marginSmall : Int = getPx(r,10)
         val marginBig : Int = getPx(r,20)
         var isFirst = true
+        //cambia dimensioni layout e visibility
         textBook.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
                 flagvis = !flagvis
@@ -98,6 +99,7 @@ class MainInstructorFragment : Fragment() {
                 }
             }
         })
+        //permette di selezionare una data
         textSet.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
                 val dialog : DatePickerDialog = DatePickerDialog(context,android.R.style.Theme_Holo_Light_Dialog_MinWidth,
@@ -108,6 +110,7 @@ class MainInstructorFragment : Fragment() {
                         year = myear
                         textSet.text = "$day/${month + 1}/$year"
                         textSet.textSize = 15.0F
+                        //crea fragment timetable
                         renderFrag(day, month, year)
                         isFirst=false
                     }
@@ -117,6 +120,7 @@ class MainInstructorFragment : Fragment() {
                 dialog.show()
             }
         })
+        //cambia dimensioni layout e visibility
         textRate.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
                 flagRate = !flagRate
@@ -137,6 +141,7 @@ class MainInstructorFragment : Fragment() {
                 }
             }
         })
+        //legge le velutazioni dell utente e le mostra in una lista
         GlobalScope.launch(Dispatchers.IO) {
             val mylist : MutableList <InstructorListEl>? = firebaseDbWrapper!!.getRatings(instructorId!!)
             if(mylist != null){
@@ -157,7 +162,7 @@ class MainInstructorFragment : Fragment() {
             this.replace(R.id.fragmentContainerTimeTable,frag)
         }
     }
-
+    //conversione dp in px
     private fun getPx(r : Resources,dp : Int) : Int {
         return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,dp.toFloat(), r.getDisplayMetrics()).toInt()
     }

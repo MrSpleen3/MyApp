@@ -21,23 +21,15 @@ import kotlinx.coroutines.withContext
 
 class PlacesFragment : Fragment() {
 
-  /*  override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }*/
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         val view : View = inflater.inflate(R.layout.fragment_main_get_places, container, false)
         val thiz = this
         val spinner: TextView = view.findViewById(R.id.search_spinner_cust)
         val firebaseDbWrapper : FirebaseDbWrapper = FirebaseDbWrapper(thiz.requireContext())
+        //legge array di località salvato su db e lo mette in una lista interna al dialog
         GlobalScope.launch(Dispatchers.IO) {
             val arr : ArrayList<String> = firebaseDbWrapper.getPlaces()
             withContext(Dispatchers.Main) {
@@ -52,6 +44,7 @@ class PlacesFragment : Fragment() {
                         val searchText: EditText = dialog.findViewById(R.id.editTextSearch)
                         val adapter: ArrayAdapter<String> = ArrayAdapter(thiz.requireContext() , android.R.layout.simple_list_item_1, arr)
                         myList.adapter = adapter
+                        //barra di ricerca nel dialog per filtrare lista
                         searchText.addTextChangedListener(object : TextWatcher {
                             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
                             }
@@ -88,15 +81,4 @@ class PlacesFragment : Fragment() {
         })
         return view
     }
-
-/*    companion object {
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            PlacesFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
-    }*/
 }

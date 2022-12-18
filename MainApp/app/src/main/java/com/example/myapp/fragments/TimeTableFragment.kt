@@ -62,7 +62,8 @@ class TimeTableFragment : Fragment() {
         var flag = false
         val view : View = inflater.inflate(R.layout.fragment_timetable, container, false)
         myListView = view.findViewById(R.id.bookingList)
-        firebaseDbWrapper = FirebaseDbWrapper(thiz.requireContext())
+        firebaseDbWrapper = FirebaseDbWrapper(mycontext!!)
+        //legge se ci sono documenti relativi alle prenotazioni desiderate e riempie le liste
         GlobalScope.launch(Dispatchers.IO) {
             val myList =
                 firebaseDbWrapper!!.getBookings(id_istr!!, day!!, month!!, year!!)
@@ -76,7 +77,8 @@ class TimeTableFragment : Fragment() {
                 myListView!!.adapter = myAdapter!!
             }
         }
-        val fire : FirebaseDbWrapper = FirebaseDbWrapper(thiz.requireContext())
+        //per aggiorare in tempo reale la lista di timeslot
+        val fire : FirebaseDbWrapper = FirebaseDbWrapper(mycontext!!)
         val docRef = fire.getCollection()
         doc = docRef.whereEqualTo("id_istr", id_istr!!)
             .whereEqualTo("day", day!!)
@@ -96,6 +98,7 @@ class TimeTableFragment : Fragment() {
             }
         return view
     }
+    //aggiornamento adapter chiamato da snapshot listener
     fun listenComplete() {
         GlobalScope.launch(Dispatchers.IO) {
             val myList =

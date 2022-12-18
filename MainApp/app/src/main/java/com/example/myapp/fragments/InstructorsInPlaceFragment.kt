@@ -24,7 +24,7 @@ import kotlinx.coroutines.withContext
 //Prende il luogo d'interesse dall'altro frag
 //e ritorna una lista d'istruttori relativa al luogo
 class InstructorsInPlaceFragment() : Fragment() {
-    // TODO: Rename and change types of parameters
+
     private var place: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,7 +46,6 @@ class InstructorsInPlaceFragment() : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         val thiz = this
         val view : View = inflater.inflate(R.layout.fragment_main_get_instructors, container, false)
         val textIntro : TextView = view.findViewById(R.id.textViewIntro)

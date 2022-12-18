@@ -33,7 +33,7 @@ import java.util.*
 
 
 class YourInstructorFragment : Fragment() {
-    // TODO: Rename and change types of parameters
+
     private var instructorId: String? = null
     private var custromerId : String? = null
     private var custromerName : String? = null
@@ -102,6 +102,7 @@ class YourInstructorFragment : Fragment() {
         val marginBig : Int = getPx(r,20)
         var isFirst = true
         var rateFlagAble : Boolean = false
+        //cambia dimensioni layout e visibility
         textBook.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
                 flagvis = !flagvis
@@ -122,6 +123,7 @@ class YourInstructorFragment : Fragment() {
                 }
             }
         })
+        //permette di selezionare una data
         textSet.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
 
@@ -133,6 +135,7 @@ class YourInstructorFragment : Fragment() {
                             year = myear
                             textSet.text = "$day/${month + 1}/$year"
                             textSet.textSize = 15.0F
+                            //crea frag timetable
                             renderFrag(day, month, year)
                             isFirst=false
                         }
@@ -142,6 +145,7 @@ class YourInstructorFragment : Fragment() {
                 dialog.show()
             }
         })
+        //cambia dimensioni layout e visibility
         textRate.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
                 flagvisRate = !flagvisRate
@@ -156,6 +160,7 @@ class YourInstructorFragment : Fragment() {
                 }
             }
         })
+        //se c'è già un voto effettuato lo mostra
         GlobalScope.launch(Dispatchers.IO) {
             val rate : MyRate? = firebaseDbWrapper!!.getMyRate(instructorId!!,custromerId!!)
             withContext(Dispatchers.Main) {
@@ -164,6 +169,7 @@ class YourInstructorFragment : Fragment() {
                     id_rate = rate.id
                 }
             }
+            //si può votare solo se si ha già fatto una leione
             val rateAbility : Boolean = firebaseDbWrapper!!.canRate(custromerId!!,instructorId!!,day,(month + 1),year)
             withContext(Dispatchers.Main) {
                 rateFlagAble = rateAbility
@@ -188,6 +194,7 @@ class YourInstructorFragment : Fragment() {
         })
         return vieww
     }
+    //conversione dp in px
     private fun getPx(r : Resources, dp : Int) : Int {
         return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,dp.toFloat(), r.getDisplayMetrics()).toInt()
     }

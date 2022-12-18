@@ -22,19 +22,10 @@ import kotlinx.coroutines.withContext
 
 class SignUpInstructor : Fragment() {
 
-   /* override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }*/
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         val view: View = inflater.inflate(R.layout.fragment_sign_up_instructor, container, false)
         val linkReg: TextView = view.findViewById(R.id.textViewInstr1)
         val linkLog : TextView = view.findViewById(R.id.textViewBackLogI)
@@ -115,15 +106,4 @@ class SignUpInstructor : Fragment() {
         })
         return view
     }
-
-  /*  companion object {
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            SignUpInstructor().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
-    } */
 }

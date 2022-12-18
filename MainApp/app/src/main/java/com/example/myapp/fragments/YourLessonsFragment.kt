@@ -21,6 +21,9 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.*
 
+//mostra una lista delle proprie lezioni da data odierna in poi,
+//che si aggiorna in tempo reale grazie a snapshotListener
+//e con on click per conferma prenotazione se si è istruttori
 class YourLessonsFragment : Fragment() {
 
     private var myId: String? = null
@@ -61,7 +64,6 @@ class YourLessonsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_your_lessons, container, false)
         mycontext = thiz.requireContext()
         myListView = view.findViewById(R.id.listaLez)
@@ -69,11 +71,11 @@ class YourLessonsFragment : Fragment() {
         year = calendar.get(Calendar.YEAR)
         month = calendar.get(Calendar.MONTH) + 1
         day = calendar.get(Calendar.DAY_OF_MONTH)
-        firebaseDbWrapper = FirebaseDbWrapper(thiz.requireContext())
+        firebaseDbWrapper = FirebaseDbWrapper(mycontext!!)
         GlobalScope.launch(Dispatchers.IO) {
             val filteredList = firebaseDbWrapper!!.getYourBookings(myId!!,day!!,month!!,year!!,flag_istr!!)
             filteredList.sort()
-            val adapter= YourLessonsListAdapter(thiz.requireContext(),0,filteredList,flag_istr!!)
+            val adapter= YourLessonsListAdapter(mycontext!!,0,filteredList,flag_istr!!)
             withContext(Dispatchers.Main){
                 myListView!!.adapter=adapter
             }
@@ -106,7 +108,7 @@ class YourLessonsFragment : Fragment() {
         menu.findItem(R.id.my_notify).isVisible= false
         super.onCreateOptionsMenu(menu, inflater)
     }
-    //TODO : chiamare refreshadapter da snapshotlistener!
+
     fun refreshAdapter() {
         Log.d("ewe","refr")
         GlobalScope.launch(Dispatchers.IO) {

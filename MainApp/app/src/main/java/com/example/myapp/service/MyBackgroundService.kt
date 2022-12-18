@@ -96,7 +96,7 @@ class MyBackgroundService : Service() {
             else notificationText = "la prenotazione del $day/$month è stata rifiutata"
         }
         else notificationText = "Prenotazione per il $day/$month ricevuta"
-        //val intent: Intent = Intent(this, YourLessonsActivity :: class.java)
+        //val intent: Intent = Intent(this, MainActivity :: class.java)
         //intent.putExtra("id", id_cust)
         //intent.putExtra("flag_istr",flag)
         //val pendingIntent = PendingIntent.getActivity(this,0,intent,PendingIntent.FLAG_IMMUTABLE)
